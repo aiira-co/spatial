@@ -5,23 +5,20 @@ class ValuesController
 {
 
   
-    private $model;
-  
+
     function __construct()
     {
-
-        $this->model = CORE::getModel('practice');
-        // $this->params =  CORE::getInstance('Params');
     }
 
 
     // method called to handle a GET request
 
     function httpGet(int $id = null): ?array
-    {
-        // return ['value1','value2'];
-        $users = $this->model->getItems('');
-        return $users;
+    {   
+        // --- use this if you are connected to the Databases ---
+        // $users = DB::table('persons')->get();
+        // return $users;
+        return ['value1','value2'];
     }
 
 
