@@ -816,7 +816,7 @@ class CoreModel
         $sql .= isset(self::$s['limit']) ? ' LIMIT '.self::$s['limit'] : '';
         $sql .= isset(self::$s['offset']) ? ' OFFSET '.self::$s['offset'] : '';
         self::$sql = $sql; //want to have this static
-      // echo $sql;
+    //   echo $sql;
         return $sql;
     }
 
@@ -851,7 +851,7 @@ class CoreModel
             }
 
 
-              // print_r($bindParam);
+            //   print_r(self::$bindParam);
               //Empty bindParam;
               self::$bindParam = [];
 
@@ -949,7 +949,10 @@ class CoreModel
         $exist = "";
 
         for ($i = 0; $i < $length; $i++) {
-            if (self::$pdo->query("SHOW COLUMNS FROM ".self::$prefix.$table." LIKE '".$field[$i]."'")->rowCount() == 1) {
+            // var_dump($field);
+            
+                                    
+            if (self::$pdo->query("SHOW COLUMNS FROM ".self::$prefix.$table." LIKE '".$field[$i]."'") != null) {
                 $exist .= ','.$alias.'.'.$field[$i];
             // echo $field[$i].'<br/>';
             }

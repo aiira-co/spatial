@@ -99,7 +99,7 @@ class Node
 
                 if (class_exists($class)) {
                     // echo 'got it';
-                    $corecontroller = new CoreController(new $class, $this->router);
+                    $coreController = new CoreController(new $class, $this->router);
                 } else {
                    
                     $basket->result = ['error'=>'The class '.$class.'does not exist. File: '.$path];
@@ -109,6 +109,7 @@ class Node
             }
         } else {
              $basket->result = ['error'=>'The controller does not exist'];
+            //  http_response_code (400);
              
         }
 

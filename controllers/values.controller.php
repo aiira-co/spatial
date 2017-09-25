@@ -17,7 +17,7 @@ class ValuesController
 
     // method called to handle a GET request
 
-    function httpGet(int $id = null):array
+    function httpGet(int $id = null): ?array
     {
         // return ['value1','value2'];
         $users = $this->model->getItems('');
@@ -29,6 +29,7 @@ class ValuesController
     function httpPost(array $form)
     {
       // code here
+        return ['id'=>2];
     }
 
 
@@ -36,6 +37,7 @@ class ValuesController
     function httpPut(int $id)
     {
       // code here
+        return ['id'=>2];
     }
 
 
@@ -43,5 +45,6 @@ class ValuesController
     function httpDelete(int $id)
     {
       // code here
+        return ['id'=>2];
     }
 }
