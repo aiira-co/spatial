@@ -55,7 +55,13 @@ class CoreController
             case 'GET':
                 # code...
                 if (method_exists($controller, 'httpGet')) {
-                    $basket->result = $controller->httpGet();
+                    $legacy = CORE::getInstance('legacy');
+                    if (isset($legacy->params)) {
+                        $basket->result = call_user_func_array(array($controller,'httpGet'), $legacy->params);
+                        // $basket->result = $controller->httpGet($legacy->params);
+                    } else {
+                        $basket->result = $controller->httpGet();
+                    }
                 } else {
                     $this->error('httpGet');
                 }
@@ -73,6 +79,7 @@ class CoreController
 
             case 'PUT':
                 $data  = file_get_contents('php://input');
+
                 if (method_exists($controller, 'httpPut')) {
                     $basket->result = $controller->httpPut($data);
                 } else {
@@ -105,7 +112,7 @@ class CoreController
     function error(string $fx)
     {
         $basket = CORE::getInstance('basket');
-        $basket->error = 'The Method '.$fx.'() was not found in the contorller';
+        $basket->results = ['error'=>'The Method '.$fx.'() was not found in the contorller'];
     }
 }
 
@@ -209,12 +216,13 @@ class CoreModel
     {
 
         if (!isset(explode('.', $fields)[1])) {
-            $fields ='';
+            $fieldss ='';
             for ($i=0; $i<count(self::$s['table']); $i++) {
-                $fields .= $this->fieldExists(self::$s['table'][$i], $fields, self::$s['alias'][$i]);
+                $fieldss.= $this->fieldExists(self::$s['table'][$i], $fields, self::$s['alias'][$i]);
             }
 
-            self::$s['field'] = trim($fields, ',');
+            // echo $fieldss;
+            self::$s['field'] = trim($fieldss, ',');
         } else {
             self::$s['field'] =  $fields;
         }
@@ -953,7 +961,7 @@ class CoreModel
             
                                     
             if (self::$pdo->query("SHOW COLUMNS FROM ".self::$prefix.$table." LIKE '".$field[$i]."'") != null) {
-                $exist .= ','.$alias.'.'.$field[$i];
+                $exist .= ','.$alias.'.'.trim($field[$i], ' ');
             // echo $field[$i].'<br/>';
             }
         }

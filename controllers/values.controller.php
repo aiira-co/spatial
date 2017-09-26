@@ -31,7 +31,7 @@ class ValuesController
 
 
     // method called to handle a PUT request
-    function httpPut(int $id)
+    function httpPut(int ...$id)
     {
       // code here
         return ['id'=>2];
