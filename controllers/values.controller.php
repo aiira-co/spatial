@@ -14,10 +14,18 @@ class ValuesController
     // method called to handle a GET request
 
     function httpGet(int $id = null): ?array
-    {   
+    {
         // --- use this if you are connected to the Databases ---
-        // $users = DB::table('persons')->get();
+        // if (count($id)) {
+        //     $users = DB::table('user')
+        //                     ->where('id', $id[0])
+        //                     ->single();
+        // } else {
+        //     $users = DB::table('users')->get();
+        // }
+        
         // return $users;
+
         return ['value1','value2'];
     }
 
