@@ -71,7 +71,7 @@ class CoreController
             case 'POST':
                 $data  = file_get_contents('php://input');
                 if (method_exists($controller, 'httpPost')) {
-                    $basket->result = $controller->httpPost($data);
+                    $basket->result = $controller->httpPost(json_decode($data, true));
                 } else {
                     $this->error('httpPost');
                 }
@@ -81,7 +81,7 @@ class CoreController
                 $data  = file_get_contents('php://input');
 
                 if (method_exists($controller, 'httpPut')) {
-                    $basket->result = $controller->httpPut($data);
+                    $basket->result = $controller->httpPut(json_decode($data, true),$legacy->params[0]);
                 } else {
                     $this->error('httpPut');
                 }
@@ -401,7 +401,7 @@ class CoreModel
 
     //This Method is used at the end of a chain to query the DB.
     //it returns an array of objects
-    public function get()
+    public function get() : array
     {
         $sql = $this->createStatement();
         return $this->query($sql);
