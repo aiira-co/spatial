@@ -9,43 +9,7 @@ class Core
 
     function __construct()
     {
-        $adConfig = new AdConfig;
-      // check if live_site is ot empty
-        if (!empty($adConfig->live_site)) {
-            $baseUrl = $adConfig->live_site;
-        } else {
-            // /check if its a secured connection
-            $http =isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https://' : 'http://';
-            $serverName = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
-
-            // echo 'Server Name'.$serverName.'<br>';
-
-            // attach directory to the serverName if its not public
-            $dir = explode(DS, getcwd());
-            $countDir = count($dir);
-
-            $dir = $dir[$countDir - 1];
-
-            $rootPaths = ['htdocs','www'];
-            for ($i=0; $i < count($rootPaths); $i++) {
-                if ($dir != $rootPaths[$i]) {
-                    $is_root = false;
-                } else {
-                    $is_root = true;
-                }
-            }
-            if ($is_root) {
-                $baseUrl = $serverName;
-            } else {
-                if ($serverName == $dir) {
-                    $baseUrl = $http.$serverName.'/';
-                } else {
-                    $baseUrl = $http.$serverName.'/'.$dir.'/';
-                }
-            }
-        }
-
-        define('BaseUrl', $baseUrl);
+        $this->cors();
     }
     // This Method is called in the root index.php file.
     // the Method intanciates the node class for routing
@@ -216,6 +180,45 @@ class Core
         }
     }
 
+
+
+    /**
+     *  An example CORS-compliant method.  It will allow any GET, POST, or OPTIONS requests from any
+     *  origin.
+     *
+     *  In a production environment, you probably want to be more restrictive, but this gives you
+     *  the general idea of what is involved.  For the nitty-gritty low-down, read:
+     *
+     *  - https://developer.mozilla.org/en/HTTP_access_control
+     *  - http://www.w3.org/TR/cors/
+     *
+     */
+    function cors()
+    {
+    
+        // Allow from any origin
+        if (isset($_SERVER['HTTP_ORIGIN'])) {
+            // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
+            // you want to allow, and if so:
+            header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');    // cache for 1 day
+        }
+    
+        // Access-Control headers are received during OPTIONS requests
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+                // may also be using PUT, PATCH, HEAD etc
+                header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT");
+            }
+    
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+                header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+            }
+    
+            exit(0);
+        }
+    }
 
 
   // Method for redirecting.

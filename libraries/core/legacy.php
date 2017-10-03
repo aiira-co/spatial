@@ -50,56 +50,87 @@ class CoreController
     {
         $controller = $this->controller;
         $basket = CORE::getInstance('basket');
+        $legacy = CORE::getInstance('legacy');
 
-        switch ($_SERVER['REQUEST_METHOD']) {
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            $httpRequest = $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'];
+        } else {
+            $httpRequest = $_SERVER['REQUEST_METHOD'];
+        }
+
+        $httpMethod = 'http'.ucfirst(strtolower($httpRequest));
+        // $basket->result['method']=$httpMethod;
+
+        switch ($httpRequest) {
             case 'GET':
                 # code...
-                if (method_exists($controller, 'httpGet')) {
-                    $legacy = CORE::getInstance('legacy');
+                if (method_exists($controller, $httpMethod)) {
                     if (isset($legacy->params)) {
-                        $basket->result = call_user_func_array(array($controller,'httpGet'), $legacy->params);
-                        // $basket->result = $controller->httpGet($legacy->params);
+                        $basket->result = call_user_func_array(array($controller,$httpMethod), $legacy->params);
                     } else {
-                        $basket->result = $controller->httpGet();
+                        $basket->result = $controller->$httpMethod();
                     }
                 } else {
-                    $this->error('httpGet');
+                    $this->error($httpMethod);
                 }
                 break;
 
 
             case 'POST':
                 $data  = file_get_contents('php://input');
-                if (method_exists($controller, 'httpPost')) {
-                    $basket->result = $controller->httpPost(json_decode($data, true));
+                if (method_exists($controller, $httpMethod)) {
+                    $basket->result = $controller->$httpMethod(json_decode($data, true));
                 } else {
-                    $this->error('httpPost');
+                    $this->error($httpMethod);
                 }
                 break;
 
             case 'PUT':
                 $data  = file_get_contents('php://input');
-
-                if (method_exists($controller, 'httpPut')) {
-                    $basket->result = $controller->httpPut(json_decode($data, true),$legacy->params[0]);
+                if (method_exists($controller, $httpMethod)) {
+                    if (isset($legacy->params)) {
+                        $basket->result = $controller->$httpMethod(json_decode($data, true), $legacy->params[1]);
+                    } else {
+                        $basket->result = $controller->$httpMethod(json_decode($data, true));
+                    }
                 } else {
-                    $this->error('httpPut');
+                    $this->error($httpMethod);
                 }
                 break;
 
             case 'DELETE':
-                if (method_exists($controller, 'httpDelete')) {
-                    $basket->result = $controller->httpDelete();
+                if (method_exists($controller, $httpMethod)) {
+                    if (isset($legacy->params)) {
+                        $basket->result = call_user_func_array(array($controller,$httpMethod), $legacy->params);
+                    } else {
+                        $basket->result = $controller->$httpMethod();
+                    }
                 } else {
-                      $this->error('httpDelete');
+                      $this->error($httpMethod);
                 }
                 break;
 
             default:
-                if (method_exists($controller, 'httpGet')) {
-                    $basket->result = $controller->httpGet();
+            // echo 'default';
+                $data  = file_get_contents('php://input');
+            
+                if (method_exists($controller, $httpMethod)) {
+                    if (isset($legacy->params)) {
+                        if (is_null($data)) {
+                            $basket->result = call_user_func_array(array($controller,$httpMethod), $legacy->params);
+                        } else {
+                            $basket->result = $controller->$httpMethod(json_decode($data, true), $legacy->params[1]);
+                        }
+                    } else {
+                        if (is_null($data)) {
+                            $basket->result = $controller->$httpMethod();
+                        } else {
+                            $basket->result = $controller->$httpMethod(json_decode($data, true));
+                        }
+                    }
                 } else {
-                    $this->error('httpGet');
+                    // echo 'method doesnt exist';
+                    $this->error($httpMethod);
                 }
                 break;
         }
@@ -111,8 +142,9 @@ class CoreController
 
     function error(string $fx)
     {
+        // echo 'error FXN'.$fx;
         $basket = CORE::getInstance('basket');
-        $basket->results = ['error'=>'The Method '.$fx.'() was not found in the contorller'];
+        $basket->result = ['error'=>'The Method '.$fx.'() is not declared in the contorller'];
     }
 }
 
