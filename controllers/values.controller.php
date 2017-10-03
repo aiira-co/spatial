@@ -13,7 +13,7 @@ class ValuesController
 
     // method called to handle a GET request
 
-    function httpGet(int $id = null): ?array
+    function httpGet(int ...$id): ?array
     {
         // --- use this if you are connected to the Databases ---
         // if (count($id)) {
@@ -24,7 +24,7 @@ class ValuesController
         //     $users = DB::table('users')->get();
         // }
         
-        // return $users;
+        // return ['data'=>$users,'totalCount'=>count($users)];
 
         return ['value1','value2'];
     }
@@ -34,15 +34,15 @@ class ValuesController
     function httpPost(array $form)
     {
       // code here
-        return ['id'=>2];
+      return ['success'=>true,'noti'=>'We have it at put','data'=>$form];
     }
 
 
     // method called to handle a PUT request
-    function httpPut(int ...$id)
+    function httpPut(array $form, int ...$id)
     {
       // code here
-        return ['id'=>2];
+        return ['success'=>true,'noti'=>'We have it at put','data'=>$form];
     }
 
 
