@@ -33,16 +33,38 @@ class ValuesController
     // method called to handle a POST request
     function httpPost(array $form)
     {
+        $postId=null;
+      // --- use this if you are connected to the Databases ---
+        // if (DB::table('values')->add($form)) {
+        //     $alert = 'Succesfully saved';
+        //      $postId = DB::$postId;
+        // } else {
+        //     $alert = 'Could not be saved. Please try again';
+        
+        // }
+
       // code here
-      return ['success'=>true,'noti'=>'We have it at put','data'=>$form];
+        return ['success'=>true,'alert'=>'We have it at put','id'=>$postId];
     }
 
 
     // method called to handle a PUT request
     function httpPut(array $form, int ...$id)
     {
+
+      // --- use this if you are connected to the Databases ---
+        // if (DB::table('values')->where('id',$id)->update($form)) {
+        //     $alert = 'Succesfully updated';
+        //      $success = true;
+        // } else {
+        //     $alert = 'Could not be saved. Please try again';
+        //      $success = false;
+        
+        // }
+
+
       // code here
-        return ['success'=>true,'noti'=>'We have it at put','data'=>$form];
+        return ['success'=>true,'alert'=>'We have it at put'];
     }
 
 
