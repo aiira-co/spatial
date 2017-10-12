@@ -49,7 +49,7 @@ class ValuesController
 
 
     // method called to handle a PUT request
-    function httpPut(array $form, int ...$id)
+    function httpPut(array $form, int $id)
     {
 
       // --- use this if you are connected to the Databases ---
