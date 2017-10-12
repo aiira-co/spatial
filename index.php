@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package     [ coreFramework ]
- * @subpackage  [ airCore ]
+ * @subpackage  [ cqured ]
  * @author      Owusu-Afriyie Kofi <koathecedi@gmail.com>
  * @copyright   2017 airDesign.
  * @license     http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -60,7 +60,8 @@ declare(strict_types=1);
 
     define('DS',DIRECTORY_SEPARATOR);
 
-    header("Access-Control-Allow-Origin: http://localhost:4200");
+    // header("Access-Control-Allow-Origin: http://localhost:4200");
+    // header("Access-Control-Allow-Methods: *");
     header('Content-Type:application/json;  charset=utf-8');
 
     if($adConfig->offline){
