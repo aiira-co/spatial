@@ -99,43 +99,8 @@ class Core
     }
 
 
-    // Instantiate a Plugin
-    //I have never used this plugin before. Work on it.
-    public static function getPlugin($plugin)
-    {
-        require_once 'plugins/index.php';
-        $plugins = new Plugins($plugin);
 
-
-        if (isset($plugins->$plugin)) {
-            $plugin = $plugins->$plugin;
-          // print_r($plugin);
-            $file = $plugin['path'];
-            $class = $plugin['class'];
-
-            if (file_exists($file)) {
-                require_once $file;
-
-                if (class_exists($class)) {
-                    return new $class;
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-
-      //  $plugins;
-    }
-
-
-
-
-
-    // Automatically load required for to instatiate the class
+    // Automatically load required for to instantiate the class
     private static function autoload($class)
     {
       // echo memory_get_usage();

@@ -44,7 +44,7 @@ class ValuesController
         // }
 
       // code here
-        return ['success'=>true,'alert'=>'We have it at put','id'=>$postId];
+        return ['success'=>true,'alert'=>'We have it at post','id'=>$postId];
     }
 
 

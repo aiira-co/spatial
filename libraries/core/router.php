@@ -6,7 +6,7 @@
      private $routers = [];
      private $path = [];
 
-     function setRouter(array ...$r)
+     function setRouter(array $r)
      {
          $this->routers = $r;
         }

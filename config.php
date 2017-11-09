@@ -12,12 +12,12 @@ class AdConfig
     public $list_limit = '20';
     public $access = '1';
 
-    // Datase Connection
+    // Database Connection
     public $dbtype = 'mysqli';
     public $host = 'localhost';
     public $user = 'root';
     public $password = '';
-    public $db = 'airMusicDB';
+    public $db = 'airDB';
     public $dbprefix = '';
 
     // Header & Cross Origin Setting

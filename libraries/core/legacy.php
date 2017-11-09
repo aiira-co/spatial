@@ -113,7 +113,7 @@ class CoreController
             default:
             // echo 'default';
                 $data  = file_get_contents('php://input');
-            
+
                 if (method_exists($controller, $httpMethod)) {
                     if (isset($legacy->params)) {
                         if (is_null($data)) {
@@ -134,7 +134,7 @@ class CoreController
                 }
                 break;
         }
-        
+
         // it will now render at the CORE::render() called in the node.php file
     }
 
@@ -433,7 +433,7 @@ class CoreModel
 
     //This Method is used at the end of a chain to query the DB.
     //it returns an array of objects
-    public function get() : array
+    public function get() : ?array
     {
         $sql = $this->createStatement();
         return $this->query($sql);
@@ -461,7 +461,7 @@ class CoreModel
     //This Method is used to query distinct rows
     // i.e SELECT COUNT(*) ...
     //used at the end of a chain method. it automatically calls the get method
-    public function distinct(): array
+    public function distinct(): ?array
     {
         self::$s['field'] = 'DISTINCT '.self::$s['field'];
         return $this->get();
@@ -603,7 +603,22 @@ class CoreModel
         return new CoreModel;
     }
 
+    // /FULL JOIN
+    function fullJoin(string $table, string $alias):self
+    {
 
+        if (self::tableExists($table)) {
+            $join = [' FULL JOIN '.self::$prefix.$table.' '.$alias];
+            if (!isset(self::$s['joinTables'])) {
+                self::$s['joinTables'] =[];
+            }
+            self::$s['joinTables'] = array_merge(self::$s['joinTables'], $join);
+        } else {
+            die('The Table '.$table.' does not exists');
+        }
+
+        return new CoreModel;
+    }
 
     // /LEFT JOIN
     function leftJoin(string $table, string $alias):self
@@ -990,8 +1005,8 @@ class CoreModel
 
         for ($i = 0; $i < $length; $i++) {
             // var_dump($field);
-            
-                                    
+
+
             if (self::$pdo->query("SHOW COLUMNS FROM ".self::$prefix.$table." LIKE '".$field[$i]."'") != null) {
                 $exist .= ','.$alias.'.'.trim($field[$i], ' ');
             // echo $field[$i].'<br/>';
