@@ -461,7 +461,7 @@ class CoreModel
     //This Method is used to query distinct rows
     // i.e SELECT COUNT(*) ...
     //used at the end of a chain method. it automatically calls the get method
-    public function distinct(): ?array
+    public function distinct(): array
     {
         self::$s['field'] = 'DISTINCT '.self::$s['field'];
         return $this->get();
@@ -530,7 +530,7 @@ class CoreModel
     function offset(int $n)
     {
         self::$s['offset'] = $n;
-        if (self::$s['order'] == null) {
+        if (!isset(self::$s['order'])) {
             $this->orderBy('id');
         }
         return $this->get();
@@ -573,7 +573,7 @@ class CoreModel
     {
         if (!isset(explode('.', $fields)[1])) {
             for ($i = 0; $i < count(self::$s['table']); $i++) {
-                $fieldVerified = $this->fieldExists(self::$s['table'][$i], $field, self::$s['alias'][$i]);
+                $fieldVerified = $this->fieldExists(self::$s['table'][$i], $fields, self::$s['alias'][$i]);
             }
             self::$s['groupBy'] = $fieldVerified;
         } else {
@@ -603,22 +603,7 @@ class CoreModel
         return new CoreModel;
     }
 
-    // /FULL JOIN
-    function fullJoin(string $table, string $alias):self
-    {
 
-        if (self::tableExists($table)) {
-            $join = [' FULL JOIN '.self::$prefix.$table.' '.$alias];
-            if (!isset(self::$s['joinTables'])) {
-                self::$s['joinTables'] =[];
-            }
-            self::$s['joinTables'] = array_merge(self::$s['joinTables'], $join);
-        } else {
-            die('The Table '.$table.' does not exists');
-        }
-
-        return new CoreModel;
-    }
 
     // /LEFT JOIN
     function leftJoin(string $table, string $alias):self
@@ -1005,8 +990,8 @@ class CoreModel
 
         for ($i = 0; $i < $length; $i++) {
             // var_dump($field);
-
-
+            
+                                    
             if (self::$pdo->query("SHOW COLUMNS FROM ".self::$prefix.$table." LIKE '".$field[$i]."'") != null) {
                 $exist .= ','.$alias.'.'.trim($field[$i], ' ');
             // echo $field[$i].'<br/>';
@@ -1017,7 +1002,6 @@ class CoreModel
         return trim($exist, ',');
     }
 }
-
 
 
 
