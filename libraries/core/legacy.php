@@ -197,7 +197,7 @@ class CoreModel
     // Not tested yet
     public static function sql($sql): self
     {
-        $this->dbSql = $sql ?? null;
+        self::$dbSql = $sql ?? null;
         return new CoreModel;
     }
 
@@ -603,7 +603,39 @@ class CoreModel
         return new CoreModel;
     }
 
+   // innerJoin
+   function innerJoin(string $table, string $alias):self
+   {
 
+    if (self::tableExists($table)) {
+        $join = [' INNER JOIN '.self::$prefix.$table.' '.$alias];
+        if (!isset(self::$s['joinTables'])) {
+            self::$s['joinTables'] =[];
+        }
+        self::$s['joinTables'] = array_merge(self::$s['joinTables'], $join);
+    } else {
+        die('The Table '.$table.' does not exists');
+    }
+
+       return new CoreModel;
+   }
+
+    // fullJoin
+    function fullJoin(string $table, string $alias):self
+    {
+
+        if (self::tableExists($table)) {
+            $join = [' FULL JOIN '.self::$prefix.$table.' '.$alias];
+            if (!isset(self::$s['joinTables'])) {
+                self::$s['joinTables'] =[];
+            }
+            self::$s['joinTables'] = array_merge(self::$s['joinTables'], $join);
+        } else {
+            die('The Table '.$table.' does not exists');
+        }
+
+        return new CoreModel;
+    }
 
     // /LEFT JOIN
     function leftJoin(string $table, string $alias):self
@@ -939,11 +971,13 @@ class CoreModel
             $indexTable = explode('.', $indexTable);
             if (isset($indexTable[1])) {
                 $dbname= $indexTable[0].'.';
-                $dbname='';
+                // $dbname='';
                 $table = $indexTable[1];
+                $fromDB = 'FROM '.$indexTable[0].' ';
             } else {
                 $dbname="";
                 $table = $indexTable[0];
+                $fromDB = '';
             }
 
           //now see if th table already has an alias set to it, then remove it.
@@ -961,11 +995,13 @@ class CoreModel
                 }
             }
 
-            if (self::$pdo->query("SHOW TABLES LIKE '".$dbname.self::$prefix.$table."'")->rowCount() == 1) {
+            // SHOW TABLES FROM suiteinventory LIKE 'person'
+
+            if (self::$pdo->query("SHOW TABLES ".$fromDB."LIKE '".self::$prefix.$table."'")->rowCount() == 1) {
                 $tablesExist[$i]=$dbname.self::$prefix.$table;
                 $tableAlias[$i] = $alias;
             } else {
-                die('The Table '.$table.' does not exist in the database');
+                die('The Table '.$dbname.$table.' does not exist in the database');
             }
         }
 
@@ -1058,7 +1094,7 @@ class CoreSession
             $pdo = CORE::getInstance('pdo');
 
             if (self::$table =='') {
-                 $this->SessionInit();
+                 self::SessionInit();
             }
 
             require_once 'config.php';
