@@ -72,11 +72,13 @@
 
             for ($i = 0; $i < count($this->routers); $i++) {
                 // echo $this->routers[$i]['path'].' </br>';
+
                 if ($this->routers[$i]['path'] == $url) {
                       $this->path =  $this->routers[$i];
                       $path = $this->path;
                       $found = true;
                 }
+
             }
 
 
@@ -90,31 +92,65 @@
               $url = explode('/', $url);
               // print_r($url);
 
-
+              // echo json_encode($url);
 
             for ($i = 0; $i < count($this->routers); $i++) {
                 // echo $this->routers[$i]['path'].' </br>';
                 $pathX = explode('/', $this->routers[$i]['path']);
+                  //get count of both pathx and url
+                  $countUrl = count($url);
+                  $countPathX = count($pathX);
 
+                  if($countPathX < $countUrl){
+                    $offset = $countUrl - $countPathX;
+
+                    $comparableUrl ='';
+                    $comparablePathX ='';
+                    $urlParams = $url;
+
+                    for($j=0;$j<($countUrl - $offset);$j++){
+                      $comparableUrl .=$url[$j].'/';
+                      $comparablePathX .=$pathX[$j].'/';
+
+                      unset($urlParams[$j]);
+                    }
+                    // echo json_encode(['url timed'=>$comparableUrl,'path'=>$comparablePathX, 'params'=>$urlParams]);
+                    if(trim($comparableUrl) == trim($comparablePathX)){
+                      // echo 'found a match';
+                      // var_dump($this->path);
+                          $this->path =  $this->routers[$i];
+                          $path = $this->path;
+
+                          // set the params to the legacy class
+                          if(count($urlParams)!==0){
+                            $legacy = CORE::getInstance('legacy');
+                            // echo count($url);
+                            $legacy->params = $urlParams;
+                          }
+                          $pathM = $pathX;
+                          $found = true;
+                    }
+
+                  }
                 // echo 'router -> '.$pathX[0].' url->'.$url[0].'|||';
-                if ($pathX[0] == $url[0]) {
-                  // echo 'found a match';
-                  // var_dump($this->path);
-                      $this->path =  $this->routers[$i];
-                      $path = $this->path;
-
-                      // set the params to the legacy class
-                      if(isset($url[1])){
-                        $urlParams = $url; 
-                        unset($urlParams[0]);
-                        // print_r($url);
-                        $legacy = CORE::getInstance('legacy');
-                        // echo count($url);
-                        $legacy->params = $urlParams;
-                      }
-                      $pathM = $pathX;
-                      $found = true;
-                }
+                // if ($pathX[0] == $url[0]) {
+                //   // echo 'found a match';
+                //   // var_dump($this->path);
+                //       $this->path =  $this->routers[$i];
+                //       $path = $this->path;
+                //
+                //       // set the params to the legacy class
+                //       if(isset($url[1])){
+                //         $urlParams = $url;
+                //         unset($urlParams[0]);
+                //         // print_r($url);
+                //         $legacy = CORE::getInstance('legacy');
+                //         // echo count($url);
+                //         $legacy->params = $urlParams;
+                //       }
+                //       $pathM = $pathX;
+                //       $found = true;
+                // }
             }
 
 

@@ -49,16 +49,7 @@ class Core
 
             // if the argument entered is PDO, then return the Database connection
             if ($class == 'pdo') {
-                        $adConfig = new AdConfig;
-
-                        //Select the dbtype, whether mysql, mysqli,mssql, oracle, sqlite etc
-                if ($adConfig->dbtype == "mysqli" || $adConfig->dbtype == "mysql") {
-                    self::$instance[$class] = new PDO("mysql:host = $adConfig->host;dbname=$adConfig->db", $adConfig->user, $adConfig->password);
-                } elseif ($config->server == "oracle") {
-                              self::$instance[$class] = new PDO("oci:dbname=".$adConfig->db, $adConfig->user, $adConfig->password);
-                } elseif ($config->server == "mssql") {
-                    self::$instance[$class] = new PDO("mssql:host = $adConfig->host;dbname=$adConfig->db", $adConfig->user, $adConfig->password);
-                }
+                    self::connectionString($class);
             } else {
                 // $formatClass = ucfirst($class)
                 self::$instance[$class] = new $class;
@@ -69,6 +60,64 @@ class Core
     }
 
 
+
+
+    // Connection Iterator
+    private static function connectionString($class){
+      $adConfig = new AdConfig;
+
+      // check if the database values are Traversable or array
+      if(!(is_array($adConfig->db) || ($adConfig->db instanceof Traversable))){
+        //Select the dbtype, whether mysql, mysqli,mssql, oracle, sqlite etc
+        switch ($adConfig->dbtype) {
+          case 'mysqli':
+
+            self::$instance[$class] = new PDO("mysql:host = $adConfig->host;dbname=$adConfig->db", $adConfig->user, $adConfig->password);
+            break;
+          case 'oracle':
+            self::$instance[$class] = new PDO("oci:dbname=".$adConfig->db, $adConfig->user, $adConfig->password);
+            break;
+
+          case 'mssql':
+            self::$instance[$class] = new PDO("mssql:host = $adConfig->host;dbname=$adConfig->db", $adConfig->user, $adConfig->password);
+            break;
+
+          default:
+            self::$instance[$class] = new PDO("mysql:host = $adConfig->host;dbname=$adConfig->db", $adConfig->user, $adConfig->password);
+            break;
+        }
+
+      }else{
+        //connection to multiple database
+        $conType = 'mysql';
+        switch ($adConfig->dbtype) {
+          case 'mysqli':
+            $conType = 'mysql';
+            break;
+          case 'oracle':
+            $conType = 'oci';
+            break;
+
+          case 'mssql':
+            $conType = 'mssql';
+            break;
+
+          default:
+            $conType = 'mysql';
+            break;
+        }
+        for($i =0; $i < count($adConfig->db); $i++){
+          // echo $adConfig->pass[$i];
+          $host = $adConfig->host[$i];
+          $db = $adConfig->db[$i];
+          self::$instance[$class][$i] = new PDO("$conType:host = $host;dbname=$db",$adConfig->user[$i],$adConfig->password[$i]);
+        }
+
+
+      }
+
+
+    }
 
 
     // Instantiate a Model
@@ -161,28 +210,28 @@ class Core
      */
     function cors($origin, $methods, $age)
     {
-    
+
         // Allow from any origin
         if (isset($_SERVER['HTTP_ORIGIN'])) {
             // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
             // you want to allow, and if so:
-            
+
             $origin == '*' ? header("Access-Control-Allow-Origin:{$_SERVER['HTTP_ORIGIN']}") : header("Access-Control-Allow-Origin:".$origin) ;
             header('Access-Control-Allow-Credentials: true');
             header('Access-Control-Max-Age:'.$age);    // cache for 1 day
         }
-    
+
         // Access-Control headers are received during OPTIONS requests
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
                 // may also be using PUT, PATCH, HEAD etc
                 header("Access-Control-Allow-Methods:".$methods);
             }
-    
+
             if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
                 header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
             }
-    
+
             exit(0);
         }
     }
