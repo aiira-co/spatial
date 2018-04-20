@@ -48,7 +48,7 @@ class Node
 
         $routerPath = $coreRouter->getPath($url);
         $legacy = CORE::getInstance('Legacy');
-      
+
       // echo 'hey';
       // print_r($routerPath);
 
@@ -101,16 +101,18 @@ class Node
                     // echo 'got it';
                     $coreController = new CoreController(new $class, $this->router);
                 } else {
-                   
+
                     $basket->result = ['error'=>'The class '.$class.'does not exist. File: '.$path];
                 }
             } else {
+              http_response_code(501);
                 $basket->result = ['error'=>'The controller path '.$path.' does not exist'];
             }
         } else {
+            http_response_code(404);
              $basket->result = ['error'=>'The controller does not exist'];
             //  http_response_code (400);
-             
+
         }
 
         CORE::render();

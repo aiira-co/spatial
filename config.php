@@ -24,6 +24,7 @@ class AdConfig
     public $allow_origin = "http://localhost:4200";
     public $allow_methods ='GET, POST, PUT, DELETE, OPTIONS';
     public $max_age='86400'; //cache for 1 day
+    public $content_type='json'; //return a json or xml result 
 
     // Routing
     public $secret = 'Pi1gS3vrtWvNq3O0';

@@ -17,8 +17,8 @@ class Core
     function route()
     {
 
-        require_once 'libraries'.DS.'core'.DS.'node.php';
-        require_once 'libraries'.DS.'core'.DS.'legacy.php';
+        require_once 'core'.DS.'node.php';
+        require_once 'core'.DS.'legacy.php';
         $node = CORE::getInstance('Node');
         $node->router();
         // $this->aleph = $node->aleph;
@@ -154,7 +154,7 @@ class Core
     {
       // echo memory_get_usage();
         $node = CORE::getInstance('Node'); //check to see if you can reduced memory usage here
-        $paths = ['libraries'.DS.'core','controllers'];
+        $paths = ['core','controllers'];
         foreach ($paths as $path) {
             $file = $path.DS.strtolower($class).'.php';
 
@@ -188,11 +188,40 @@ class Core
         // instead of params, use the header's application to see the return
         //also check for password if it matches.
 
-        if (($params->get('api')) == 'json' && ($params->get('hash')) == ($adConfig->secret)) {
-            echo json_encode($basket->result);
-        } else {
-            echo json_encode($basket->result);
+            if($adConfig->content_type === 'xml'){
+              // $xml = new SimpleXMLElement('<data/>');
+              // array_walk_recursive(json_decode(json_encode($basket->result),true),[$xml,'addChild']);
+
+              // echo $result;
+              // self::arrayToXml($basket->result,$xml);
+              // self::arrayToXml(['name'=>'ama'],$xml);
+
+              // array_walk_recursive($result,[$xml,'addChild']);
+              // print_r($basket->result);
+              // echo $xml->asXML();
+            echo xmlrpc_encode($basket->result);
+            }else{
+              echo json_encode($basket->result);
+            }
+
+
+    }
+
+
+    private static function arrayToXml(array $data, SimpleXMLElement $xml_data){
+      foreach($data as $key => $value){
+
+        if(is_array($value)){
+          $new_object = $xml_data->addChild($key);
+          self::arrayToXml($value, $new_object);
+        }else{
+          if($key === (int)$key){
+            $key = "key_$key";
+          }
+          $xml_data->addChild($key,$value);
         }
+
+      }
     }
 
 

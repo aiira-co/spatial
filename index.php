@@ -60,9 +60,8 @@ declare(strict_types=1);
 
     define('DS',DIRECTORY_SEPARATOR);
 
-    // header("Access-Control-Allow-Origin: http://localhost:4200");
-    // header("Access-Control-Allow-Methods: *");
-    header('Content-Type:application/json;  charset=utf-8');
+
+      header('Content-Type:application/'.$adConfig->content_type.';  charset=utf-8');
 
     if($adConfig->offline){
         $result = ['notify'=>'offline'];
@@ -70,7 +69,7 @@ declare(strict_types=1);
     }
     else{
 
-         require_once 'libraries'.DS.'core'.DS.'core.php';
+         require_once 'core'.DS.'core.php';
          $site = new Core;
 
          $site->Route();
