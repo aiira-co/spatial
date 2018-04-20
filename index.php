@@ -58,22 +58,17 @@ declare(strict_types=1);
     $adConfig = new AdConfig;
 
 
-    define('DS',DIRECTORY_SEPARATOR);
+    define('DS', DIRECTORY_SEPARATOR);
 
 
       header('Content-Type:application/'.$adConfig->content_type.';  charset=utf-8');
 
-    if($adConfig->offline){
+    if ($adConfig->offline) {
         $result = ['notify'=>'offline'];
         echo json_encode($result);
+    } else {
+        require_once 'core'.DS.'core.php';
+        $site = new Core;
+
+        $site->Route();
     }
-    else{
-
-         require_once 'core'.DS.'core.php';
-         $site = new Core;
-
-         $site->Route();
-
-    }
-
-?>

@@ -2,7 +2,7 @@
 
 class AdConfig
 {
-	// General
+    // General
     public $offline = '0';
     public $offline_message = 'This site is down for maintenance.<br />Please check back again soon.';
     public $display_offline_message = '1';
@@ -24,7 +24,7 @@ class AdConfig
     public $allow_origin = "http://localhost:4200";
     public $allow_methods ='GET, POST, PUT, DELETE, OPTIONS';
     public $max_age='86400'; //cache for 1 day
-    public $content_type='json'; //return a json or xml result 
+    public $content_type='json'; //return a json or xml result
 
     // Routing
     public $secret = 'Pi1gS3vrtWvNq3O0';

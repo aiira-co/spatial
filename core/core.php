@@ -3,20 +3,17 @@
 
 class Core
 {
-
-
     private static $instance = [];
 
-    function __construct()
+    public function __construct()
     {
         $adConfig  = new AdConfig;
         $this->cors($adConfig->allow_origin, $adConfig->allow_methods, $adConfig->max_age);
     }
     // This Method is called in the root index.php file.
     // the Method intanciates the node class for routing
-    function route()
+    public function route()
     {
-
         require_once 'core'.DS.'node.php';
         require_once 'core'.DS.'legacy.php';
         $node = CORE::getInstance('Node');
@@ -42,14 +39,14 @@ class Core
         if (isset(self::$instance[$class])) {
             return self::$instance[$class];
         } else {
-          // check if class is available
+            // check if class is available
             if (!class_exists($class)) {
                 self::Autoload($class);
             }
 
             // if the argument entered is PDO, then return the Database connection
             if ($class == 'pdo') {
-                    self::connectionString($class);
+                self::connectionString($class);
             } else {
                 // $formatClass = ucfirst($class)
                 self::$instance[$class] = new $class;
@@ -63,13 +60,14 @@ class Core
 
 
     // Connection Iterator
-    private static function connectionString($class){
-      $adConfig = new AdConfig;
+    private static function connectionString($class)
+    {
+        $adConfig = new AdConfig;
 
-      // check if the database values are Traversable or array
-      if(!(is_array($adConfig->db) || ($adConfig->db instanceof Traversable))){
-        //Select the dbtype, whether mysql, mysqli,mssql, oracle, sqlite etc
-        switch ($adConfig->dbtype) {
+        // check if the database values are Traversable or array
+        if (!(is_array($adConfig->db) || ($adConfig->db instanceof Traversable))) {
+            //Select the dbtype, whether mysql, mysqli,mssql, oracle, sqlite etc
+            switch ($adConfig->dbtype) {
           case 'mysqli':
 
             self::$instance[$class] = new PDO("mysql:host = $adConfig->host;dbname=$adConfig->db", $adConfig->user, $adConfig->password);
@@ -86,11 +84,10 @@ class Core
             self::$instance[$class] = new PDO("mysql:host = $adConfig->host;dbname=$adConfig->db", $adConfig->user, $adConfig->password);
             break;
         }
-
-      }else{
-        //connection to multiple database
-        $conType = 'mysql';
-        switch ($adConfig->dbtype) {
+        } else {
+            //connection to multiple database
+            $conType = 'mysql';
+            switch ($adConfig->dbtype) {
           case 'mysqli':
             $conType = 'mysql';
             break;
@@ -106,17 +103,13 @@ class Core
             $conType = 'mysql';
             break;
         }
-        for($i =0; $i < count($adConfig->db); $i++){
-          // echo $adConfig->pass[$i];
-          $host = $adConfig->host[$i];
-          $db = $adConfig->db[$i];
-          self::$instance[$class][$i] = new PDO("$conType:host = $host;dbname=$db",$adConfig->user[$i],$adConfig->password[$i]);
+            for ($i =0; $i < count($adConfig->db); $i++) {
+                // echo $adConfig->pass[$i];
+                $host = $adConfig->host[$i];
+                $db = $adConfig->db[$i];
+                self::$instance[$class][$i] = new PDO("$conType:host = $host;dbname=$db", $adConfig->user[$i], $adConfig->password[$i]);
+            }
         }
-
-
-      }
-
-
     }
 
 
@@ -127,10 +120,9 @@ class Core
 
     public static function getModel($model, $path = null)
     {
+        $file = $path??'models'.DS.$model .'.model.php';
 
-            $file = $path??'models'.DS.$model .'.model.php';
-
-            $class = ucfirst($model).'Model';
+        $class = ucfirst($model).'Model';
         if (class_exists($class)) {
             return new $class;
         } else {
@@ -152,7 +144,7 @@ class Core
     // Automatically load required for to instantiate the class
     private static function autoload($class)
     {
-      // echo memory_get_usage();
+        // echo memory_get_usage();
         $node = CORE::getInstance('Node'); //check to see if you can reduced memory usage here
         $paths = ['core','controllers'];
         foreach ($paths as $path) {
@@ -179,7 +171,6 @@ class Core
 
     public static function render()
     {
-
         $adConfig = new AdConfig;
 
         $basket = CORE::getInstance('basket');
@@ -188,40 +179,37 @@ class Core
         // instead of params, use the header's application to see the return
         //also check for password if it matches.
 
-            if($adConfig->content_type === 'xml'){
-              // $xml = new SimpleXMLElement('<data/>');
-              // array_walk_recursive(json_decode(json_encode($basket->result),true),[$xml,'addChild']);
+        if ($adConfig->content_type === 'xml') {
+            // $xml = new SimpleXMLElement('<data/>');
+            // array_walk_recursive(json_decode(json_encode($basket->result),true),[$xml,'addChild']);
 
-              // echo $result;
-              // self::arrayToXml($basket->result,$xml);
-              // self::arrayToXml(['name'=>'ama'],$xml);
+            // echo $result;
+            // self::arrayToXml($basket->result,$xml);
+            // self::arrayToXml(['name'=>'ama'],$xml);
 
-              // array_walk_recursive($result,[$xml,'addChild']);
-              // print_r($basket->result);
-              // echo $xml->asXML();
+            // array_walk_recursive($result,[$xml,'addChild']);
+            // print_r($basket->result);
+            // echo $xml->asXML();
             echo xmlrpc_encode($basket->result);
-            }else{
-              echo json_encode($basket->result);
-            }
-
-
+        } else {
+            echo json_encode($basket->result);
+        }
     }
 
 
-    private static function arrayToXml(array $data, SimpleXMLElement $xml_data){
-      foreach($data as $key => $value){
-
-        if(is_array($value)){
-          $new_object = $xml_data->addChild($key);
-          self::arrayToXml($value, $new_object);
-        }else{
-          if($key === (int)$key){
-            $key = "key_$key";
-          }
-          $xml_data->addChild($key,$value);
+    private static function arrayToXml(array $data, SimpleXMLElement $xml_data)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $new_object = $xml_data->addChild($key);
+                self::arrayToXml($value, $new_object);
+            } else {
+                if ($key === (int)$key) {
+                    $key = "key_$key";
+                }
+                $xml_data->addChild($key, $value);
+            }
         }
-
-      }
     }
 
 
@@ -237,7 +225,7 @@ class Core
      *  - http://www.w3.org/TR/cors/
      *
      */
-    function cors($origin, $methods, $age)
+    public function cors($origin, $methods, $age)
     {
 
         // Allow from any origin
@@ -266,8 +254,8 @@ class Core
     }
 
 
-  // Method for redirecting.
-  // This method is also used in the node class for redirecting routes
+    // Method for redirecting.
+    // This method is also used in the node class for redirecting routes
 
     public static function redirect($url, $redirectTo = false, $code = 302)
     {

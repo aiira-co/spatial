@@ -3,17 +3,14 @@ use CoreModel as DB;
 
 class ValuesController
 {
-
-  
-
-    function __construct()
+    public function __construct()
     {
     }
 
 
     // method called to handle a GET request
 
-    function httpGet(int ...$id): ?array
+    public function httpGet(int ...$id): ?array
     {
         // --- use this if you are connected to the Databases ---
         // if (count($id)) {
@@ -23,7 +20,7 @@ class ValuesController
         // } else {
         //     $users = DB::table('users')->get();
         // }
-        
+
         // return ['data'=>$users,'totalCount'=>count($users)];
 
         return ['value1','value2'];
@@ -31,25 +28,25 @@ class ValuesController
 
 
     // method called to handle a POST request
-    function httpPost(array $form)
+    public function httpPost(array $form)
     {
         $postId=null;
-      // --- use this if you are connected to the Databases ---
+        // --- use this if you are connected to the Databases ---
         // if (DB::table('values')->add($form)) {
         //     $alert = 'Succesfully saved';
         //      $postId = DB::$postId;
         // } else {
         //     $alert = 'Could not be saved. Please try again';
-        
+
         // }
 
-      // code here
+        // code here
         return ['success'=>true,'alert'=>'We have it at post','id'=>$postId];
     }
 
 
     // method called to handle a PUT request
-    function httpPut(array $form, int $id)
+    public function httpPut(array $form, int $id)
     {
 
       // --- use this if you are connected to the Databases ---
@@ -59,19 +56,19 @@ class ValuesController
         // } else {
         //     $alert = 'Could not be saved. Please try again';
         //      $success = false;
-        
+
         // }
 
 
-      // code here
+        // code here
         return ['success'=>true,'alert'=>'We have it at put'];
     }
 
 
     // method called to handle a DELETE request
-    function httpDelete(int $id)
+    public function httpDelete(int $id)
     {
-      // code here
+        // code here
         return ['id'=>2];
     }
 }

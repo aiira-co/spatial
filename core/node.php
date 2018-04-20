@@ -3,7 +3,6 @@
 
 class Node
 {
-
     private $route = ['0'=>'aleph','1'=>'beth','2'=>'gimmel','3'=>'daleth','4'=>'hey'];
     public $router = [];
     private $adConfig;
@@ -11,18 +10,18 @@ class Node
 
 
     // Setters & Getters
-    function set($key, $value)
+    public function set($key, $value)
     {
         $this->$key = $value;
     }
 
-    function get($key)
+    public function get($key)
     {
         return $this->$key ?? null;
     }
 
 
-    function router()
+    public function router()
     {
         $this->adConfig  =  new AdConfig;
 
@@ -37,25 +36,25 @@ class Node
 
     private function airRoute()
     {
-      // echo ' app router file exists';
+        // echo ' app router file exists';
         require_once $this->adConfig->routerPath;
         $coreRouter = CORE::getInstance('Router');
-      // print_r($r->getRouter());
+        // print_r($r->getRouter());
 
-      // Get URL and Formate it
+        // Get URL and Formate it
         $url = $_GET['url']??'/';
         $url = $url!='/' ? rtrim($url, '/'):'/';
 
         $routerPath = $coreRouter->getPath($url);
         $legacy = CORE::getInstance('Legacy');
 
-      // echo 'hey';
-      // print_r($routerPath);
+        // echo 'hey';
+        // print_r($routerPath);
 
         $this->adConfig  =  new AdConfig;
 
         $basket = CORE::getInstance('basket');
-      // Check if url was found in the coreRouter
+        // Check if url was found in the coreRouter
         if ($routerPath != null) {
             //Check if it has a redirect property
             if (isset($routerPath['redirectTo'])) {
@@ -93,7 +92,7 @@ class Node
                 require_once $path;
                 $i = explode('-', $aleph);
                 $class = isset($i[1]) ? ucfirst($i[0]).ucfirst($i[1]) : ucfirst($i[0]);
-                        // $aleph;
+                // $aleph;
                 $class = $class.'Controller';
                 // echo '<br/>'.$class;
 
@@ -101,18 +100,16 @@ class Node
                     // echo 'got it';
                     $coreController = new CoreController(new $class, $this->router);
                 } else {
-
                     $basket->result = ['error'=>'The class '.$class.'does not exist. File: '.$path];
                 }
             } else {
-              http_response_code(501);
+                http_response_code(501);
                 $basket->result = ['error'=>'The controller path '.$path.' does not exist'];
             }
         } else {
             http_response_code(404);
-             $basket->result = ['error'=>'The controller does not exist'];
+            $basket->result = ['error'=>'The controller does not exist'];
             //  http_response_code (400);
-
         }
 
         CORE::render();
