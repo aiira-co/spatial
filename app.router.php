@@ -1,6 +1,11 @@
 <?php
 
-$apiRoutes = [['path'=>'values', 'controller'=>'values']];
+$apiRoutes = [
+  [
+    'path'=>'values',
+    'controller'=>'values'
+  ]
+];
 
 
 $apiRouterModule = CORE::getInstance('Router');
