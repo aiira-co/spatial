@@ -477,7 +477,7 @@ class CoreModel
         self::$s['field'] = 'COUNT(*)';
         $sql = $this->createStatement();
 
-        return json_decode(json_encode($this->query($sql)), true)[0]['COUNT(*)'];
+        return json_decode(json_encode($this->query($sql)), true)[0]['COUNT(*)']?? 0;
     }
 
 
