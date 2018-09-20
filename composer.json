@@ -1,2 +1,12 @@
 {
+ "autoload":{
+   "psr-4":{
+     "Lynq\\Core\\":"vendor/projectair/cqured/core/",
+     "Lynq\\Router\\":"vendor/projectair/cqured/router/",
+     "Lynq\\Entity\\":"vendor/projectair/cqured/entity/",
+     "Api\\Models\\":"api/models/",
+     "Api\\Controllers\\":"api/controllers/"
+   }
+
+ }
 }

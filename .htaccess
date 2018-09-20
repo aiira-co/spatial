@@ -1,9 +1,34 @@
+# <IfModule mode_rewrite.c>
+#     <IfModule mode_negotiation.c>
+#         Options -MultiViews
+#     </IfModule>
+
 RewriteEngine on
 
-RewriteCond %{REQUEST_FILENAME} !-d
+##
+## You may need to uncommet the follwing line for some hosting environmets,
+## If you have installed a subdirectory, enter the name here also.
+##
+# RewriteBase
+
+##
+## Black list protected files
+##
+
+
+
+##
+## White list folder and files
+##
+
 RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+##
+## Rewrite for routing
+##
+RewriteRule ^(.*)$ index.php?lynqQueryUrl=$1 [L,QSA]
 
 RewriteRule \.(json)$ - [F]
+# </IfModule>

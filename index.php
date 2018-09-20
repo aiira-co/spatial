@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2017 airDesign.
+ * Copyright (c) 2018 ProjectAIR.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,42 +33,66 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package     [ coreFramework ]
+ * @package     [ ProjectAIR ]
  * @subpackage  [ cqured ]
  * @author      Owusu-Afriyie Kofi <koathecedi@gmail.com>
- * @copyright   2017 airDesign.
+ * @copyright   2018 ProjectAIR.
  * @license     http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link        http://airDesign.co.nf
  * @version     @@2.00@@
  */
-declare(strict_types=1);
 
-    session_start();
+ declare(strict_types=1);
 
-    //check if the site is offline,
-    //if yes, show offline page and account login,
-        //if login, display site
+ use Lynq\Core\Program;
 
-    //else if no, show the default page that is set as home.
-        //check if the page exists,
-            //if yes, show page
-                //else, it show error page
+ session_start();
 
-    require_once 'config.php';
-    $adConfig = new AdConfig;
+ header('Content-Type:application/json;  charset=utf-8');
+
+ /**
+  * Boostrap the app
+  */
+ class Startup
+ {
+     private $zenoConfig;
+
+     // the bootraped will tell us the router
 
 
-    define('DS', DIRECTORY_SEPARATOR);
+     //check if the app is offline,
+     //if yes, show offline page and account login,
+     //if login, display app
+
+     //else if no, show the default page that is set as home.
+     //check if the page exists,
+     //if yes, show page
+     //else, it show error page
+
+     public function __construct()
+     {
+         require_once 'config.php';
+
+         $this->zenoConfign = new Config;
+
+         if ($this->zenoConfign->offline) {
+             echo json_encode(["noti"=>"success","result"=>$zenoConfig->offline_message]);
+         } else {
+             define('DS', DIRECTORY_SEPARATOR);
+             require_once __DIR__.DS.'vendor'.DS.'autoload.php';
+             $this->bootstrapApp() ;
+         }
+     }
 
 
-      header('Content-Type:application/'.$adConfig->content_type.';  charset=utf-8');
 
-    if ($adConfig->offline) {
-        $result = ['notify'=>'offline'];
-        echo json_encode($result);
-    } else {
-        require_once 'core'.DS.'core.php';
-        $site = new Core;
+     private function bootstrapApp()
+     {
+         // print_r(new Config);
+         $api = new Program(new Config);
 
-        $site->Route();
-    }
+         $api->route(); 
+     }
+ }
+
+ $app = new Startup;

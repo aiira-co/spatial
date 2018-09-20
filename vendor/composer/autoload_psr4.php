@@ -6,4 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Lynq\\Router\\' => array($vendorDir . '/projectair/cqured/router'),
+    'Lynq\\Entity\\' => array($vendorDir . '/projectair/cqured/entity'),
+    'Lynq\\Core\\' => array($vendorDir . '/projectair/cqured/core'),
+    'Api\\Models\\' => array($baseDir . '/api/models'),
+    'Api\\Controllers\\' => array($baseDir . '/api/controllers'),
 );

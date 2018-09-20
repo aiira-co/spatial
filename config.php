@@ -1,9 +1,16 @@
 <?php
-
-class AdConfig
+/**
+ * Configuration class for the API.
+ * Toggle the $enableProdMode to show or hide CQured's error reporter.
+ * Set Hearders & Corss Origin Settings.
+ * Api's Router file path can be changed here too.
+ */
+class Config
 {
     // General
-    public $offline = '0';
+    public $enableProdMode=false;
+
+    public $offline = false;
     public $offline_message = 'This site is down for maintenance.<br />Please check back again soon.';
     public $display_offline_message = '1';
     public $offline_image = '';
@@ -12,13 +19,6 @@ class AdConfig
     public $list_limit = '20';
     public $access = '1';
 
-    // Database Connection
-    public $dbtype = 'mysqli';
-    public $host = 'localhost';
-    public $user = 'root';
-    public $password = '';
-    public $db = 'airDB';
-    public $dbprefix = '';
 
     // Header & Cross Origin Setting
     public $allow_origin = "http://localhost:4200";
@@ -28,5 +28,5 @@ class AdConfig
 
     // Routing
     public $secret = 'Pi1gS3vrtWvNq3O0';
-    public $routerPath="./app.router.php";
+    public $routerPath="./api/ApiRouter.php";
 }
