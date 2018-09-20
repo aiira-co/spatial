@@ -14,7 +14,9 @@ This is a PHP 7.2+ Web API to partner client-side applications like Angular, Ion
 - Download the the API from this repo, unzip it and place it at the
   directory of your PHP Server. eg. For XAMPP, place it at the 'htdocs' folder.
   You can rename the folder if you desire.
-
+- I have a sample database in the 'asset/\_test_database' folder called coreDB,
+  - Install this database to test out the PersonController
+  - http://localhost/cqured/person
 - Setting Up: Setting this framework up is very easy. Simply open the 'config.php' file; this file
   contains the configuration for the API.
 
