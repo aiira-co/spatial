@@ -7,8 +7,8 @@ $apiRoutes = [
     'controller'=>'ValuesController'
   ],
   [
-    'path'=>'mediaz',
-    'controller'=>'MediaController',
+    'path'=>'person',
+    'controller'=>'PersonController',
     'authguard'=> ['AuthenticationModel']
   ]
 ];
