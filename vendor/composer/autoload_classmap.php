@@ -6,4 +6,18 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Api\\Controllers\\MediaController' => $baseDir . '/api/controllers/MediaController.php',
+    'Api\\Controllers\\ValuesController' => $baseDir . '/api/controllers/ValuesController.php',
+    'Api\\Models\\AuthenticationModel' => $baseDir . '/api/models/AuthenticationModel.php',
+    'Api\\Models\\PracticeModel' => $baseDir . '/api/models/PracticeModel.php',
+    'Lynq\\Core\\Controller' => $vendorDir . '/projectair/cqured/core/Controller.php',
+    'Lynq\\Core\\Legacy' => $vendorDir . '/projectair/cqured/core/Legacy.php',
+    'Lynq\\Core\\Programe' => $vendorDir . '/projectair/cqured/core/Program.php',
+    'Lynq\\Core\\Render' => $vendorDir . '/projectair/cqured/core/Render.php',
+    'Lynq\\Entity\\EntityModel' => $vendorDir . '/projectair/cqured/entity/EntityModel.php',
+    'Lynq\\Entity\\MiddleWare' => $vendorDir . '/projectair/cqured/entity/MiddleWare.php',
+    'Lynq\\Entity\\Session' => $vendorDir . '/projectair/cqured/entity/Session.php',
+    'Lynq\\Router\\ActivatedRoute' => $vendorDir . '/projectair/cqured/router/ActivatedRoute.php',
+    'Lynq\\Router\\Node' => $vendorDir . '/projectair/cqured/router/Node.php',
+    'Lynq\\Router\\Routes' => $vendorDir . '/projectair/cqured/router/Routes.php',
 );
