@@ -9,7 +9,7 @@ namespace Api\Models;
  * @category Model
  */
 
-class AuthenticationModel
+class AuthenticationModel implements \Lynq\Router\CanActivate
 {
     /**
      * Method Used to Auhtourize Access to Controller,
