@@ -9,17 +9,14 @@ namespace Api\Models;
  * @category Model
  */
 
-class AuthenticationModel implements \Lynq\Router\CanActivate
+class AuthenticationModel
 {
     /**
      * Method Used to Auhtourize Access to Controller,
      * Method excepts a boolean return
      * Return false, to denied access or true to allow
-     *
-     * @param string $url
-     * @return boolean
      */
-    public function canActivate(string $url): bool
+    public function canActivate(string $url):bool
     {
         // echo \json_encode(['error'=>'access denied']);
         return true;
