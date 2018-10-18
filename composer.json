@@ -1,11 +1,13 @@
 {
-  "name": "air/cqured",
+  "name": "aiir/cqured",
   "description": "PHP7+ WebAPI Framework",
   "version": "2.0.0-alpha1",
   "type": "project",
   "keywords": [
-    "API",
-    "Database"
+    "framework",
+    "api",
+    "database",
+    "cqured"
   ],
   "homepage": "https://github.com/air-Design/cqured",
   "readme": "https://github.com/air-Design/cqured/blob/master/README.md",
@@ -25,6 +27,13 @@
   "suggest": {
     "lcubucci/jwt": "Generate Json Web Tokens for Authentication"
   },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "Lynq\\Core\\": "vendor/projectair/cqured/core/",
