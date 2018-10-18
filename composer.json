@@ -1,12 +1,39 @@
 {
- "autoload":{
-   "psr-4":{
-     "Lynq\\Core\\":"vendor/projectair/cqured/core/",
-     "Lynq\\Router\\":"vendor/projectair/cqured/router/",
-     "Lynq\\Entity\\":"vendor/projectair/cqured/entity/",
-     "Api\\Models\\":"api/models/",
-     "Api\\Controllers\\":"api/controllers/"
-   }
 
- }
+  "name": "air/cqured",
+  "description": "PHP7+ WebAPI Framework",
+  "version": "2.0.0-alpha1",
+  "type": "project",
+  "keywords": [
+    "API",
+    "Database"
+  ],
+  "homepage": "https://github.com/air-Design/cqured",
+  "readme": "https://github.com/air-Design/cqured/blob/master/README.md",
+  "time": "2018/10/14",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.2.0"
+  },
+  "authors": [
+    {
+      "name": "Kofi Owusu-Afriyie",
+      "email": "airdesign.code@gmail.com",
+      "homepage": "https://github.com/air-Design",
+      "role": "Developer"
+    }
+  ],
+  "suggest": {
+    "lcubucci/jwt": "Generate Json Web Tokens for Authentication"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lynq\\Core\\": "vendor/projectair/cqured/core/",
+      "Lynq\\Router\\": "vendor/projectair/cqured/router/",
+      "Lynq\\Entity\\": "vendor/projectair/cqured/entity/",
+      "Api\\Models\\": "api/models/",
+      "Api\\Controllers\\": "api/controllers/"
+    }
+  }
+
 }
