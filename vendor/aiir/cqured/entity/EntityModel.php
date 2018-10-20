@@ -1,8 +1,8 @@
 <?php
 namespace Cqured\Entity;
 
-use \PDO;
 use Cqured\Core\Program;
+use \PDO;
 
 /**
  * EntityModel Class exists in the Cqured\Entity namespace
@@ -10,7 +10,7 @@ use Cqured\Core\Program;
  * Database Queries with Chain methods.
  *
  * @category Entity
-*/
+ */
 class EntityModel
 {
     private $_pdo;
@@ -21,14 +21,13 @@ class EntityModel
     public $postId;
     protected $error;
 
-
     /**
      * A static variable to hold all values of the chain methods for use in
      * the _createStatement() Method
-    */
+     */
     private $_statement = [];
     private $_bindParam = [];
-    private $_sql;
+    public $sql;
 
     /**
      * Connection String
@@ -41,7 +40,7 @@ class EntityModel
      * $password = 'secrete';
      *
      * $this->myAppDB = new EntityModel($dsn, $user, $password);
-    */
+     */
     public function __construct($dsn, $user, $password)
     {
         /* Connect to a MySQL database using driver invocation */
@@ -56,18 +55,15 @@ class EntityModel
         }
     }
 
-
-
     /**
      * This method is used to store raw sql statement for query
-    */
-    public function sql($sql):self
+     */
+    public function sql($sql): self
     {
-        $this->_statement =[];
-        $this->_statement['sql'] =  $sql ;
+        $this->_statement = [];
+        $this->_statement['sql'] = $sql;
         return $this;
     }
-
 
     /**
      * This Method is the first to be called for chaining.
@@ -76,11 +72,11 @@ class EntityModel
      * it has a default alias of 't'.
      *
      * SELECT t.* FROM table t
-    */
+     */
 
     public function table(string $table): self
     {
-        $this->_statement =[];
+        $this->_statement = [];
 
         $tables = $this->_tableExists($table);
         if ($tables) {
@@ -95,12 +91,10 @@ class EntityModel
                 // print_r($tables['alias']);
             }
         } else {
-            Program::reportError('The Table: '.$this->prefix.$table.' does not exists', 'Database Query Error');
+            Program::reportError('The Table: ' . $this->prefix . $table . ' does not exists', 'Database Query Error');
         }
         return $this;
     }
-
-
 
     /**
      * This Method is to set the fields of the table
@@ -108,28 +102,23 @@ class EntityModel
      * SELECT 'fields' FROM ...
      *
      * @return EntityModel
-    */
+     */
     public function fields(string $fields): self
     {
         if (!isset(explode('.', $fields)[1])) {
-            $fieldss ='';
-            for ($i=0; $i<count($this->_statement['table']); $i++) {
-                $fieldss.= $this->_fieldExists($this->_statement['table'][$i], $fields, $this->_statement['alias'][$i]);
+            $fieldss = '';
+            for ($i = 0; $i < count($this->_statement['table']); $i++) {
+                $fieldss .= $this->_fieldExists($this->_statement['table'][$i], $fields, $this->_statement['alias'][$i]);
             }
 
             // echo $fieldss;
             $this->_statement['field'] = trim($fieldss, ',');
         } else {
-            $this->_statement['field'] =  $fields;
+            $this->_statement['field'] = $fields;
         }
 
         return $this;
     }
-
-
-
-
-
 
     /**
      * This Method is to set wheres for the statement
@@ -137,7 +126,7 @@ class EntityModel
      * WhERE ...
      *
      * @return EntityModel
-    */
+     */
 
     public function where(string $field, string $opValue, string $value = null): self
     {
@@ -150,28 +139,29 @@ class EntityModel
                 $field = $fieldVerified;
             }
 
-            if ($opValue == null) {
-                echo 'fill second arg';
+            if (is_null($opValue)) {
+                Program::reportError('Please specify second arg to set WHERE: Call DB::table(\'table\')->where(\'id\',*error*)', 'Database Query Error');
             } elseif ($opValue == "=" ||
-                   $opValue == "!=" ||
-                   $opValue == "<" ||
-                   $opValue == ">" ||
-                   $opValue == "<=" ||
-                   $opValue == ">=" ||
-                   $opValue == "BETWEEN" ||
-                   $opValue == "IN" ||
-                   $opValue == "NOT IN" ||
-                   $opValue == "LIKE") {
-                if ($value==null) {
-                    echo 'fill third arg';
-                } else {
-                    $this->_statement['where'] = $field.' '.$opValue.' :'.str_replace('.', '_', $field);
+                $opValue == "!=" ||
+                $opValue == "<" ||
+                $opValue == ">" ||
+                $opValue == "<=" ||
+                $opValue == ">=" ||
+                $opValue == "BETWEEN" ||
+                $opValue == "IN" ||
+                $opValue == "NOT IN" ||
+                $opValue == "LIKE") {
+                if (is_null($value)) {
+                    Program::reportError('Please specify third arg to set WHERE: Call DB::table(\'table\')->where(\'id\',\'condition\',*error*)', 'Database Query Error');
 
-                    $this->_bindParam[':'.str_replace('.', '_', $field).''] = $value;
+                } else {
+                    $this->_statement['where'] = $field . ' ' . $opValue . ' :' . str_replace('.', '_', $field);
+
+                    $this->_bindParam[':' . str_replace('.', '_', $field) . ''] = $value;
                 }
             } else {
-                $this->_statement['where'] = $field.' = :'.str_replace('.', '_', $field);
-                $this->_bindParam[':'.str_replace('.', '_', $field).''] = $opValue;
+                $this->_statement['where'] = $field . ' = :' . str_replace('.', '_', $field);
+                $this->_bindParam[':' . str_replace('.', '_', $field) . ''] = $opValue;
             }
         }
 
@@ -180,17 +170,13 @@ class EntityModel
         return $this;
     }
 
-
-
-
-
     /**
      * This Method is to set wheres for the statement. used after the where() is called
      *
      * WhERE ... || ..
      *
      * @return EntityModel
-    */
+     */
     public function orWhere(string $field, string $opValue, string $value = null): self
     {
         //checek if where is already set
@@ -207,29 +193,29 @@ class EntityModel
                 $field = $fieldVerified;
             }
 
-            if ($opValue == null) {
-                echo 'fill second arg';
+            if (is_null($opValue)) {
+                Program::reportError('Please specify third arg to set WHERE ... OR: Call DB::table(\'table\')->orWhere(\'id\',*error*)', 'Database Query Error');
             } elseif ($opValue == "=" ||
-                   $opValue == "!=" ||
-                   $opValue == "<" ||
-                   $opValue == ">" ||
-                   $opValue == "<=" ||
-                   $opValue == ">=" ||
-                   $opValue == "BETWEEN" ||
-                   $opValue == "IN" ||
-                   $opValue == "NOT IN" ||
-                   $opValue == "LIKE") {
-                if ($value==null) {
-                    echo 'fill third arg';
+                $opValue == "!=" ||
+                $opValue == "<" ||
+                $opValue == ">" ||
+                $opValue == "<=" ||
+                $opValue == ">=" ||
+                $opValue == "BETWEEN" ||
+                $opValue == "IN" ||
+                $opValue == "NOT IN" ||
+                $opValue == "LIKE") {
+                if (is_null($value)) {
+                    Program::reportError('Please specify third arg to set WHERE ... OR: Call DB::table(\'table\')->orWhere(\'id\',\'condition\',*error*)', 'Database Query Error');
                 } else {
-                    $OrWhere = $field.' '.$opValue.' :'.str_replace('.', '_', $field);
-                    $this->_statement['where'] = $this->_statement['where'].' OR '.$OrWhere;
-                    $this->_bindParam[':'.str_replace('.', '_', $field).''] = $value;
+                    $OrWhere = $field . ' ' . $opValue . ' :' . str_replace('.', '_', $field);
+                    $this->_statement['where'] = $this->_statement['where'] . ' OR ' . $OrWhere;
+                    $this->_bindParam[':' . str_replace('.', '_', $field) . ''] = $value;
                 }
             } else {
-                $OrWhere = $field.' = :'.str_replace('.', '_', $field);
-                $this->_statement['where'] = $this->_statement['where'].' OR '.$OrWhere;
-                $this->_bindParam[':'.str_replace('.', '_', $field).''] = $opValue;
+                $OrWhere = $field . ' = :' . str_replace('.', '_', $field);
+                $this->_statement['where'] = $this->_statement['where'] . ' OR ' . $OrWhere;
+                $this->_bindParam[':' . str_replace('.', '_', $field) . ''] = $opValue;
             }
         }
 
@@ -238,19 +224,13 @@ class EntityModel
         return $this;
     }
 
-
-
-
-
-
-
     /**
      * This Method is to set wheres for the statement. used after the where() is called
      *
      * WhERE ... && ..
      *
      * @return EntityModel
-    */
+     */
 
     public function andWhere(string $field, string $opValue, string $value = null): self
     {
@@ -268,29 +248,29 @@ class EntityModel
                 $field = $fieldVerified;
             }
 
-            if ($opValue == null) {
-                echo 'fill second arg';
+            if (is_null($opValue)) {
+                Program::reportError('Please specify second arg to set WHERE ... AND: Call DB::table(\'table\')->where(\'id\',*error*)', 'Database Query Error');
             } elseif ($opValue == "=" ||
-                   $opValue == "!=" ||
-                   $opValue == "<" ||
-                   $opValue == ">" ||
-                   $opValue == "<=" ||
-                   $opValue == ">=" ||
-                   $opValue == "BETWEEN" ||
-                   $opValue == "IN" ||
-                   $opValue == "NOT IN" ||
-                   $opValue == "LIKE") {
-                if ($value==null) {
-                    echo 'fill third arg';
+                $opValue == "!=" ||
+                $opValue == "<" ||
+                $opValue == ">" ||
+                $opValue == "<=" ||
+                $opValue == ">=" ||
+                $opValue == "BETWEEN" ||
+                $opValue == "IN" ||
+                $opValue == "NOT IN" ||
+                $opValue == "LIKE") {
+                if (is_null($value)) {
+                    Program::reportError('Please specify third arg to set WHERE ... AND: Call DB::table(\'table\')->andWhere(\'id\',\'condition\',*error*)', 'Database Query Error');
                 } else {
-                    $AndWhere = $field.' '.$opValue.' :'.str_replace('.', '_', $field);
-                    $this->_statement['where'] = $this->_statement['where'].' AND '.$AndWhere;
-                    $this->_bindParam[':'.str_replace('.', '_', $field).''] = $value;
+                    $AndWhere = $field . ' ' . $opValue . ' :' . str_replace('.', '_', $field);
+                    $this->_statement['where'] = $this->_statement['where'] . ' AND ' . $AndWhere;
+                    $this->_bindParam[':' . str_replace('.', '_', $field) . ''] = $value;
                 }
             } else {
-                $AndWhere = $field.' = :'.str_replace('.', '_', $field);
-                $this->_statement['where'] = $this->_statement['where'].' AND '.$AndWhere;
-                $this->_bindParam[':'.str_replace('.', '_', $field).''] = $opValue;
+                $AndWhere = $field . ' = :' . str_replace('.', '_', $field);
+                $this->_statement['where'] = $this->_statement['where'] . ' AND ' . $AndWhere;
+                $this->_bindParam[':' . str_replace('.', '_', $field) . ''] = $opValue;
             }
         }
 
@@ -299,25 +279,18 @@ class EntityModel
         return $this;
     }
 
-
-
-
-
     /**
      * This Method is used at the end of a chain to query the DB.
      *
      * Returns an array of objects
      *
      * @return array;
-    */
-    public function get() : ?array
+     */
+    public function get(): ?array
     {
         $sql = $this->_statement['sql'] ?? $this->_createStatement();
         return $this->_query($sql);
     }
-
-
-
 
     /**
      * This Method counts the results of a query.
@@ -329,14 +302,13 @@ class EntityModel
      *
      * @return int
      */
-    public function count():int
+    public function count(): int
     {
         $this->_statement['field'] = 'COUNT(*)';
         $sql = $this->_createStatement();
 
-        return json_decode(json_encode($this->_query($sql)), true)[0]['COUNT(*)']?? 0;
+        return json_decode(json_encode($this->_query($sql)), true)[0]['COUNT(*)'] ?? 0;
     }
-
 
     /**
      * This Method returns the Average results of a query.
@@ -347,12 +319,12 @@ class EntityModel
      *
      * @return int
      */
-    public function avg($field='*'): ?int
+    public function avg($field = '*'): ?int
     {
-        $this->_statement['field'] = 'AVG('.$field.')';
+        $this->_statement['field'] = 'AVG(' . $field . ')';
         $sql = $this->_createStatement();
 
-        return json_decode(json_encode($this->_query($sql)), true)[0]['AVG('.$field.')'];
+        return json_decode(json_encode($this->_query($sql)), true)[0]['AVG(' . $field . ')'];
     }
 
     /**
@@ -361,13 +333,12 @@ class EntityModel
      * SELECT DISTINCT(*) ...
      *
      * Used at the end of a chain method. it automatically calls the get method
-    */
+     */
     public function distinct(): ?array
     {
-        $this->_statement['field'] = 'DISTINCT '.$this->_statement['field'];
+        $this->_statement['field'] = 'DISTINCT ' . $this->_statement['field'];
         return $this->get();
     }
-
 
     /**
      * This Method is to set LIMIT for the statement, taking the last ID
@@ -375,7 +346,7 @@ class EntityModel
      * LIMIT 1 ORDER BY id ACS
      *
      * Hence it will limit it to one, order by ID
-    */
+     */
     public function first()
     {
         $this->_statement['limit'] = 1;
@@ -383,22 +354,17 @@ class EntityModel
         return $this->_query($sql, false);
     }
 
-
-
-
     /**
      * This Method is no different from the first() on
      *
      * LIMIT 1 ORDER BY id ASC
      *
      * returns an object
-    */
+     */
     public function single()
     {
         return $this->first();
     }
-
-
 
     /**
      * This Method is to set LIMIT for the statement, taking the last ID
@@ -409,7 +375,7 @@ class EntityModel
      * returns an object
      *
      * @return Object
-    */
+     */
     public function last()
     {
         $this->_statement['limit'] = 1;
@@ -418,29 +384,25 @@ class EntityModel
         return $this->_query($sql, false);
     }
 
-
-
     /**
      * This Method is to set LIMIT for the statement.
      *
      * LIMIT 5
      *
      * returns EntityModel for chaining methods
-    */
+     */
     public function limit(int $limit): self
     {
         $this->_statement['limit'] = $limit;
         return $this;
     }
 
-
-
     /**
      * This Method is used to set OFFSET for the SQL statement
      * OFFSET 5
      *
      * Returns objects. used for pagination
-    */
+     */
     public function offset(int $n)
     {
         $this->_statement['offset'] = $n;
@@ -449,9 +411,6 @@ class EntityModel
         }
         return $this->get();
     }
-
-
-
 
     /**
      * This Method sets the ORDER in which the queried data should display.
@@ -471,19 +430,17 @@ class EntityModel
             $field = $fieldVerified;
         }
 
-
-        if ($order==1) {
+        if ($order == 1) {
             $o = 'DESC';
         } elseif ($order == 2) {
-            $o= 'ASC';
+            $o = 'ASC';
         } else {
             Program::reportError('Please specify : the parameter  for the second argument <br/> 1 for DSC, 2 for ASC', 'Database Query Error');
         }
 
-        $this->_statement['order']= $field.' '.$o;
+        $this->_statement['order'] = $field . ' ' . $o;
         return $this;
     }
-
 
     /**
      * This Method is to group rows in a query.
@@ -499,13 +456,10 @@ class EntityModel
             }
             $this->_statement['groupBy'] = $fieldVerified;
         } else {
-            $this->_statement['groupBy'] =  $fields;
+            $this->_statement['groupBy'] = $fields;
         }
         return $this;
     }
-
-
-
 
     // Joining Tables
 
@@ -516,16 +470,16 @@ class EntityModel
      *
      * @return EntityModel
      */
-    public function join(string $table, string $alias):self
+    public function join(string $table, string $alias): self
     {
         if ($this->_tableExists($table)) {
-            $join = [' INNER JOIN '.$this->prefix.$table.' '.$alias];
+            $join = [' INNER JOIN ' . $this->prefix . $table . ' ' . $alias];
             if (!isset($this->_statement['joinTables'])) {
-                $this->_statement['joinTables'] =[];
+                $this->_statement['joinTables'] = [];
             }
             $this->_statement['joinTables'] = array_merge($this->_statement['joinTables'], $join);
         } else {
-            Program::reportError('The Table: '.$table.' does not exists', 'Database Query Error');
+            Program::reportError('The Table: ' . $table . ' does not exists', 'Database Query Error');
         }
 
         return $this;
@@ -538,16 +492,16 @@ class EntityModel
      *
      * @return EntityModel
      */
-    public function innerJoin(string $table, string $alias):self
+    public function innerJoin(string $table, string $alias): self
     {
         if ($this->_tableExists($table)) {
-            $join = [' INNER JOIN '.$this->prefix.$table.' '.$alias];
+            $join = [' INNER JOIN ' . $this->prefix . $table . ' ' . $alias];
             if (!isset($this->_statement['joinTables'])) {
-                $this->_statement['joinTables'] =[];
+                $this->_statement['joinTables'] = [];
             }
             $this->_statement['joinTables'] = array_merge($this->_statement['joinTables'], $join);
         } else {
-            Program::reportError('The Table: '.$table.' does not exists', 'Database Query Error');
+            Program::reportError('The Table: ' . $table . ' does not exists', 'Database Query Error');
         }
 
         return $this;
@@ -560,16 +514,16 @@ class EntityModel
      *
      * @return EntityModel
      */
-    public function fullJoin(string $table, string $alias):self
+    public function fullJoin(string $table, string $alias): self
     {
         if ($this->_tableExists($table)) {
-            $join = [' FULL JOIN '.$this->prefix.$table.' '.$alias];
+            $join = [' FULL JOIN ' . $this->prefix . $table . ' ' . $alias];
             if (!isset($this->_statement['joinTables'])) {
-                $this->_statement['joinTables'] =[];
+                $this->_statement['joinTables'] = [];
             }
             $this->_statement['joinTables'] = array_merge($this->_statement['joinTables'], $join);
         } else {
-            Program::reportError('The Table: '.$table.' does not exists', 'Database Query Error');
+            Program::reportError('The Table: ' . $table . ' does not exists', 'Database Query Error');
         }
 
         return $this;
@@ -582,25 +536,20 @@ class EntityModel
      *
      * @return EntityModel
      */
-    public function leftJoin(string $table, string $alias):self
+    public function leftJoin(string $table, string $alias): self
     {
         if ($this->_tableExists($table)) {
             if (!isset($this->_statement['joinTables'])) {
-                $this->_statement['joinTables'] =[];
+                $this->_statement['joinTables'] = [];
             }
-            $join = [' LEFT JOIN '.$this->prefix.$table.' '.$alias];
+            $join = [' LEFT JOIN ' . $this->prefix . $table . ' ' . $alias];
             $this->_statement['joinTables'] = array_merge($this->_statement['joinTables'], $join);
         } else {
-            Program::reportError('The Table: '.$table.' does not exists', 'Database Query Error');
+            Program::reportError('The Table: ' . $table . ' does not exists', 'Database Query Error');
         }
 
         return $this;
     }
-
-
-
-
-
 
     /**
      * RIGHT JOIN
@@ -609,22 +558,20 @@ class EntityModel
      *
      * @return EntityModel
      */
-    public function rightJoin(string $table, string $alias):self
+    public function rightJoin(string $table, string $alias): self
     {
         if ($this->_tableExists($table)) {
             if (!isset($this->_statement['joinTables'])) {
-                $this->_statement['joinTables'] =[];
+                $this->_statement['joinTables'] = [];
             }
-            $join = [' RIGHT JOIN '.$this->prefix.$table.' '.$alias];
+            $join = [' RIGHT JOIN ' . $this->prefix . $table . ' ' . $alias];
             $this->_statement['joinTables'] = array_merge($this->_statement['joinTables'], $join);
         } else {
-            Program::reportError('The Table: '.$table.' does not exists', 'Database Query Error');
+            Program::reportError('The Table: ' . $table . ' does not exists', 'Database Query Error');
         }
 
         return $this;
     }
-
-
 
     /**
      * Used after a join method to set the condition of the joint table
@@ -633,23 +580,16 @@ class EntityModel
      *
      * @return EntityModel
      */
-    public function on(string $jField, string $tField):self
+    public function on(string $jField, string $tField): self
     {
         // check if fields exists
-        $on = [' ON '.$jField.' = '.$tField];
+        $on = [' ON ' . $jField . ' = ' . $tField];
         if (!isset($this->_statement['joinOn'])) {
-            $this->_statement['joinOn'] =[];
+            $this->_statement['joinOn'] = [];
         }
         $this->_statement['joinOn'] = array_merge($this->_statement['joinOn'], $on);
         return $this;
     }
-
-
-
-
-
-
-
 
     /**
      * This Method is to ADD / INSERT row(s) of a table`
@@ -658,41 +598,36 @@ class EntityModel
      *
      * @return Boolean
      */
-    public function add(array $data):bool
+    public function add(array $data): bool
     {
         $fields = array_keys($data);
         $length = count($fields);
 
-        $field="";
-        $values="";
+        $field = "";
+        $values = "";
 
+        for ($i = 0; $i < $length; $i++) {
+            $field .= ", `" . $fields[$i] . "`";
 
-        for ($i=0; $i < $length; $i++) {
-            $field .=", `".$fields[$i]."`";
-
-            $values .=", :".$fields[$i]."";
+            $values .= ", :" . $fields[$i] . "";
         }
-
 
         $field = trim($field, ',');
         $values = trim($values, ',');
 
-
-        $sql = 'INSERT INTO '.$this->prefix;
-        $sql .=explode(' ', $this->_genFieldsTables('tables'))[0].' (';
-        $sql .= $field.') VALUES ('.$values.')';
+        $sql = 'INSERT INTO ' . $this->prefix;
+        $sql .= explode(' ', $this->_genFieldsTables('tables'))[0] . ' (';
+        $sql .= $field . ') VALUES (' . $values . ')';
         // echo $sql;
 
-        for ($i=0; $i < $length; $i++) {
-            $this->_bindParam[':'.$fields[$i].''] = $data[$fields[$i]];
+        for ($i = 0; $i < $length; $i++) {
+            $this->_bindParam[':' . $fields[$i] . ''] = $data[$fields[$i]];
         }
 
         // print_r($this->_bindParam);
 
         // return true;
-        $this->_sql = $sql;
-
-
+        $this->sql = $sql;
 
         if ($this->_query($sql)) {
             return true;
@@ -700,10 +635,6 @@ class EntityModel
             return false;
         }
     }
-
-
-
-
 
     /**
      * This Method is to update row(s) of a table`
@@ -714,7 +645,7 @@ class EntityModel
      *
      * @return Boolean
      */
-    public function update(array $data):bool
+    public function update(array $data): bool
     {
         $fields = array_keys($data);
 
@@ -724,33 +655,30 @@ class EntityModel
 
         // $basket->set("length", $length);
 
-        $field="";
-        $values="";
-        for ($i=0; $i < $length; $i++) {
-            $values .=", `".$fields[$i]."` = :".$fields[$i]."";
+        $field = "";
+        $values = "";
+        for ($i = 0; $i < $length; $i++) {
+            $values .= ", `" . $fields[$i] . "` = :" . $fields[$i] . "";
         }
 
         $values = trim($values, ',');
 
-
-        $sql = 'UPDATE '.$this->prefix;
-        $sql .=explode(' ', $this->_genFieldsTables('tables'))[0].' t SET '.$values;
+        $sql = 'UPDATE ' . $this->prefix;
+        $sql .= explode(' ', $this->_genFieldsTables('tables'))[0] . ' t SET ' . $values;
 
         if ($this->_statement['where'] == null) {
             Program::reportError('Please specify data to UPDATE: Call DB::table(\'table\')->where(\'id\',$id)->update($arr)', 'Database Query Error');
         }
-        $sql .= ($this->_statement['where'] == null) ? '' :' WHERE '.$this->_statement['where'];
+        $sql .= ($this->_statement['where'] == null) ? '' : ' WHERE ' . $this->_statement['where'];
 
-        $this->_sql = $sql;
-
+        $this->sql = $sql;
 
         // SET bindParam
-        for ($i=0; $i < $length; $i++) {
-            $this->_bindParam[':'.$fields[$i].''] = $data[$fields[$i]];
+        for ($i = 0; $i < $length; $i++) {
+            $this->_bindParam[':' . $fields[$i] . ''] = $data[$fields[$i]];
         }
         // echo $sql;
         // print_r($this->_bindParam);
-
 
         if ($this->_query($sql)) {
             return true;
@@ -758,9 +686,6 @@ class EntityModel
             return false;
         }
     }
-
-
-
 
     /**
      * This Method is to delete row(s) of a table`
@@ -771,19 +696,19 @@ class EntityModel
      *
      * @return Boolean
      */
-    public function delete():bool
+    public function delete(): bool
     {
-        $sql = 'DELETE FROM '.$this->prefix;
+        $sql = 'DELETE FROM ' . $this->prefix;
         $sql .= explode(' ', $this->_genFieldsTables('tables'))[0];
         if ($this->_statement['where'] == null) {
             Program::reportError('Please specify data to DELETE: Call DB::table(\'table\')->where(\'id\',$id)->delete()', 'Database Query Error');
         }
 
-        $sql .= ($this->_statement['where'] == null) ? '' :' WHERE '.str_replace('t.', '', $this->_statement['where']);
+        $sql .= ($this->_statement['where'] == null) ? '' : ' WHERE ' . str_replace('t.', '', $this->_statement['where']);
         // echo $this->_statement['where'];
 
         // echo $sql;
-        $this->_sql = $sql;
+        $this->sql = $sql;
 
         if ($this->_query($sql)) {
             return true;
@@ -792,24 +717,22 @@ class EntityModel
         }
     }
 
-
-
-    private function _genFieldsTables(string $get):string
+    private function _genFieldsTables(string $get): string
     {
         //table iteration
-        $tables ="";
-        $fields ="";
+        $tables = "";
+        $fields = "";
         if (isset($this->_statement['table'])) {
-            for ($i =0; $i < count($this->_statement['table']); $i++) {
-                $fields .= $this->_statement['alias'][$i].'.*,';
-                $tables .= $this->_statement['table'][$i].' '.$this->_statement['alias'][$i].',';
+            for ($i = 0; $i < count($this->_statement['table']); $i++) {
+                $fields .= $this->_statement['alias'][$i] . '.*,';
+                $tables .= $this->_statement['table'][$i] . ' ' . $this->_statement['alias'][$i] . ',';
             }
             // echo $tables;
         }
 
-        $fields = $this->_statement['field']??trim($fields, ',');
+        $fields = $this->_statement['field'] ?? trim($fields, ',');
         $tables = trim($tables, ',');
-        if ($get =="fields") {
+        if ($get == "fields") {
             $results = $fields;
         } else {
             $results = $tables;
@@ -817,7 +740,6 @@ class EntityModel
 
         return $results;
     }
-
 
     /**
      * This Method is used mostly in GET request to create or generate the
@@ -827,37 +749,33 @@ class EntityModel
      *
      * @return String
      */
-    private function _createStatement():string
+    private function _createStatement(): string
     {
 
-         // $tableAlias = isset($alias)?'':' t';
+        // $tableAlias = isset($alias)?'':' t';
         // $sql .=' FROM '.$this->prefix.$this->_statement['table'].$tableAlias;
 
-        $sql = 'SELECT '.$this->_genFieldsTables('fields');
+        $sql = 'SELECT ' . $this->_genFieldsTables('fields');
 
-        $sql .= ' FROM '.$this->_genFieldsTables('tables');
+        $sql .= ' FROM ' . $this->_genFieldsTables('tables');
 
         // Jion iteration
 
-
         if (isset($this->_statement['joinTables'])) {
-            for ($i =0; $i < count($this->_statement['joinTables']); $i++) {
-                $sql .= $this->_statement['joinTables'][$i].' '.$this->_statement['joinOn'][$i];
+            for ($i = 0; $i < count($this->_statement['joinTables']); $i++) {
+                $sql .= $this->_statement['joinTables'][$i] . ' ' . $this->_statement['joinOn'][$i];
             }
         }
 
-        $sql .= isset($this->_statement['where']) ? ' WHERE '.$this->_statement['where'] : '';
-        $sql .= isset($this->_statement['groupBy']) ? ' GROUP BY '.$this->_statement['groupBy'] : '';
-        $sql .= isset($this->_statement['order']) ? ' ORDER BY '.$this->_statement['order'] : '';
-        $sql .= isset($this->_statement['limit']) ? ' LIMIT '.$this->_statement['limit'] : '';
-        $sql .= isset($this->_statement['offset']) ? ' OFFSET '.$this->_statement['offset'] : '';
-        $this->_sql = $sql; //want to have this static
+        $sql .= isset($this->_statement['where']) ? ' WHERE ' . $this->_statement['where'] : '';
+        $sql .= isset($this->_statement['groupBy']) ? ' GROUP BY ' . $this->_statement['groupBy'] : '';
+        $sql .= isset($this->_statement['order']) ? ' ORDER BY ' . $this->_statement['order'] : '';
+        $sql .= isset($this->_statement['limit']) ? ' LIMIT ' . $this->_statement['limit'] : '';
+        $sql .= isset($this->_statement['offset']) ? ' OFFSET ' . $this->_statement['offset'] : '';
+        $this->sql = $sql; //want to have this static
         //   echo $sql;
         return $sql;
     }
-
-
-
 
     /**
      * This Method is to makes use of the PDO prepare method to query the statement
@@ -885,10 +803,9 @@ class EntityModel
             $fields = array_keys($this->_bindParam);
             $length = count($fields);
 
-            for ($i=0; $i < $length; $i++) {
+            for ($i = 0; $i < $length; $i++) {
                 $query->bindParam($fields[$i], $this->_bindParam[$fields[$i]]);
             }
-
 
             //   print_r($this->_bindParam);
             //Empty bindParam;
@@ -896,12 +813,12 @@ class EntityModel
 
             if ($query->execute()) {
                 // If its a SELECT statment
-                if ($sql[0]=='S') {
+                if ($sql[0] == 'S') {
                     // $query->rowCount() > 1
-                    return   $fetchAll ? $query->fetchAll(5): $query->fetch(5);
+                    return $fetchAll ? $query->fetchAll(5) : $query->fetch(5);
                 } else {
                     // If its an INSERT statment
-                    if ($sql[0]=='I') {
+                    if ($sql[0] == 'I') {
                         $this->postId = $this->_pdo->lastInsertId();
                     }
                     return true;
@@ -910,13 +827,9 @@ class EntityModel
                 return null;
             }
         } catch (PDOExeption $e) {
-            echo '[{"error":"'.$e->message().'"}]';
+            echo '[{"error":"' . $e->message() . '"}]';
         }
     }
-
-
-
-
 
     /**
      * Method to check if a table exist,
@@ -924,14 +837,14 @@ class EntityModel
      *
      * @return Array
      */
-    private function _tableExists($tables):array
+    private function _tableExists($tables): array
     {
         //explode to see how many tables are being queried
         $tables = explode(',', trim($tables, ','));
 
         $length = count($tables);
         $tablesExist = [];
-        $tableAlias =[];
+        $tableAlias = [];
 
         for ($i = 0; $i < $length; $i++) {
             // Now trim off any whitespaces
@@ -940,12 +853,12 @@ class EntityModel
             // Explode with DOT '.' to see if the databasename is attached to the table
             $indexTable = explode('.', $indexTable);
             if (isset($indexTable[1])) {
-                $dbname= $indexTable[0].'.';
+                $dbname = $indexTable[0] . '.';
                 // $dbname='';
                 $table = $indexTable[1];
-                $fromDB = 'FROM '.$indexTable[0].' ';
+                $fromDB = 'FROM ' . $indexTable[0] . ' ';
             } else {
-                $dbname="";
+                $dbname = "";
                 $table = $indexTable[0];
                 $fromDB = '';
             }
@@ -955,13 +868,13 @@ class EntityModel
             if (isset($aliasTable[1])) {
                 // alias exists
                 $alias = $aliasTable[1];
-                echo  $alias;
+                echo $alias;
                 $table = $aliasTable[0];
             } else {
                 if ($length == 1) {
                     $alias = "t";
                 } else {
-                    $alias = "t".$i;
+                    $alias = "t" . $i;
                 }
             }
 
@@ -977,53 +890,47 @@ class EntityModel
                     }
                 }
 
-
-
                 if ($exists) {
-                    $tablesExist[$i]=$dbname.$this->prefix.$table;
+                    $tablesExist[$i] = $dbname . $this->prefix . $table;
                     $tableAlias[$i] = $alias;
                 } else {
-                    Program::reportError('The Table: '.$dbname.$table.' does not exist in the database', 'Database Query Error');
+                    Program::reportError('The Table: ' . $dbname . $table . ' does not exist in the database', 'Database Query Error');
                 }
             } else {
 
-              //Single Connection
+                //Single Connection
                 if ($this->_checkTableField('table', $this->_pdo, $fromDB, $table)) {
-                    $tablesExist[$i]=$dbname.$this->prefix.$table;
+                    $tablesExist[$i] = $dbname . $this->prefix . $table;
                     $tableAlias[$i] = $alias;
                 } else {
-                    Program::reportError('The Table: '.$dbname.$table.' does not exist in the database', 'Database Query Error');
+                    Program::reportError('The Table: ' . $dbname . $table . ' does not exist in the database', 'Database Query Error');
                 }
             }
         }
 
-
-        return ['tables'=>$tablesExist,'alias'=>$tableAlias];
+        return ['tables' => $tablesExist, 'alias' => $tableAlias];
     }
-
 
     /**
      * Iterator Method to query for the existence of fields and tables
      *
      * @return Boolean
      */
-    private function _checkTableField($type, $con, $subject, $table):bool
+    private function _checkTableField($type, $con, $subject, $table): bool
     {
         switch ($type) {
-        case 'field':
-            return $con->query("SHOW COLUMNS FROM ".$this->prefix.$table." LIKE '".$subject."'") != null;
-        break;
+            case 'field':
+                return $con->query("SHOW COLUMNS FROM " . $this->prefix . $table . " LIKE '" . $subject . "'") != null;
+                break;
 
-        default:
-            $tableExists = $con->query("SHOW TABLES ".$subject."LIKE '".$this->prefix.$table."'");
-            return $tableExists && $tableExists->rowCount() == 1;
-        break;
+            default:
+                $tableExists = $con->query("SHOW TABLES " . $subject . "LIKE '" . $this->prefix . $table . "'");
+                return $tableExists && $tableExists->rowCount() == 1;
+                break;
         }
 
         return false;
     }
-
-
 
     /**
      * Method to check is a field exist, if it does,
@@ -1031,7 +938,7 @@ class EntityModel
      *
      * @return String
      */
-    private function _fieldExists($table, $field, $alias):string
+    private function _fieldExists($table, $field, $alias): string
     {
 
         // echo 'table is: '.$table.' --- fields is: '.$field.' ---- alias is: '.$alias;
@@ -1043,11 +950,10 @@ class EntityModel
         for ($i = 0; $i < $length; $i++) {
             // var_dump($field);
             if ($this->_checkTableField('field', $this->_pdo, $field[$i], $table)) {
-                $exist .= ','.$alias.'.'.trim($field[$i], ' ');
+                $exist .= ',' . $alias . '.' . trim($field[$i], ' ');
                 // echo $field[$i].'<br/>';
             }
         }
-
 
         return trim($exist, ',');
     }

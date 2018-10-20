@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2018 ProjectAIR.
+ * Copyright (c) 2018 ProjectAIIR.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,10 +33,10 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package     [ ProjectAIR ]
+ * @package     [ ProjectAIIR ]
  * @subpackage  [ cqured ]
  * @author      Owusu-Afriyie Kofi <koathecedi@gmail.com>
- * @copyright   2018 ProjectAIR.
+ * @copyright   2018 ProjectAIIR.
  * @license     http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link        http://airDesign.co.nf
  * @version     @@2.00@@
