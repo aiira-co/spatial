@@ -1,6 +1,6 @@
 <?php
 
-namespace Lynq\Core;
+namespace Cqured\Core;
 
 /**
  * Controller Class exists in the Lynq\Core namespace

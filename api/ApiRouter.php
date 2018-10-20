@@ -1,5 +1,5 @@
 <?php
-use Lynq\Core\Program;
+use Cqured\Core\Program;
 
 $apiRoutes = [
   [

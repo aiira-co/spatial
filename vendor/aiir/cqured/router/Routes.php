@@ -1,7 +1,7 @@
-<?php namespace Lynq\Router;
+<?php namespace Cqured\Router;
 
 /**
- * Routes Class exists in the Lynq\Router namespace
+ * Routes Class exists in the Cqured\Router namespace
  * This class holdes and handles path-to-component logics
  *
  * @category Router
@@ -129,7 +129,7 @@ class Routes
 
                     // set the params to the legacy class
                     if (count($urlParams)!==0) {
-                        $legacy = \Lynq\Core\Program::getInstance('Legacy');
+                        $legacy = \Cqured\Core\Program::getInstance('Legacy');
                         // echo count($url);
                         $legacy->params = $urlParams;
                     }

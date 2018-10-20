@@ -11,6 +11,13 @@ This is a PHP 7.2+ Web API to partner client-side applications like Angular, Ion
 
 ## Getting Started
 
+###Install with Composer
+We recommend you create this project with a PHP composer CLI:
+```shell
+    composer create-project aiir/cqured your-api-name
+```
+
+###Download Directory from repo
 - Download the the API from this repo, unzip it and place it at the
   directory of your PHP Server. eg. For XAMPP, place it at the 'htdocs' folder.
   You can rename the folder if you desire.
@@ -141,11 +148,11 @@ class ValuesController
     {
         // --- use this if you are connected to the Databases ---
         // if (count($id)) {
-        //     $users = Lynq\Entity\EntityModel::table('user')
+        //     $users = Cqured\Entity\EntityModel::table('user')
         //                     ->where('id', $id[0])
         //                     ->single();
         // } else {
-        //     $users = Lynq\Entity\EntityModel::table('users')->get();
+        //     $users = Cqured\Entity\EntityModel::table('users')->get();
         // }
 
         // return ['data'=>$users,'totalCount'=>count($users)];
@@ -168,9 +175,9 @@ class ValuesController
     {
         $postId = null;
         // --- use this if you are connected to the Databases ---
-        // if (Lynq\Entity\EntityModel::table('values')->add($form)) {
+        // if (Cqured\Entity\EntityModel::table('values')->add($form)) {
         //     $alert = 'Succesfully saved';
-        //      $postId = Lynq\Entity\EntityModel::$postId;
+        //      $postId = Cqured\Entity\EntityModel::$postId;
         // } else {
         //     $alert = 'Could not be saved. Please try again';
 
@@ -200,7 +207,7 @@ class ValuesController
     {
 
         // --- use this if you are connected to the Databases ---
-        // if (Lynq\Entity\EntityModel::table('values')->where('id',$id)->update($form)) {
+        // if (Cqured\Entity\EntityModel::table('values')->where('id',$id)->update($form)) {
         //     $alert = 'Succesfully updated';
         //      $success = true;
         // } else {
@@ -362,7 +369,7 @@ $appRouter = [
 
 ];
 
-$appRouterModule = CORE::getInstance('Router'); //creates an instance of the router class
+$appRouterModule = Programe::getInstance('Router'); //creates an instance of the router class
 $appRouterModule->setRouter($appRouter); //registers the routers
 ```
 
@@ -383,7 +390,7 @@ namespace Api\Models;
  * @category Model
  */
 
-class AuthenticationModel
+class AuthenticationModel implements \Cqured\Router\CanActivate
 {
     /**
      * Method Used to Auhtourize Access to Controller,
@@ -427,7 +434,7 @@ class UserModel
 
     private $_table='users';
 
-    pfunction getUsers()
+    function getUsers()
     {
         return DB::table($this->table)
                     ->get();
@@ -449,7 +456,7 @@ class UserModel
 ```php
 namespace Api\Models;
 
-use Lynq\Entity\EntityModel;
+use Cqured\Entity\EntityModel;
 
 class UsersComponent
 {
@@ -542,7 +549,7 @@ class UsersController
 namespace Api\Controllers;
 
 use Api\Models\UserModel;
-use Lynq\Router\ActivatedRoute;
+use Cqured\Router\ActivatedRoute;
 
 class UsersController
 {

@@ -1,8 +1,8 @@
 <?php
-namespace Lynq\Core;
+namespace Cqured\Core;
 
 /**
- * Render Class exists in the Lynq\Core namespace
+ * Render Class exists in the Cqured\Core namespace
  * This class holds the return values of the http*() methods and finially displays it as json
  *
  * @category Core

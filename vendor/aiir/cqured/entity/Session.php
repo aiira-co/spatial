@@ -1,8 +1,8 @@
 <?php
-namespace Lynq\Entity;
+namespace Cqured\Entity;
 
 /**
- * Session Class exists in the Lynq\Entity namespace
+ * Session Class exists in the Cqured\Entity namespace
  * This class is for authentication
  *
  * @category Entity

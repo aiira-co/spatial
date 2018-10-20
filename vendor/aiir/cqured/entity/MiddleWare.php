@@ -1,8 +1,8 @@
 <?php
-namespace Lynq\Entity;
+namespace Cqured\Entity;
 
 /**
- * MiddleWare Class exists in the Lynq\Entity namespace
+ * MiddleWare Class exists in the Cqured\Entity namespace
  * This class is simply a filter between the component and the model
  * They are effective in POST queries to strip tags and etc
  *

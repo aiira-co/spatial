@@ -1,11 +1,11 @@
 <?php
-namespace Lynq\Entity;
+namespace Cqured\Entity;
 
 use \PDO;
-use Lynq\Core\Program;
+use Cqured\Core\Program;
 
 /**
- * EntityModel Class exists in the Lynq\Entity namespace
+ * EntityModel Class exists in the Cqured\Entity namespace
  * This class handles Database Connection (PDO)
  * Database Queries with Chain methods.
  *

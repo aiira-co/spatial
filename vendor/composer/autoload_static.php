@@ -7,11 +7,11 @@ namespace Composer\Autoload;
 class ComposerStaticInit216a3faef2a3dc340377a31c8686eca6
 {
     public static $prefixLengthsPsr4 = array (
-        'L' => 
+        'C' => 
         array (
-            'Lynq\\Router\\' => 12,
-            'Lynq\\Entity\\' => 12,
-            'Lynq\\Core\\' => 10,
+            'Cqured\\Router\\' => 14,
+            'Cqured\\Entity\\' => 14,
+            'Cqured\\Core\\' => 12,
         ),
         'A' => 
         array (
@@ -21,17 +21,17 @@ class ComposerStaticInit216a3faef2a3dc340377a31c8686eca6
     );
 
     public static $prefixDirsPsr4 = array (
-        'Lynq\\Router\\' => 
+        'Cqured\\Router\\' => 
         array (
-            0 => __DIR__ . '/..' . '/projectair/cqured/router',
+            0 => __DIR__ . '/..' . '/aiir/cqured/router',
         ),
-        'Lynq\\Entity\\' => 
+        'Cqured\\Entity\\' => 
         array (
-            0 => __DIR__ . '/..' . '/projectair/cqured/entity',
+            0 => __DIR__ . '/..' . '/aiir/cqured/entity',
         ),
-        'Lynq\\Core\\' => 
+        'Cqured\\Core\\' => 
         array (
-            0 => __DIR__ . '/..' . '/projectair/cqured/core',
+            0 => __DIR__ . '/..' . '/aiir/cqured/core',
         ),
         'Api\\Models\\' => 
         array (
@@ -44,20 +44,23 @@ class ComposerStaticInit216a3faef2a3dc340377a31c8686eca6
     );
 
     public static $classMap = array (
-        'Api\\Controllers\\MediaController' => __DIR__ . '/../..' . '/api/controllers/MediaController.php',
+        'Api\\Controllers\\BaseController' => __DIR__ . '/../..' . '/api/controllers/BaseController.php',
+        'Api\\Controllers\\PersonController' => __DIR__ . '/../..' . '/api/controllers/PersonController.php',
         'Api\\Controllers\\ValuesController' => __DIR__ . '/../..' . '/api/controllers/ValuesController.php',
+        'Api\\Models\\AirCoreDB' => __DIR__ . '/../..' . '/api/models/AirCoreDB.php',
         'Api\\Models\\AuthenticationModel' => __DIR__ . '/../..' . '/api/models/AuthenticationModel.php',
-        'Api\\Models\\PracticeModel' => __DIR__ . '/../..' . '/api/models/PracticeModel.php',
-        'Lynq\\Core\\Controller' => __DIR__ . '/..' . '/projectair/cqured/core/Controller.php',
-        'Lynq\\Core\\Legacy' => __DIR__ . '/..' . '/projectair/cqured/core/Legacy.php',
-        'Lynq\\Core\\Programe' => __DIR__ . '/..' . '/projectair/cqured/core/Program.php',
-        'Lynq\\Core\\Render' => __DIR__ . '/..' . '/projectair/cqured/core/Render.php',
-        'Lynq\\Entity\\EntityModel' => __DIR__ . '/..' . '/projectair/cqured/entity/EntityModel.php',
-        'Lynq\\Entity\\MiddleWare' => __DIR__ . '/..' . '/projectair/cqured/entity/MiddleWare.php',
-        'Lynq\\Entity\\Session' => __DIR__ . '/..' . '/projectair/cqured/entity/Session.php',
-        'Lynq\\Router\\ActivatedRoute' => __DIR__ . '/..' . '/projectair/cqured/router/ActivatedRoute.php',
-        'Lynq\\Router\\Node' => __DIR__ . '/..' . '/projectair/cqured/router/Node.php',
-        'Lynq\\Router\\Routes' => __DIR__ . '/..' . '/projectair/cqured/router/Routes.php',
+        'Api\\Models\\PersonModel' => __DIR__ . '/../..' . '/api/models/PersonModel.php',
+        'Cqured\\Core\\Controller' => __DIR__ . '/..' . '/aiir/cqured/core/Controller.php',
+        'Cqured\\Core\\Legacy' => __DIR__ . '/..' . '/aiir/cqured/core/Legacy.php',
+        'Cqured\\Core\\Program' => __DIR__ . '/..' . '/aiir/cqured/core/Program.php',
+        'Cqured\\Core\\Render' => __DIR__ . '/..' . '/aiir/cqured/core/Render.php',
+        'Cqured\\Entity\\EntityModel' => __DIR__ . '/..' . '/aiir/cqured/entity/EntityModel.php',
+        'Cqured\\Entity\\MiddleWare' => __DIR__ . '/..' . '/aiir/cqured/entity/MiddleWare.php',
+        'Cqured\\Entity\\Session' => __DIR__ . '/..' . '/aiir/cqured/entity/Session.php',
+        'Cqured\\Router\\ActivatedRoute' => __DIR__ . '/..' . '/aiir/cqured/router/ActivatedRoute.php',
+        'Cqured\\Router\\CanActivate' => __DIR__ . '/..' . '/aiir/cqured/router/CanActivate.php',
+        'Cqured\\Router\\Node' => __DIR__ . '/..' . '/aiir/cqured/router/Node.php',
+        'Cqured\\Router\\Routes' => __DIR__ . '/..' . '/aiir/cqured/router/Routes.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

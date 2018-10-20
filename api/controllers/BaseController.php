@@ -1,7 +1,7 @@
 <?php
 namespace Api\Controllers;
 
-use Lynq\Router\ActivatedRoute;
+use Cqured\Router\ActivatedRoute;
 
 /**
  * BaseController Class exists in the Api\Controllers namespace

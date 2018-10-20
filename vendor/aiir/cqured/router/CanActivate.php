@@ -1,4 +1,4 @@
-<?php namespace Lynq\Router;
+<?php namespace Cqured\Router;
 
 /**
  * Interface to AuthGuard-ing

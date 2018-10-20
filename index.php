@@ -44,7 +44,7 @@
 
  declare(strict_types=1);
 
- use Lynq\Core\Program;
+ use Cqured\Core\Program;
 
  session_start();
 

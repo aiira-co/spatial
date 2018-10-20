@@ -1,12 +1,12 @@
 <?php
-namespace Lynq\Router;
+namespace Cqured\Router;
 
-use Lynq\Core\Controller;
-use Lynq\Core\Program;
-use Lynq\Router\Routes;
+use Cqured\Core\Controller;
+use Cqured\Core\Program;
+use Cqured\Router\Routes;
 
 /**
-* Node Class exists in the Lynq\Router namespace
+* Node Class exists in the Cqured\Router namespace
  * Node class intantciated at the Program Class
  * Reponsible for getting, the controller that matches
  * the requested URI
@@ -67,19 +67,19 @@ class Node
         // print_r($r->getRouter());
 
         // Get URL and Formate it
-        $url = $_GET['lynqQueryUrl']??'/';
-        $url = $url!='/' ? rtrim($url, '/'):'/';
+        $url = $_GET['CquredQueryUrl']??'/';
+        $url = $url!=='/' ? rtrim($url, '/'):'/';
 
         $routerPath = $coreRouter->getPath($url);
         $legacy = Program::getInstance('Legacy');
 
         // echo 'hey';
-        // print_r($routerPath);
+        // print_r($_GET['CquredQueryUrl']);
 
 
         $basket = Program::getInstance('Render');
         // Check if url was found in the coreRouter
-        if ($routerPath != null) {
+        if ($routerPath !== null) {
             //Check if it has a redirect property
             if (isset($routerPath['redirectTo'])) {
                 Program::redirect($routerPath['redirectTo']);

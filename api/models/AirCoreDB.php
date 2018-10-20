@@ -1,7 +1,7 @@
 <?php
 namespace Api\Models;
 
-use Lynq\Entity\EntityModel;
+use Cqured\Entity\EntityModel;
 
 /**
  * AirMediaDB Class exists in the Api\Models namespace

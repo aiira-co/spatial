@@ -1,8 +1,8 @@
 <?php
-namespace Lynq\Router;
+namespace Cqured\Router;
 
 /**
- * ActivatedRoute Class exists in the Lynq\Router namespace
+ * ActivatedRoute Class exists in the Cqured\Router namespace
  * This class initialized $_GET global.
  * Strings sent through the GET global are passed through
  * the htmlspecialchar() function to remove any tags

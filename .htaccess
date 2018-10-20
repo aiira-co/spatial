@@ -28,7 +28,7 @@ RewriteCond %{REQUEST_FILENAME} !-l
 ##
 ## Rewrite for routing
 ##
-RewriteRule ^(.*)$ index.php?lynqQueryUrl=$1 [L,QSA]
+RewriteRule ^(.*)$ index.php?CquredQueryUrl=$1 [L,QSA]
 
 RewriteRule \.(json)$ - [F]
 # </IfModule>

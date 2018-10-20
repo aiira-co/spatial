@@ -1,4 +1,4 @@
-<?php namespace Lynq\Utils;
+<?php namespace Cqured\Utils;
 
 /**
  * Interface for routes.

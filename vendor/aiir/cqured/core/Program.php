@@ -2,17 +2,17 @@
 /**
  * Programe Class
  */
-namespace Lynq\Core;
+namespace Cqured\Core;
 
-use Lynq\Router\ActivatedRoute;
-use Lynq\Router\Node;
-use \Lynq\Core\Component;
-use \Lynq\Core\Legacy;
-use Lynq\Core\Render;
-use Lynq\Router\Routes;
+use Cqured\Router\ActivatedRoute;
+use Cqured\Router\Node;
+use Cqured\Core\Component;
+use Cqured\Core\Legacy;
+use Cqured\Core\Render;
+use Cqured\Router\Routes;
 
 /**
- * Program Class exists in the Lynq\Core namespace
+ * Program Class exists in the Cqured\Core namespace
  * This class is the framework itself. It handles error reporting, instancing, and configuring
  *
  * @category Core
@@ -69,11 +69,11 @@ class Program
                 self::autoload($class, 'core');
             }
 
-            if ($class == 'Legacy') {
+            if ($class === 'Legacy') {
                 self::$instance[$class] = new Legacy;
-            } elseif ($class == 'Render') {
+            } elseif ($class === 'Render') {
                 self::$instance[$class] = new Render;
-            } elseif ($class == 'Routes') {
+            } elseif ($class === 'Routes') {
                 self::$instance[$class] = new Routes;
             } else {
 

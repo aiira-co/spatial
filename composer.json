@@ -36,9 +36,9 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Lynq\\Core\\": "vendor/projectair/cqured/core/",
-      "Lynq\\Router\\": "vendor/projectair/cqured/router/",
-      "Lynq\\Entity\\": "vendor/projectair/cqured/entity/",
+      "Cqured\\Core\\": "vendor/aiir/cqured/core/",
+      "Cqured\\Router\\": "vendor/aiir/cqured/router/",
+      "Cqured\\Entity\\": "vendor/aiir/cqured/entity/",
       "Api\\Models\\": "api/models/",
       "Api\\Controllers\\": "api/controllers/"
     }
