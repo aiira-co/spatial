@@ -6,25 +6,31 @@ use Doctrine\ORM\EntityManager;
 
 class DoctrineEntity
 {
-    private $config;
-    private $cache;
+    private $_config;
+    private $_cache;
 
-    public function __contruct()
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        $this->_onInit(new Configuration);
+        $this->_onInit();
     }
 
     /**
      * Set default configs for
      * cahce and proxy with production mode.
      *
-     * @return void
+     * @return self
      */
-    private function _onInit($config)
+    private function _onInit()
     {
+        $config = new Configuration;
         // get values from config
-        include_once '/config.php';
-        $enableProdMode = (new Config)->enableProdMode;
+        include_once 'config.php';
+        $enableProdMode = (new \Config)->enableProdMode;
 
         // Set defaults
         if ($enableProdMode) {
@@ -38,9 +44,9 @@ class DoctrineEntity
             $config->setAutoGenerateProxyClasses(true);
         }
         // Driver Implementation
-        // $driverImpl = $config
-        //     ->newDefaultAnnotationDriver('/path/to/lib/MyProject/Entities');
-        // $config->setMetadataDriverImpl($driverImpl);
+        $driverImpl = $config
+            ->newDefaultAnnotationDriver('/src/core/domain/MyProject/Entities');
+        $config->setMetadataDriverImpl($driverImpl);
 
         // Cache
         $config->setMetadataCacheImpl($cache);
@@ -50,8 +56,9 @@ class DoctrineEntity
         $config->setProxyDir('/src/core/domain/');
         $config->setProxyNamespace('Core\Domain');
 
-        $this->config = $config;
-        $this->cache = $cache;
+        $this->_config = $config;
+        $this->_cache = $cache;
+        // return $this;
     }
 
     /**
@@ -63,7 +70,7 @@ class DoctrineEntity
      */
     public function entityManager(array $connectionOptions)
     {
-        return EntityManager::create($connectionOptions, $this->config);
+        return EntityManager::create($connectionOptions, $this->_config);
     }
 
     /**
@@ -75,11 +82,11 @@ class DoctrineEntity
     public function isDev(bool $dev = false): self
     {
         if ($dev) {
-            $this->cache = new \Doctrine\Common\Cache\ArrayCache;
-            $this->config->setAutoGenerateProxyClasses(true);
+            $this->_cache = new \Doctrine\Common\Cache\ArrayCache;
+            $this->_config->setAutoGenerateProxyClasses(true);
         } else {
-            $this->cache = new \Doctrine\Common\Cache\ApcCache;
-            $this->config->setAutoGenerateProxyClasses(false);
+            $this->_cache = new \Doctrine\Common\Cache\ApcCache;
+            $this->_config->setAutoGenerateProxyClasses(false);
         }
         return $this;
     }
@@ -95,8 +102,8 @@ class DoctrineEntity
      */
     public function setProxyDir(string $dir = '/src/core/domain/media/proxies'): self
     {
-        // print_r($this->config);
-        // $this->config->setProxyDir($dir);
+        // print_r($this->_config);
+        // $this->_config->setProxyDir($dir);
         return $this;
     }
 
@@ -108,7 +115,7 @@ class DoctrineEntity
      */
     public function getProxyDir(): string
     {
-        return $this->config->getProxyDir();
+        return $this->_config->getProxyDir();
     }
     // Proxy Namespace
 
@@ -120,7 +127,7 @@ class DoctrineEntity
      */
     public function setProxyNamespace($namespace = 'Core\Domain'): self
     {
-        $this->config->setProxyNamespace($namespace);
+        $this->_config->setProxyNamespace($namespace);
         return $this;
     }
 
@@ -132,7 +139,7 @@ class DoctrineEntity
      */
     public function getProxyNamespace(): string
     {
-        return $this->config->getProxyDir();
+        return $this->_config->getProxyDir();
     }
     /**
      * Sets the metadata driver implementation that is used
@@ -144,7 +151,7 @@ class DoctrineEntity
      */
     public function setMetadataDriverImpl($driver): self
     {
-        $this->config->setMetadataDriverImpl($driver);
+        $this->_config->setMetadataDriverImpl($driver);
         return $this;
     }
     /**
@@ -157,6 +164,6 @@ class DoctrineEntity
      */
     public function getMetadataDriverImpl(): string
     {
-        return $this->config->getMetadataDriverImpl();
+        return $this->_config->getMetadataDriverImpl();
     }
 }

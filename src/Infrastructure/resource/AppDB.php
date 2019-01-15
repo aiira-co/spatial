@@ -19,9 +19,9 @@ class AppDB
     public function __construct()
     {
         $connection = ['url' => 'mysql://root:glory@localhost/mediadata'];
-        $this->emMedia = (new DoctrineEntity)
-            ->setProxyDir('/src/core/domain/media/proxies')
-            ->setProxyNamespace('Core\Domain\Media')
+        $this->emApp = (new DoctrineEntity)
+            ->setProxyDir('/src/core/domain/app/proxies')
+            ->setProxyNamespace('Core\Domain\App')
             ->entityManager($connection);
         $this->onInit();
     }

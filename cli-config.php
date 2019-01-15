@@ -1,6 +1,6 @@
 <?php
 // cli-config.php
-$dbClass = 'SocialDB';
+$dbClass = 'AppDB';
 $space = 'resource';
 $filePath = './src/Infrastructure/' . $space . '/' . $dbClass . '.php';
 if (file_exists($filePath)) {
