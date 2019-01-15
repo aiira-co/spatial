@@ -1,7 +1,7 @@
 <?php
 namespace Presentation\AppApi\Controllers;
 
-use Core\Application\Logics\Hospital\Queries\GetPersonsQuery;
+use Core\Application\Logics\App\Queries\GetPersonsQuery;
 use Cqured\MediatR\Mediator;
 
 /**
