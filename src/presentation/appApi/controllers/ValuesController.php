@@ -26,7 +26,7 @@ class ValuesController
     public function httpGet(int...$id): ?array
     {
         return [
-            'hospital api',
+            'app api',
             'value1',
             'value2',
         ];

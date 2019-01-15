@@ -1,6 +1,13 @@
 # CQured MULTI-WebAPI Framework
 
 Still under-development.
+
+* To Access the appAPI's ValuesController, go to localhost/cqured/appApi/values   -> this just returns the array in the controller's httpGet() method.
+* The real magic is to enter localhost/cqured/appApi/test to access the the controller's httpGet() method.
+This now calls the GetPersonQuery from the your 'app' application in the core/applications/app/person/queries folder.
+  * The Query Class automatically calls its Handler class (done with the cqured\mediatr class).
+
+  
 Onion Architecture for multi-api framework
 * CQured web-api for presentation(Api)
 * Doctrine for DB
