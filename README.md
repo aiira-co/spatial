@@ -8,7 +8,7 @@ Onion Architecture for multi-api framework
 * lcobucci/jwt for Auth
 
 # Quick Intro
-The Framework are divided into 4 sections.
+The Framework is divided into 4 sections.
 * Presentation
 * Common
 * Core
