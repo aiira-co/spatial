@@ -1,0 +1,46 @@
+<?php
+
+
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Playlist
+ *
+ * @ORM\Table(name="Playlist")
+ * @ORM\Entity
+ */
+class Playlist
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="name", type="integer", nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="description", type="integer", nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="userId", type="integer", nullable=false)
+     */
+    private $userid;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}

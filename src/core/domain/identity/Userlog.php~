@@ -1,0 +1,67 @@
+<?php
+
+
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Userlog
+ *
+ * @ORM\Table(name="UserLog")
+ * @ORM\Entity
+ */
+class Userlog
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="remoteAddr", type="string", length=255, nullable=false)
+     */
+    private $remoteaddr;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="requestUri", type="string", length=255, nullable=false)
+     */
+    private $requesturi;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="requestMethod", type="string", length=10, nullable=false)
+     */
+    private $requestmethod;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="userId", type="integer", nullable=false)
+     */
+    private $userid;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="activityId", type="integer", nullable=false)
+     */
+    private $activityid;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $date = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
