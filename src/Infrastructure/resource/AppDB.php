@@ -18,12 +18,12 @@ class AppDB
      */
     public function __construct()
     {
-        $connection = ['url' => 'mysql://root:glory@localhost/mediadata'];
-        $this->emApp = (new DoctrineEntity)
-            ->setProxyDir('/src/core/domain/app/proxies')
-            ->setProxyNamespace('Core\Domain\App')
+        $connection = ['url' => 'mysql://db_user:db_password@localhost/db_name'];
+        $this->emMedia = (new DoctrineEntity)
+            ->setProxyDir('/src/core/domain/myapp/proxies')
+            ->setProxyNamespace('Core\Domain\MyApp')
             ->entityManager($connection);
-        $this->onInit();
+
     }
 
     /**
@@ -35,23 +35,4 @@ class AppDB
     {
     }
 
-    /**
-     * For Debugging, this class returns the recent sql statement queried
-     *
-     * @return string
-     */
-    public function getSQL(): string
-    {
-        return $this->airMediaDB->sql;
-    }
-
-    /**
-     * Get Last Inserted ID
-     *
-     * @return integer
-     */
-    public function getLastId(): int
-    {
-        return $this->airMediaDB->postId;
-    }
 }

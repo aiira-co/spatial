@@ -1,9 +1,9 @@
 <?php
-// src/core/domain/identity/User.php
+// src/core/domain/myapp/Product.php
 /**
- * @Entity @Table(name="user")
+ * @Entity @Table(name="products")
  **/
-class User
+class Product
 {
     /** @Id @Column(type="integer") @GeneratedValue **/
     protected $id;

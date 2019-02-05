@@ -23,13 +23,13 @@ class DoctrineEntity
      * Set default configs for
      * cahce and proxy with production mode.
      *
-     * @return self
+     * @return void
      */
     private function _onInit()
     {
         $config = new Configuration;
         // get values from config
-        include_once 'config.php';
+        include_once './config.php';
         $enableProdMode = (new \Config)->enableProdMode;
 
         // Set defaults
@@ -43,9 +43,11 @@ class DoctrineEntity
             $cache = new \Doctrine\Common\Cache\ArrayCache;
             $config->setAutoGenerateProxyClasses(true);
         }
+        // echo __DIR__;
+        $rootPath = './src/core/';
         // Driver Implementation
         $driverImpl = $config
-            ->newDefaultAnnotationDriver('/src/core/domain/MyProject/Entities');
+            ->newDefaultAnnotationDriver($rootPath . 'domain');
         $config->setMetadataDriverImpl($driverImpl);
 
         // Cache
@@ -53,7 +55,7 @@ class DoctrineEntity
         $config->setQueryCacheImpl($cache);
 
         // Proxies
-        $config->setProxyDir('/src/core/domain/');
+        $config->setProxyDir($rootPath . 'domain/');
         $config->setProxyNamespace('Core\Domain');
 
         $this->_config = $config;
