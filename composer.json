@@ -1,5 +1,4 @@
 {
-
   "name": "aiir/cqured",
   "description": "PHP7+ WebAPI Framework",
   "version": "2.0.0-alpha1",
@@ -15,7 +14,14 @@
   "time": "2018/10/14",
   "license": "MIT",
   "require": {
-    "php": ">=7.2.0"
+    "php": ">=7.2.0",
+    "doctrine/orm": "^2.6.2",
+    "guzzlehttp/psr7": "^1.4",
+    "lcobucci/jwt": "^4.0.0-alpha1",
+    "psr/http-message": "^1.0",
+    "psr/http-server-handler": "^1.0",
+    "psr/http-server-middleware": "^1.0",
+    "symfony/yaml": "2.*"
   },
   "authors": [
     {
@@ -26,7 +32,7 @@
     }
   ],
   "suggest": {
-    "lcubucci/jwt": "Generate Json Web Tokens for Authentication"
+    "lcobucci/jwt": "Generate Json Web Tokens for Authentication"
   },
   "config": {
     "preferred-install": "dist",
@@ -37,12 +43,14 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Lynq\\Core\\": "vendor/projectair/cqured/core/",
-      "Lynq\\Router\\": "vendor/projectair/cqured/router/",
-      "Lynq\\Entity\\": "vendor/projectair/cqured/entity/",
-      "Api\\Models\\": "api/models/",
-      "Api\\Controllers\\": "api/controllers/"
+      "Cqured\\Core\\": "vendor/cqured/cqured/core/",
+      "Cqured\\Router\\": "vendor/cqured/cqured/router/",
+      "Cqured\\Entity\\": "vendor/cqured/cqured/entity/",
+      "Cqured\\MediatR\\": "vendor/cqured/mediatr/src/",
+      "Presentation\\": "src/presentation/",
+      "Common\\": "src/common/",
+      "Core\\": "src/core/",
+      "Infrastructure\\": "src/infrastructure/"
     }
   }
-
 }
