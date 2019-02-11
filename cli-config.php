@@ -1,19 +1,20 @@
 <?php
 // cli-config.php
-$dbClass = 'AppDB';
-$space = 'resource';
-$filePath = './src/Infrastructure/' . $space . '/' . $dbClass . '.php';
-if (file_exists($filePath)) {
-    require_once $filePath;
+require_once './config.php';
+$config = (new Config)->cliConfig;
 
-    if (class_exists('\\Infrastructure\\' . ucfirst($space) . '\\' . $dbClass)) {
-        $em = 'em' . str_replace('DB', '', $dbClass);
-        $class = '\\Infrastructure\\' . ucfirst($space) . '\\' . $dbClass;
+$filePath = './src/Infrastructure/' . $config['namespace'] . '/' . $config['class'] . '.php';
+if (file_exists($filePath)) {
+    include_once $filePath;
+
+    if (class_exists('\\Infrastructure\\' . ucfirst($config['namespace']) . '\\' . $config['class'])) {
+        $em = 'em' . str_replace('DB', '', $config['class']);
+        $class = '\\Infrastructure\\' . ucfirst($config['namespace']) . '\\' . $config['class'];
 
         return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet((new $class)->$em);
     } else {
-        die('Class ' . '\\Infrastructure\\' . ucfirst($space) . '\\' . $dbClass . ' not found!');
+        die('Class ' . '\\Infrastructure\\' . ucfirst($config['namespace']) . '\\' . $config['class'] . ' not found!');
     }
 } else {
-    die('file not found');
+    die('file not found --> ' . $filePath);
 }
