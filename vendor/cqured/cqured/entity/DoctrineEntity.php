@@ -14,9 +14,9 @@ class DoctrineEntity
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $domain)
     {
-        $this->_onInit();
+        $this->_onInit($domain);
     }
 
     /**
@@ -25,7 +25,7 @@ class DoctrineEntity
      *
      * @return void
      */
-    private function _onInit()
+    private function _onInit(string $domain)
     {
         $config = new Configuration;
         // get values from config
@@ -44,10 +44,12 @@ class DoctrineEntity
             $config->setAutoGenerateProxyClasses(true);
         }
         // echo __DIR__;
-        $rootPath = './src/core/';
+        $domainRootPath = './src/core/domain/';
+
+        // I might need to force valye of driver for doamin folder at constructor
         // Driver Implementation
         $driverImpl = $config
-            ->newDefaultAnnotationDriver($rootPath . 'domain');
+            ->newDefaultAnnotationDriver($domainRootPath . $domain);
         $config->setMetadataDriverImpl($driverImpl);
 
         // Cache
@@ -55,8 +57,8 @@ class DoctrineEntity
         $config->setQueryCacheImpl($cache);
 
         // Proxies
-        $config->setProxyDir($rootPath . 'domain/');
-        $config->setProxyNamespace('Core\Domain');
+        $config->setProxyDir($domainRootPath . $domain . '/proxy');
+        $config->setProxyNamespace('Core\Domain\\' . ucfirst($domain));
 
         $this->_config = $config;
         $this->_cache = $cache;

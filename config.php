@@ -9,6 +9,11 @@ class Config
 {
     // General
     public $enableProdMode = false;
+    
+    public $cliConfig = [
+        'class' => 'IdentityDB', //entityManager will be $em{{dbClassName}}
+        'namespace' => 'identity', //namspace & file Location will be Infrastructure/{{dbNamespace}}
+    ];
 
     public $offline = false;
     public $offline_message = 'This site is down for maintenance.<br />Please check back again soon.';

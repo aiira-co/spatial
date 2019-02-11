@@ -13,26 +13,12 @@ class AppDB
 {
     public $emApp;
 
-    /**
-     * Connect to database in constructor
-     */
     public function __construct()
     {
-        $connection = ['url' => 'mysql://db_user:db_password@localhost/db_name'];
-        $this->emMedia = (new DoctrineEntity)
-            ->setProxyDir('/src/core/domain/myapp/proxies')
-            ->setProxyNamespace('Core\Domain\MyApp')
+        $connection = ['url' => 'mysql://root:glory@localhost/galaxyId'];
+        $this->emApp = (new DoctrineEntity('myapp'))
             ->entityManager($connection);
 
-    }
-
-    /**
-     * OnInit()
-     *
-     * @return void
-     */
-    public function onInit()
-    {
     }
 
 }
