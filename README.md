@@ -1,4 +1,4 @@
-# CQured MULTI-WebAPI Framework
+# CQured MULTI-WebAPI Framework - Clean Architecture
 
 Still under-development.
 
@@ -8,7 +8,7 @@ This now calls the GetPersonQuery from the your 'app' application in the core/ap
   * The Query Class automatically calls its Handler class (done with the cqured\mediatr class).
 
   
-Onion Architecture for multi-api framework
+Clean/Onion Architecture for multi-api framework
 * CQured web-api for presentation(Api)
 * Doctrine for DB
 * GuzzlePSR7 for http
