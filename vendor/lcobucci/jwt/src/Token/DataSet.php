@@ -1,23 +1,14 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
-
 declare(strict_types=1);
 
 namespace Lcobucci\JWT\Token;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- *
- * @since 4.0.0
- */
+use function array_key_exists;
+
 final class DataSet
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     private $data;
 
@@ -26,12 +17,20 @@ final class DataSet
      */
     private $encoded;
 
+    /**
+     * @param mixed[] $data
+     */
     public function __construct(array $data, string $encoded)
     {
-        $this->data = $data;
+        $this->data    = $data;
         $this->encoded = $encoded;
     }
 
+    /**
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     */
     public function get(string $name, $default = null)
     {
         return $this->data[$name] ?? $default;
@@ -42,6 +41,9 @@ final class DataSet
         return array_key_exists($name, $this->data);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function all(): array
     {
         return $this->data;

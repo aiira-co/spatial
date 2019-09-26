@@ -4,11 +4,11 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb3063585fce335d3973235bb1f68701c
+class ComposerStaticInit35e2d4344a2ed669617e48287492aff9
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
     );
@@ -16,16 +16,19 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php73\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
-            'Symfony\\Polyfill\\Ctype\\' => 23,
-            'Symfony\\Contracts\\' => 18,
-            'Symfony\\Component\\Yaml\\' => 23,
+            'Symfony\\Contracts\\Service\\' => 26,
             'Symfony\\Component\\Console\\' => 26,
+            'Spatial\\Router\\' => 15,
+            'Spatial\\Mediator\\' => 17,
+            'Spatial\\Entity\\' => 15,
         ),
         'P' => 
         array (
             'Psr\\Http\\Server\\' => 16,
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Container\\' => 14,
             'Presentation\\' => 13,
         ),
         'L' => 
@@ -47,7 +50,9 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
             'Doctrine\\ORM\\' => 13,
             'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\DBAL\\' => 14,
+            'Doctrine\\Common\\Lexer\\' => 22,
             'Doctrine\\Common\\Inflector\\' => 26,
+            'Doctrine\\Common\\Collections\\' => 28,
             'Doctrine\\Common\\Cache\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
             'Doctrine\\Common\\' => 16,
@@ -64,25 +69,33 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Php73\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Polyfill\\Ctype\\' => 
+        'Symfony\\Contracts\\Service\\' => 
         array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
-        ),
-        'Symfony\\Contracts\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/contracts',
-        ),
-        'Symfony\\Component\\Yaml\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/yaml',
+            0 => __DIR__ . '/..' . '/symfony/service-contracts',
         ),
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'Spatial\\Router\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatial/route/src',
+        ),
+        'Spatial\\Mediator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatial/mediator/src',
+        ),
+        'Spatial\\Entity\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatial/doctrine/src',
         ),
         'Psr\\Http\\Server\\' => 
         array (
@@ -92,6 +105,10 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'Presentation\\' => 
         array (
@@ -129,9 +146,17 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         array (
             0 => __DIR__ . '/..' . '/doctrine/dbal/lib/Doctrine/DBAL',
         ),
+        'Doctrine\\Common\\Lexer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer',
+        ),
         'Doctrine\\Common\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
+        ),
+        'Doctrine\\Common\\Collections\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/collections/lib/Doctrine/Common/Collections',
         ),
         'Doctrine\\Common\\Cache\\' => 
         array (
@@ -174,20 +199,6 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'D' => 
-        array (
-            'Doctrine\\Common\\Lexer\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/doctrine/lexer/lib',
-            ),
-            'Doctrine\\Common\\Collections\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/doctrine/collections/lib',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'Common\\Constants\\Constants' => __DIR__ . '/../..' . '/src/common/constants/constants.php',
         'Common\\Exceptions\\Exceptions' => __DIR__ . '/../..' . '/src/common/exceptions/exceptions.php',
@@ -200,30 +211,8 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Core\\Application\\Logics\\App\\Queries\\GetPersonsQuery' => __DIR__ . '/../..' . '/src/core/application/logics/app/person/queries/GetPersonsQueryHandler.php',
         'Core\\Application\\Logics\\App\\Queries\\GetPersonsQueryHandler' => __DIR__ . '/../..' . '/src/core/application/logics/app/person/queries/GetPersonsQuery.php',
         'Core\\Application\\Logics\\Myapp\\Commands\\CreatePersonCommandHandler' => __DIR__ . '/../..' . '/src/core/application/logics/app/person/commands/CreatePersonCommandHandler.php',
-        'Cqured\\Core\\Controller' => __DIR__ . '/..' . '/cqured/cqured/core/Controller.php',
-        'Cqured\\Core\\Legacy' => __DIR__ . '/..' . '/cqured/cqured/core/Legacy.php',
-        'Cqured\\Core\\Program' => __DIR__ . '/..' . '/cqured/cqured/core/Program.php',
-        'Cqured\\Core\\Render' => __DIR__ . '/..' . '/cqured/cqured/core/Render.php',
-        'Cqured\\Entity\\DoctrineEntity' => __DIR__ . '/..' . '/cqured/cqured/entity/DoctrineEntity.php',
-        'Cqured\\Entity\\EntityModel' => __DIR__ . '/..' . '/cqured/cqured/entity/EntityModel.php',
-        'Cqured\\Entity\\MiddleWare' => __DIR__ . '/..' . '/cqured/cqured/entity/MiddleWare.php',
-        'Cqured\\Entity\\Session' => __DIR__ . '/..' . '/cqured/cqured/entity/Session.php',
-        'Cqured\\MediatR\\IBaseRequest' => __DIR__ . '/..' . '/cqured/mediatr/src/IRequest.php',
-        'Cqured\\MediatR\\IMediator' => __DIR__ . '/..' . '/cqured/mediatr/src/IMediator.php',
-        'Cqured\\MediatR\\INotification' => __DIR__ . '/..' . '/cqured/mediatr/src/INotification.php',
-        'Cqured\\MediatR\\IRequest' => __DIR__ . '/..' . '/cqured/mediatr/src/IRequest.php',
-        'Cqured\\MediatR\\IRequestAsync' => __DIR__ . '/..' . '/cqured/mediatr/src/IRequest.php',
-        'Cqured\\MediatR\\IRequestHandler' => __DIR__ . '/..' . '/cqured/mediatr/src/IRequestHandler.php',
-        'Cqured\\MediatR\\IResponse' => __DIR__ . '/..' . '/cqured/mediatr/src/IResponse.php',
-        'Cqured\\MediatR\\Mediator' => __DIR__ . '/..' . '/cqured/mediatr/src/Mediator.php',
-        'Cqured\\MediatR\\RequestHandler' => __DIR__ . '/..' . '/cqured/mediatr/src/RequestHandler.php',
-        'Cqured\\MediatR\\Response' => __DIR__ . '/..' . '/cqured/mediatr/src/Response.php',
-        'Cqured\\MediatR\\ServiceFactory' => __DIR__ . '/..' . '/cqured/mediatr/src/ServiceFactory.php',
-        'Cqured\\MediatR\\ServiceFactoryExtensions' => __DIR__ . '/..' . '/cqured/mediatr/src/ServiceFactory.php',
-        'Cqured\\Router\\ActivatedRoute' => __DIR__ . '/..' . '/cqured/cqured/router/ActivatedRoute.php',
-        'Cqured\\Router\\CanActivate' => __DIR__ . '/..' . '/cqured/cqured/router/CanActivate.php',
-        'Cqured\\Router\\Node' => __DIR__ . '/..' . '/cqured/cqured/router/Node.php',
-        'Cqured\\Router\\Routes' => __DIR__ . '/..' . '/cqured/cqured/router/Routes.php',
+        'Core\\Domain\\Identity\\User' => __DIR__ . '/../..' . '/src/core/domain/identity/User.php',
+        'Core\\Domain\\Myapp\\Product' => __DIR__ . '/../..' . '/src/core/domain/myapp/Product.php',
         'Doctrine\\Common\\Annotations\\Annotation' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/Annotation.php',
         'Doctrine\\Common\\Annotations\\AnnotationException' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/AnnotationException.php',
         'Doctrine\\Common\\Annotations\\AnnotationReader' => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations/AnnotationReader.php',
@@ -1002,7 +991,7 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Infrastructure\\Identity\\IdentityDB' => __DIR__ . '/../..' . '/src/infrastructure/identity/IdentityDB.php',
         'Infrastructure\\JWT\\ConfigJWT' => __DIR__ . '/../..' . '/src/infrastructure/jwt/ConfigJWT.php',
         'Infrastructure\\Resource\\AppDB' => __DIR__ . '/../..' . '/src/infrastructure/resource/AppDB.php',
-        'Infrastructure\\Resource\\MediaDB' => __DIR__ . '/../..' . '/src/infrastructure/resource/MediaDB.php',
+        'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
         'Lcobucci\\Clock\\Clock' => __DIR__ . '/..' . '/lcobucci/clock/src/Clock.php',
         'Lcobucci\\Clock\\FrozenClock' => __DIR__ . '/..' . '/lcobucci/clock/src/FrozenClock.php',
         'Lcobucci\\Clock\\SystemClock' => __DIR__ . '/..' . '/lcobucci/clock/src/SystemClock.php',
@@ -1012,18 +1001,18 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Lcobucci\\JWT\\Parser' => __DIR__ . '/..' . '/lcobucci/jwt/src/Parser.php',
         'Lcobucci\\JWT\\Signer' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer.php',
         'Lcobucci\\JWT\\Signer\\Ecdsa' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa.php',
-        'Lcobucci\\JWT\\Signer\\Ecdsa\\EccAdapter' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/EccAdapter.php',
-        'Lcobucci\\JWT\\Signer\\Ecdsa\\KeyParser' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/KeyParser.php',
+        'Lcobucci\\JWT\\Signer\\Ecdsa\\MultibyteStringConverter' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/MultibyteStringConverter.php',
         'Lcobucci\\JWT\\Signer\\Ecdsa\\Sha256' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/Sha256.php',
         'Lcobucci\\JWT\\Signer\\Ecdsa\\Sha384' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/Sha384.php',
         'Lcobucci\\JWT\\Signer\\Ecdsa\\Sha512' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/Sha512.php',
-        'Lcobucci\\JWT\\Signer\\Ecdsa\\SignatureSerializer' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/SignatureSerializer.php',
+        'Lcobucci\\JWT\\Signer\\Ecdsa\\SignatureConverter' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Ecdsa/SignatureConverter.php',
         'Lcobucci\\JWT\\Signer\\Hmac' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Hmac.php',
         'Lcobucci\\JWT\\Signer\\Hmac\\Sha256' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Hmac/Sha256.php',
         'Lcobucci\\JWT\\Signer\\Hmac\\Sha384' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Hmac/Sha384.php',
         'Lcobucci\\JWT\\Signer\\Hmac\\Sha512' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Hmac/Sha512.php',
         'Lcobucci\\JWT\\Signer\\Key' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Key.php',
         'Lcobucci\\JWT\\Signer\\None' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/None.php',
+        'Lcobucci\\JWT\\Signer\\OpenSSL' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/OpenSSL.php',
         'Lcobucci\\JWT\\Signer\\Rsa' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Rsa.php',
         'Lcobucci\\JWT\\Signer\\Rsa\\Sha256' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Rsa/Sha256.php',
         'Lcobucci\\JWT\\Signer\\Rsa\\Sha384' => __DIR__ . '/..' . '/lcobucci/jwt/src/Signer/Rsa/Sha384.php',
@@ -1036,14 +1025,14 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Lcobucci\\JWT\\Token\\RegisteredClaims' => __DIR__ . '/..' . '/lcobucci/jwt/src/Token/RegisteredClaims.php',
         'Lcobucci\\JWT\\Token\\Signature' => __DIR__ . '/..' . '/lcobucci/jwt/src/Token/Signature.php',
         'Lcobucci\\JWT\\Validation\\Constraint' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Constraint.php',
-        'Lcobucci\\JWT\\Validation\\ConstraintViolationException' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/ConstraintViolationException.php',
+        'Lcobucci\\JWT\\Validation\\ConstraintViolation' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/ConstraintViolation.php',
         'Lcobucci\\JWT\\Validation\\Constraint\\IdentifiedBy' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Constraint/IdentifiedBy.php',
         'Lcobucci\\JWT\\Validation\\Constraint\\IssuedBy' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Constraint/IssuedBy.php',
         'Lcobucci\\JWT\\Validation\\Constraint\\PermittedFor' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Constraint/PermittedFor.php',
         'Lcobucci\\JWT\\Validation\\Constraint\\RelatedTo' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Constraint/RelatedTo.php',
         'Lcobucci\\JWT\\Validation\\Constraint\\SignedWith' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Constraint/SignedWith.php',
         'Lcobucci\\JWT\\Validation\\Constraint\\ValidAt' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Constraint/ValidAt.php',
-        'Lcobucci\\JWT\\Validation\\InvalidTokenException' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/InvalidTokenException.php',
+        'Lcobucci\\JWT\\Validation\\InvalidToken' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/InvalidToken.php',
         'Lcobucci\\JWT\\Validation\\Validator' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validation/Validator.php',
         'Lcobucci\\JWT\\Validator' => __DIR__ . '/..' . '/lcobucci/jwt/src/Validator.php',
         'Lcobucci\\Jose\\Parsing\\Decoder' => __DIR__ . '/..' . '/lcobucci/jose-parsing/src/Decoder.php',
@@ -1065,6 +1054,9 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Presentation\\IdentityApi\\Models\\TokenModel' => __DIR__ . '/../..' . '/src/presentation/identityApi/models/TokenModel.php',
         'Presentation\\IdentityApi\\Models\\UserLogModel' => __DIR__ . '/../..' . '/src/presentation/identityApi/models/UserLogModel.php',
         'Presentation\\IdentityApi\\Models\\UserModel' => __DIR__ . '/../..' . '/src/presentation/identityApi/models/UserModel.php',
+        'Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerExceptionInterface.php',
+        'Psr\\Container\\ContainerInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerInterface.php',
+        'Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/NotFoundExceptionInterface.php',
         'Psr\\Http\\Message\\MessageInterface' => __DIR__ . '/..' . '/psr/http-message/src/MessageInterface.php',
         'Psr\\Http\\Message\\RequestInterface' => __DIR__ . '/..' . '/psr/http-message/src/RequestInterface.php',
         'Psr\\Http\\Message\\ResponseInterface' => __DIR__ . '/..' . '/psr/http-message/src/ResponseInterface.php',
@@ -1074,6 +1066,16 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Psr\\Http\\Message\\UriInterface' => __DIR__ . '/..' . '/psr/http-message/src/UriInterface.php',
         'Psr\\Http\\Server\\MiddlewareInterface' => __DIR__ . '/..' . '/psr/http-server-middleware/src/MiddlewareInterface.php',
         'Psr\\Http\\Server\\RequestHandlerInterface' => __DIR__ . '/..' . '/psr/http-server-handler/src/RequestHandlerInterface.php',
+        'Spatial\\Entity\\DoctrineEntity' => __DIR__ . '/..' . '/spatial/doctrine/src/DoctrineEntity.php',
+        'Spatial\\Router\\ActivatedRoute' => __DIR__ . '/..' . '/spatial/route/src/ActivatedRoute.php',
+        'Spatial\\Router\\CanActivate' => __DIR__ . '/..' . '/spatial/route/src/CanActivate.php',
+        'Spatial\\Router\\IRequest' => __DIR__ . '/..' . '/spatial/route/src/IRequest.php',
+        'Spatial\\Router\\MessageTrait' => __DIR__ . '/..' . '/spatial/route/src/MessageTrait.php',
+        'Spatial\\Router\\Request' => __DIR__ . '/..' . '/spatial/route/src/Request.php',
+        'Spatial\\Router\\Response' => __DIR__ . '/..' . '/spatial/route/src/Response.php',
+        'Spatial\\Router\\ResponseOLD' => __DIR__ . '/..' . '/spatial/route/src/Response copy.php',
+        'Spatial\\Router\\Route' => __DIR__ . '/..' . '/spatial/route/src/Route.php',
+        'Spatial\\Router\\RouterModule' => __DIR__ . '/..' . '/spatial/route/src/RouterModule.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => __DIR__ . '/..' . '/symfony/console/CommandLoader/CommandLoaderInterface.php',
         'Symfony\\Component\\Console\\CommandLoader\\ContainerCommandLoader' => __DIR__ . '/..' . '/symfony/console/CommandLoader/ContainerCommandLoader.php',
@@ -1111,6 +1113,7 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Symfony\\Component\\Console\\Formatter\\WrappableOutputFormatterInterface' => __DIR__ . '/..' . '/symfony/console/Formatter/WrappableOutputFormatterInterface.php',
         'Symfony\\Component\\Console\\Helper\\DebugFormatterHelper' => __DIR__ . '/..' . '/symfony/console/Helper/DebugFormatterHelper.php',
         'Symfony\\Component\\Console\\Helper\\DescriptorHelper' => __DIR__ . '/..' . '/symfony/console/Helper/DescriptorHelper.php',
+        'Symfony\\Component\\Console\\Helper\\Dumper' => __DIR__ . '/..' . '/symfony/console/Helper/Dumper.php',
         'Symfony\\Component\\Console\\Helper\\FormatterHelper' => __DIR__ . '/..' . '/symfony/console/Helper/FormatterHelper.php',
         'Symfony\\Component\\Console\\Helper\\Helper' => __DIR__ . '/..' . '/symfony/console/Helper/Helper.php',
         'Symfony\\Component\\Console\\Helper\\HelperInterface' => __DIR__ . '/..' . '/symfony/console/Helper/HelperInterface.php',
@@ -1155,47 +1158,22 @@ class ComposerStaticInitb3063585fce335d3973235bb1f68701c
         'Symfony\\Component\\Console\\Tester\\ApplicationTester' => __DIR__ . '/..' . '/symfony/console/Tester/ApplicationTester.php',
         'Symfony\\Component\\Console\\Tester\\CommandTester' => __DIR__ . '/..' . '/symfony/console/Tester/CommandTester.php',
         'Symfony\\Component\\Console\\Tester\\TesterTrait' => __DIR__ . '/..' . '/symfony/console/Tester/TesterTrait.php',
-        'Symfony\\Component\\Yaml\\Dumper' => __DIR__ . '/..' . '/symfony/yaml/Dumper.php',
-        'Symfony\\Component\\Yaml\\Escaper' => __DIR__ . '/..' . '/symfony/yaml/Escaper.php',
-        'Symfony\\Component\\Yaml\\Exception\\DumpException' => __DIR__ . '/..' . '/symfony/yaml/Exception/DumpException.php',
-        'Symfony\\Component\\Yaml\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/symfony/yaml/Exception/ExceptionInterface.php',
-        'Symfony\\Component\\Yaml\\Exception\\ParseException' => __DIR__ . '/..' . '/symfony/yaml/Exception/ParseException.php',
-        'Symfony\\Component\\Yaml\\Exception\\RuntimeException' => __DIR__ . '/..' . '/symfony/yaml/Exception/RuntimeException.php',
-        'Symfony\\Component\\Yaml\\Inline' => __DIR__ . '/..' . '/symfony/yaml/Inline.php',
-        'Symfony\\Component\\Yaml\\Parser' => __DIR__ . '/..' . '/symfony/yaml/Parser.php',
-        'Symfony\\Component\\Yaml\\Unescaper' => __DIR__ . '/..' . '/symfony/yaml/Unescaper.php',
-        'Symfony\\Component\\Yaml\\Yaml' => __DIR__ . '/..' . '/symfony/yaml/Yaml.php',
-        'Symfony\\Contracts\\Cache\\CacheInterface' => __DIR__ . '/..' . '/symfony/contracts/Cache/CacheInterface.php',
-        'Symfony\\Contracts\\Cache\\CacheTrait' => __DIR__ . '/..' . '/symfony/contracts/Cache/CacheTrait.php',
-        'Symfony\\Contracts\\Cache\\CallbackInterface' => __DIR__ . '/..' . '/symfony/contracts/Cache/CallbackInterface.php',
-        'Symfony\\Contracts\\Cache\\ItemInterface' => __DIR__ . '/..' . '/symfony/contracts/Cache/ItemInterface.php',
-        'Symfony\\Contracts\\Cache\\TagAwareCacheInterface' => __DIR__ . '/..' . '/symfony/contracts/Cache/TagAwareCacheInterface.php',
-        'Symfony\\Contracts\\Service\\ResetInterface' => __DIR__ . '/..' . '/symfony/contracts/Service/ResetInterface.php',
-        'Symfony\\Contracts\\Service\\ServiceLocatorTrait' => __DIR__ . '/..' . '/symfony/contracts/Service/ServiceLocatorTrait.php',
-        'Symfony\\Contracts\\Service\\ServiceSubscriberInterface' => __DIR__ . '/..' . '/symfony/contracts/Service/ServiceSubscriberInterface.php',
-        'Symfony\\Contracts\\Service\\ServiceSubscriberTrait' => __DIR__ . '/..' . '/symfony/contracts/Service/ServiceSubscriberTrait.php',
-        'Symfony\\Contracts\\Tests\\Cache\\CacheTraitTest' => __DIR__ . '/..' . '/symfony/contracts/Tests/Cache/CacheTraitTest.php',
-        'Symfony\\Contracts\\Tests\\Cache\\TestPool' => __DIR__ . '/..' . '/symfony/contracts/Tests/Cache/CacheTraitTest.php',
-        'Symfony\\Contracts\\Tests\\Service\\ChildTestService' => __DIR__ . '/..' . '/symfony/contracts/Tests/Service/ServiceSubscriberTraitTest.php',
-        'Symfony\\Contracts\\Tests\\Service\\ParentTestService' => __DIR__ . '/..' . '/symfony/contracts/Tests/Service/ServiceSubscriberTraitTest.php',
-        'Symfony\\Contracts\\Tests\\Service\\ServiceLocatorTest' => __DIR__ . '/..' . '/symfony/contracts/Tests/Service/ServiceLocatorTest.php',
-        'Symfony\\Contracts\\Tests\\Service\\ServiceSubscriberTraitTest' => __DIR__ . '/..' . '/symfony/contracts/Tests/Service/ServiceSubscriberTraitTest.php',
-        'Symfony\\Contracts\\Tests\\Service\\TestService' => __DIR__ . '/..' . '/symfony/contracts/Tests/Service/ServiceSubscriberTraitTest.php',
-        'Symfony\\Contracts\\Tests\\Translation\\TranslatorTest' => __DIR__ . '/..' . '/symfony/contracts/Tests/Translation/TranslatorTest.php',
-        'Symfony\\Contracts\\Translation\\LocaleAwareInterface' => __DIR__ . '/..' . '/symfony/contracts/Translation/LocaleAwareInterface.php',
-        'Symfony\\Contracts\\Translation\\TranslatorInterface' => __DIR__ . '/..' . '/symfony/contracts/Translation/TranslatorInterface.php',
-        'Symfony\\Contracts\\Translation\\TranslatorTrait' => __DIR__ . '/..' . '/symfony/contracts/Translation/TranslatorTrait.php',
-        'Symfony\\Polyfill\\Ctype\\Ctype' => __DIR__ . '/..' . '/symfony/polyfill-ctype/Ctype.php',
+        'Symfony\\Contracts\\Service\\ResetInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ResetInterface.php',
+        'Symfony\\Contracts\\Service\\ServiceLocatorTrait' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceLocatorTrait.php',
+        'Symfony\\Contracts\\Service\\ServiceProviderInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceProviderInterface.php',
+        'Symfony\\Contracts\\Service\\ServiceSubscriberInterface' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceSubscriberInterface.php',
+        'Symfony\\Contracts\\Service\\ServiceSubscriberTrait' => __DIR__ . '/..' . '/symfony/service-contracts/ServiceSubscriberTrait.php',
+        'Symfony\\Contracts\\Service\\Test\\ServiceLocatorTest' => __DIR__ . '/..' . '/symfony/service-contracts/Test/ServiceLocatorTest.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
+        'Symfony\\Polyfill\\Php73\\Php73' => __DIR__ . '/..' . '/symfony/polyfill-php73/Php73.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb3063585fce335d3973235bb1f68701c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb3063585fce335d3973235bb1f68701c::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitb3063585fce335d3973235bb1f68701c::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitb3063585fce335d3973235bb1f68701c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit35e2d4344a2ed669617e48287492aff9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit35e2d4344a2ed669617e48287492aff9::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit35e2d4344a2ed669617e48287492aff9::$classMap;
 
         }, null, ClassLoader::class);
     }

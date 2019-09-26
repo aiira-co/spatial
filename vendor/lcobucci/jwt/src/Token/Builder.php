@@ -1,52 +1,37 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
-
 declare(strict_types=1);
 
 namespace Lcobucci\JWT\Token;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Lcobucci\Jose\Parsing;
 use Lcobucci\JWT\Builder as BuilderInterface;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key;
+use function array_diff;
+use function array_intersect;
+use function array_keys;
+use function array_merge;
+use function in_array;
 
-/**
- * This class makes easier the token creation process
- *
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 0.1.0
- */
 final class Builder implements BuilderInterface
 {
     /**
-     * The token header
-     *
-     * @var array
+     * @var mixed[]
      */
-    private $headers = ['typ'=> 'JWT', 'alg' => 'none'];
+    private $headers = ['typ' => 'JWT', 'alg' => null];
 
     /**
-     * The token claim set
-     *
-     * @var array
+     * @var mixed[]
      */
     private $claims = [];
 
     /**
-     * The data encoder
-     *
      * @var Parsing\Encoder
      */
     private $encoder;
 
-    /**
-     * Initializes a new builder
-     */
     public function __construct(Parsing\Encoder $encoder)
     {
         $this->encoder = $encoder;
@@ -55,15 +40,12 @@ final class Builder implements BuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function permittedFor(string $audience): BuilderInterface
+    public function permittedFor(string ...$audiences): BuilderInterface
     {
-        $audiences = $this->claims[RegisteredClaims::AUDIENCE] ?? [];
+        $configured = $this->claims[RegisteredClaims::AUDIENCE] ?? [];
+        $toAppend   = array_diff($audiences, $configured);
 
-        if (!in_array($audience, $audiences)) {
-            $audiences[] = $audience;
-        }
-
-        return $this->setClaim(RegisteredClaims::AUDIENCE, $audiences);
+        return $this->setClaim(RegisteredClaims::AUDIENCE, array_merge($configured, $toAppend));
     }
 
     /**
@@ -130,12 +112,15 @@ final class Builder implements BuilderInterface
     public function withClaim(string $name, $value): BuilderInterface
     {
         if (in_array($name, RegisteredClaims::ALL, true)) {
-            throw new \InvalidArgumentException('You should use the correct methods to set registered claims');
+            throw new InvalidArgumentException('You should use the correct methods to set registered claims');
         }
 
         return $this->setClaim($name, $value);
     }
 
+    /**
+     * @param mixed $value
+     */
     private function setClaim(string $name, $value): BuilderInterface
     {
         $this->claims[$name] = $value;
@@ -143,6 +128,9 @@ final class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * @param mixed[] $items
+     */
     private function encode(array $items): string
     {
         return $this->encoder->base64UrlEncode(
@@ -155,13 +143,13 @@ final class Builder implements BuilderInterface
      */
     public function getToken(Signer $signer, Key $key): Plain
     {
-        $headers = $this->headers;
+        $headers        = $this->headers;
         $headers['alg'] = $signer->getAlgorithmId();
 
         $encodedHeaders = $this->encode($headers);
-        $encodedClaims = $this->encode($this->formatClaims($this->claims));
+        $encodedClaims  = $this->encode($this->formatClaims($this->claims));
 
-        $signature = $signer->sign($encodedHeaders . '.' . $encodedClaims, $key);
+        $signature        = $signer->sign($encodedHeaders . '.' . $encodedClaims, $key);
         $encodedSignature = $this->encoder->base64UrlEncode($signature);
 
         return new Plain(
@@ -171,9 +159,14 @@ final class Builder implements BuilderInterface
         );
     }
 
+    /**
+     * @param mixed[] $claims
+     *
+     * @return mixed[]
+     */
     private function formatClaims(array $claims): array
     {
-        if (isset($claims[RegisteredClaims::AUDIENCE][0]) && !isset($claims[RegisteredClaims::AUDIENCE][1])) {
+        if (isset($claims[RegisteredClaims::AUDIENCE][0]) && ! isset($claims[RegisteredClaims::AUDIENCE][1])) {
             $claims[RegisteredClaims::AUDIENCE] = $claims[RegisteredClaims::AUDIENCE][0];
         }
 
@@ -189,7 +182,7 @@ final class Builder implements BuilderInterface
      */
     private function convertDate(DateTimeImmutable $date)
     {
-        $seconds = $date->format('U');
+        $seconds      = $date->format('U');
         $microseconds = $date->format('u');
 
         if ((int) $microseconds === 0) {

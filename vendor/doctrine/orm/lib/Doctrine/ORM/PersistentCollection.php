@@ -25,6 +25,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use function array_merge;
+use function get_class;
 
 /**
  * A PersistentCollection represents a collection of elements that have persistent state.
@@ -447,7 +449,7 @@ final class PersistentCollection extends AbstractLazyCollection implements Selec
      */
     public function count()
     {
-        if ( ! $this->initialized && $this->association['fetch'] === ClassMetadata::FETCH_EXTRA_LAZY) {
+        if (! $this->initialized && $this->association !== null && $this->association['fetch'] === ClassMetadata::FETCH_EXTRA_LAZY) {
             $persister = $this->em->getUnitOfWork()->getCollectionPersister($this->association);
 
             return $persister->count($this) + ($this->isDirty ? $this->collection->count() : 0);
@@ -565,7 +567,9 @@ final class PersistentCollection extends AbstractLazyCollection implements Selec
         if ($this->association['isOwningSide'] && $this->owner) {
             $this->changed();
 
-            $uow->scheduleCollectionDeletion($this);
+            if (! $this->em->getClassMetadata(get_class($this->owner))->isChangeTrackingDeferredExplicit()) {
+                $uow->scheduleCollectionDeletion($this);
+            }
 
             $this->takeSnapshot();
         }
@@ -668,6 +672,7 @@ final class PersistentCollection extends AbstractLazyCollection implements Selec
 
         $criteria = clone $criteria;
         $criteria->where($expression);
+        $criteria->orderBy(array_merge($this->association['orderBy'] ?? [], $criteria->getOrderings()));
 
         $persister = $this->em->getUnitOfWork()->getEntityPersister($this->association['targetEntity']);
 

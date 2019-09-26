@@ -1,20 +1,16 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
-
 declare(strict_types=1);
 
 namespace Lcobucci\JWT\Signer;
 
 use InvalidArgumentException;
+use SplFileObject;
+use Throwable;
+use function assert;
+use function is_string;
+use function strpos;
+use function substr;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 3.0.4
- */
 final class Key
 {
     /**
@@ -27,10 +23,6 @@ final class Key
      */
     private $passphrase;
 
-    /**
-     * @param string $content
-     * @param string $passphrase
-     */
     public function __construct(string $content, string $passphrase = '')
     {
         $this->setContent($content);
@@ -38,8 +30,6 @@ final class Key
     }
 
     /**
-     * @param string $content
-     *
      * @throws InvalidArgumentException
      */
     private function setContent(string $content): void
@@ -52,34 +42,26 @@ final class Key
     }
 
     /**
-     * @param string $content
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function readFile(string $content): string
     {
-        $file = substr($content, 7);
+        try {
+            $file    = new SplFileObject(substr($content, 7));
+            $content = $file->fread($file->getSize());
+            assert(is_string($content));
 
-        if (!is_readable($file)) {
-            throw new \InvalidArgumentException('You must inform a valid key file');
+            return $content;
+        } catch (Throwable $exception) {
+            throw new InvalidArgumentException('You must provide a valid key file', $exception->getCode(), $exception);
         }
-
-        return file_get_contents($file);
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @return string
-     */
     public function getPassphrase(): string
     {
         return $this->passphrase;

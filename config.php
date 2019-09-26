@@ -1,4 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
+use Spatial\Router\Route;
+use Spatial\Router\RouterModule;
+
 /**
  * Configuration class for the API.
  * Toggle the $enableProdMode to show or hide CQured's error reporter.
@@ -7,34 +13,61 @@
  */
 class Config
 {
-    // General
+    // General & PHP Doctrine Config
     public $enableProdMode = false;
-    
-    public $cliConfig = [
-        'class' => 'IdentityDB', //entityManager will be $em{{dbClassName}}
-        'namespace' => 'identity', //namspace & file Location will be Infrastructure/{{dbNamespace}}
+
+    public $appName = 'Spatial';
+    public $offline = [
+        'value' => false,
+        'offlineMessage' => 'This site is down for maintenance.<br />Please check back again soon.',
+        'displayOfflineMessage' => '1',
+        'offlineImage' => '',
     ];
 
-    public $offline = false;
-    public $offline_message = 'This site is down for maintenance.<br />Please check back again soon.';
-    public $display_offline_message = '1';
-    public $offline_image = '';
-    public $sitename = 'airCore';
-    public $captcha = '0';
-    public $list_limit = '20';
-    public $access = '1';
 
-    // Header & Cross Origin Setting
-    public $allow_origin = "http://localhost:4200";
-    public $allow_methods = 'GET, POST, PUT, DELETE, OPTIONS';
-    public $max_age = '86400'; //cache for 1 day
-    public $content_type = 'json'; //return a json or xml result
+    public $cliConfig = [
+        'class' => 'playDB', //entityManager will be $em{{dbClassName}}
+        'namespace' => 'resource', //namspace & file Location will be Infrastructure/{{dbNamespace}}
+    ];
+
+
+    function __construct()
+    {
+        if (!$this->offline['value']) {
+
+            $this->routeModule = new RouterModule();
+        }
+    }
+
+
+    private function _appRoute()
+    {
+        $route = new Route();
+        $route->mapRoute(
+            "DefaultAPI", // name
+            "api/{controller}/{id}", //routeTemplate
+            new class ()
+            {
+                public $id = 2;
+            } //defaults
+        );
+
+        // initialize the RouterModule to set routes
+        $this->routeModule->routeConfig($route)
+            ->allowedMethods('GET, POST, PUT, DELETE')
+            ->enableCache($this->enableProdMode)
+            ->authGuard() // takes in list objects for authorization with interface CanActivate
+            ->defaultContentType('application/json')
+            ->controllerNamespaceMap('Spatial\\{name}\\Controllers\\'); // {name} refers to the route name
+    }
+
+    public function render()
+    {
+        $this->_appRoute();
+        $this->routeModule->render();
+    }
+
 
     // Routing
-    public $secret = 'Pi1gS3vrtWvNq3O0';
-    // public $routerPath="./src/api/ApiRouter.php";
-    public $presentationApis = [
-        "identityApi",
-        "appApi",
-    ];
+
 }

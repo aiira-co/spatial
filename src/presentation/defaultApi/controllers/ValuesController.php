@@ -1,8 +1,8 @@
 <?php
-namespace Presentation\AppApi\Controllers;
+namespace Presentation\DefaultAPI\Controllers;
 
-use Core\Application\Logics\App\Queries\GetPersonsQuery;
-use Cqured\MediatR\Mediator;
+use Spatial\MediatR\Mediator;
+use Spatial\Router\Response;
 
 /**
  * ValuesController Class exists in the Api\Controllers namespace
@@ -12,14 +12,14 @@ use Cqured\MediatR\Mediator;
  * @category Controller
  */
 
-class TestController
+class ValuesController
 {
     /**
      * Use constructor to Inject or instanciate dependecies
      */
     public function __construct()
     {
-        $this->mediator = new Mediator();
+        $this->mediator = new Mediator;
     }
 
     /**
@@ -27,18 +27,10 @@ class TestController
      * URI: POST: https://api.com/values
      * URI: POST: https://api.com/values/2 ,the number 2 in the uri is passed as int ...$id to the method
      */
-    public function httpGet(int...$id): ?array
+    public function httpGet(int...$id): ?Response
     {
-        $query = new GetPersonsQuery;
-
-        /**
-         * Mediator takes the Request Class and
-         * matches it to its respective Handler
-         *
-         * Mediator calls the handler() method
-         * from the handler which returns a response
-         */
-        return $this->mediator->send($query);
+        return $this->mediator->process();
+     
     }
 
     /**
@@ -51,11 +43,7 @@ class TestController
         $postId = null;
 
         // code here
-        return [
-            'success' => true,
-            'alert' => 'We have it at post',
-            'id' => $postId,
-        ];
+        return ['success' => true, 'alert' => 'We have it at post', 'id' => $postId];
     }
 
     /**
@@ -68,10 +56,7 @@ class TestController
     {
 
         // code here
-        return [
-            'success' => true,
-            'alert' => 'We have it at put',
-        ];
+        return ['success' => true, 'alert' => 'We have it at put'];
     }
 
     /**

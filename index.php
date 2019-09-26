@@ -42,57 +42,39 @@
  * @version     @@2.00@@
  */
 
- declare(strict_types=1);
+declare(strict_types=1);
 
- use Cqured\Core\Program;
+use Cqured\Core\Program;
 
- session_start();
+/**
+ * Boostrap the app
+ */
+class Startup
+{
+    private $webConfig;
 
- header('Content-Type:application/json;  charset=utf-8');
+    public function __construct()
+    {
+        require_once 'config.php';
 
- /**
-  * Boostrap the app
-  */
- class Startup
- {
-     private $zenoConfig;
+        $this->webConfig = new Config;
 
-     // the bootraped will tell us the router
-
-
-     //check if the app is offline,
-     //if yes, show offline page and account login,
-     //if login, display app
-
-     //else if no, show the default page that is set as home.
-     //check if the page exists,
-     //if yes, show page
-     //else, it show error page
-
-     public function __construct()
-     {
-         require_once 'config.php';
-
-         $this->zenoConfign = new Config;
-
-         if ($this->zenoConfign->offline) {
-             echo json_encode(["noti"=>"success","result"=>$zenoConfig->offline_message]);
-         } else {
-             define('DS', DIRECTORY_SEPARATOR);
-             require_once __DIR__.DS.'vendor'.DS.'autoload.php';
-             $this->bootstrapApp() ;
-         }
-     }
+        if ($this->webConfig->offline['value']) {
+            echo json_encode(["noti" => "success", "result" => $webConfig->offlineMessage]);
+        } else {
+            $this->_bootstrapApp();
+        }
+    }
 
 
 
-     private function bootstrapApp()
-     {
-         // print_r(new Config);
-         $api = new Program(new Config);
+    private function _bootstrapApp()
+    {
+        define('DS', DIRECTORY_SEPARATOR);
+        require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
 
-         $api->route(); 
-     }
- }
+        $this->webConfig->render();
+    }
+}
 
- $app = new Startup;
+$app = new Startup();

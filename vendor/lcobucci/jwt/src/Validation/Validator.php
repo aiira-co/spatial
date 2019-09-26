@@ -1,21 +1,10 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
-
 declare(strict_types=1);
 
 namespace Lcobucci\JWT\Validation;
 
 use Lcobucci\JWT\Token;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- *
- * @since 4.0.0
- */
 final class Validator implements \Lcobucci\JWT\Validator
 {
     /**
@@ -30,10 +19,13 @@ final class Validator implements \Lcobucci\JWT\Validator
         }
 
         if ($violations) {
-            throw InvalidTokenException::fromViolations(...$violations);
+            throw InvalidToken::fromViolations(...$violations);
         }
     }
 
+    /**
+     * @param ConstraintViolation[] $violations
+     */
     private function checkConstraint(
         Constraint $constraint,
         Token $token,
@@ -41,7 +33,7 @@ final class Validator implements \Lcobucci\JWT\Validator
     ): void {
         try {
             $constraint->assert($token);
-        } catch (ConstraintViolationException $e) {
+        } catch (ConstraintViolation $e) {
             $violations[] = $e;
         }
     }
@@ -54,7 +46,7 @@ final class Validator implements \Lcobucci\JWT\Validator
             }
 
             return true;
-        } catch (ConstraintViolationException $e) {
+        } catch (ConstraintViolation $e) {
             return false;
         }
     }

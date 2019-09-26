@@ -1,42 +1,26 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
-
 declare(strict_types=1);
 
 namespace Lcobucci\JWT\Token;
 
 use DateTimeInterface;
 use Lcobucci\JWT\Token as TokenInterface;
+use function implode;
+use function in_array;
 
-/**
- * Basic structure of the JWT
- *
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 0.1.0
- */
 final class Plain implements TokenInterface
 {
     /**
-     * The token headers
-     *
      * @var DataSet
      */
     private $headers;
 
     /**
-     * The token claim set
-     *
      * @var DataSet
      */
     private $claims;
 
     /**
-     * The token signature
-     *
      * @var Signature
      */
     private $signature;
@@ -46,8 +30,8 @@ final class Plain implements TokenInterface
         DataSet $claims,
         Signature $signature
     ) {
-        $this->headers = $headers;
-        $this->claims = $claims;
+        $this->headers   = $headers;
+        $this->claims    = $claims;
         $this->signature = $signature;
     }
 
@@ -136,7 +120,7 @@ final class Plain implements TokenInterface
      */
     public function isExpired(DateTimeInterface $now): bool
     {
-        if (!$this->claims->has(RegisteredClaims::EXPIRATION_TIME)) {
+        if (! $this->claims->has(RegisteredClaims::EXPIRATION_TIME)) {
             return false;
         }
 

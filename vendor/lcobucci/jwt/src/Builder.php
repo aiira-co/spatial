@@ -1,28 +1,19 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
-
 declare(strict_types=1);
 
 namespace Lcobucci\JWT;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Token\Plain;
 
-/**
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 4.0.0
- */
 interface Builder
 {
     /**
-     * Appends a new audience
+     * Appends new items to audience
      */
-    public function permittedFor(string $audience): Builder;
+    public function permittedFor(string ...$audiences): Builder;
 
     /**
      * Configures the expiration time
@@ -56,13 +47,17 @@ interface Builder
 
     /**
      * Configures a header item
+     *
+     * @param mixed $value
      */
     public function withHeader(string $name, $value): Builder;
 
     /**
      * Configures a claim item
      *
-     * @throws \InvalidArgumentException When trying to set a registered claim
+     * @param mixed $value
+     *
+     * @throws InvalidArgumentException When trying to set a registered claim.
      */
     public function withClaim(string $name, $value): Builder;
 

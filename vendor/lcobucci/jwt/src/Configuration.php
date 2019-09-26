@@ -1,10 +1,4 @@
 <?php
-/**
- * This file is part of Lcobucci\JWT, a simple library to handle JWT and JWS
- *
- * @license http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
- */
-
 declare(strict_types=1);
 
 namespace Lcobucci\JWT;
@@ -12,15 +6,13 @@ namespace Lcobucci\JWT;
 use Lcobucci\Jose\Parsing;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\None;
+use Lcobucci\JWT\Validation\Constraint;
 
 /**
  * Configuration container for the JWT Builder and Parser
  *
  * Serves like a small DI container to simplify the creation and usage
  * of the objects.
- *
- * @author Luís Otávio Cobucci Oblonczyk <lcobucci@gmail.com>
- * @since 4.0.0
  */
 final class Configuration
 {
@@ -59,6 +51,11 @@ final class Configuration
      */
     private $validator;
 
+    /**
+     * @var Constraint[]
+     */
+    private $validationConstraints = [];
+
     public static function forAsymmetricSigner(
         Signer $signer,
         Key $signingKey,
@@ -84,8 +81,8 @@ final class Configuration
         Key $signingKey,
         Key $verificationKey
     ) {
-        $this->signer = $signer;
-        $this->signingKey = $signingKey;
+        $this->signer          = $signer;
+        $this->signingKey      = $signingKey;
         $this->verificationKey = $verificationKey;
     }
 
@@ -163,5 +160,18 @@ final class Configuration
     public function setValidator(Validator $validator): void
     {
         $this->validator = $validator;
+    }
+
+    /**
+     * @return Constraint[]
+     */
+    public function getValidationConstraints(): array
+    {
+        return $this->validationConstraints;
+    }
+
+    public function setValidationConstraints(Constraint ...$validationConstraints): void
+    {
+        $this->validationConstraints = $validationConstraints;
     }
 }
