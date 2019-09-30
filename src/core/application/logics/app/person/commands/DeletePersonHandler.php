@@ -1,16 +1,16 @@
 <?php
 namespace Core\Application\Logics\App\Commands;
 
-use Cqured\MediatR\IRequest;
-use Cqured\MediatR\IRequestHandler;
-use Cqured\MediatR\Response;
+use Cqured\Mediator\IRequest;
+use Cqured\Mediator\IRequestHandler;
+use Cqured\Mediator\Response;
 
-class DeletePersonCommandHandler implements IRequestHandler
+class DeletePersonHandler implements IRequestHandler
 {
     /**
      * Handles Server Response
      *
-     * @param OneWay $request
+     * @param IRequest $request
      * @return Response
      */
     public function handle(IRequest $request)

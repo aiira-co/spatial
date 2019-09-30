@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3954a764805787b92dc23301a8216e8",
+    "content-hash": "e63ee81a59d98560f2c42b1dc8fe96a5",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1404,17 +1404,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/air-Design/spatial-mediator.git",
-                "reference": "0aaf7334d08e887c72e45d5d4e5427566a8ddf73"
+                "reference": "a1c2cc09f19556764510cfddfa4819e941ffdc04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/air-Design/spatial-mediator/zipball/0aaf7334d08e887c72e45d5d4e5427566a8ddf73",
-                "reference": "0aaf7334d08e887c72e45d5d4e5427566a8ddf73",
+                "url": "https://api.github.com/repos/air-Design/spatial-mediator/zipball/a1c2cc09f19556764510cfddfa4819e941ffdc04",
+                "reference": "a1c2cc09f19556764510cfddfa4819e941ffdc04",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0",
-                "psr/http-server-middleware": "^1.0"
+                "php": "^7.2",
+                "psr/http-server-middleware": "^1.0",
+                "spatial/psr7": "dev-master"
             },
             "type": "library",
             "extra": {
@@ -1451,7 +1452,45 @@
                 "request",
                 "response"
             ],
-            "time": "2019-09-26T02:08:39+00:00"
+            "time": "2019-09-30T14:20:30+00:00"
+        },
+        {
+            "name": "spatial/psr7",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/air-Design/spatial-psr7.git",
+                "reference": "40f5c27aac371185b355c9b8f19187dffdd8b845"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/air-Design/spatial-psr7/zipball/40f5c27aac371185b355c9b8f19187dffdd8b845",
+                "reference": "40f5c27aac371185b355c9b8f19187dffdd8b845",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/psr7": "^1.6",
+                "php": "^7.2",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatial\\Psr7\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "projectair",
+                    "email": "airdesign.code@gmail.com"
+                }
+            ],
+            "description": "PSR 7 (GuzzleHttp) implementation for Spatial Framework. Request & Response Classes for spatial-mediator & spatial-route",
+            "time": "2019-09-30T14:22:29+00:00"
         },
         {
             "name": "spatial/route",
@@ -1459,17 +1498,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/air-Design/spatial-route.git",
-                "reference": "1ea35c0c42435f607c433e696aeecb122dafb38a"
+                "reference": "cf9e515f728e5ab0e8b4b5d059d165925c146f75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/air-Design/spatial-route/zipball/1ea35c0c42435f607c433e696aeecb122dafb38a",
-                "reference": "1ea35c0c42435f607c433e696aeecb122dafb38a",
+                "url": "https://api.github.com/repos/air-Design/spatial-route/zipball/cf9e515f728e5ab0e8b4b5d059d165925c146f75",
+                "reference": "cf9e515f728e5ab0e8b4b5d059d165925c146f75",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/psr7": "^1.6",
-                "psr/http-message": "^1.0"
+                "php": "^7.2",
+                "psr/http-message": "^1.0",
+                "spatial/psr7": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -1488,7 +1528,7 @@
                 }
             ],
             "description": "PHP routing which contains Authourization, CORS, nexted routes",
-            "time": "2019-09-26T01:43:57+00:00"
+            "time": "2019-09-30T14:59:18+00:00"
         },
         {
             "name": "symfony/console",
@@ -1752,7 +1792,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.0"
+        "php": "^7.2"
     },
     "platform-dev": []
 }

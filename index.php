@@ -55,6 +55,8 @@ class Startup
 
     public function __construct()
     {
+        define('DS', DIRECTORY_SEPARATOR);
+        require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
         require_once 'config.php';
 
         $this->webConfig = new Config;
@@ -70,8 +72,6 @@ class Startup
 
     private function _bootstrapApp()
     {
-        define('DS', DIRECTORY_SEPARATOR);
-        require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
 
         $this->webConfig->render();
     }

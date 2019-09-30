@@ -1,15 +1,15 @@
 <?php
-namespace Core\Application\Logics\App\Commands;
 
-use Core\Domain\Media\Media;
-use Cqured\MediatR\IRequest;
+namespace Core\Application\Logics\DefaultApp\Commands;
+
+use Spatial\Psr7\Request;
 
 /**
  * Request To be passed to Its' Handler
  * Handler can use this class's properties and methods
  * for Server Request, etc
  */
-class EditPersonCommand implements IRequest
+class DeleteEntity extends Request
 {
     public function addPerson()
     {
@@ -21,6 +21,5 @@ class EditPersonCommand implements IRequest
             ],
             'expire' => null,
         ];
-        return $this->emMedia->getRepository(Media::class);
     }
 }

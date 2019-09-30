@@ -1,15 +1,14 @@
 <?php
 namespace Core\Application\Logics\App\Commands;
 
-use Core\Domain\Media\Media;
-use Cqured\MediatR\IRequest;
+use Cqured\Mediator\IRequest;
 
 /**
  * Request To be passed to Its' Handler
  * Handler can use this class's properties and methods
  * for Server Request, etc
  */
-class DeletePersonCommand implements IRequest
+class UpdatePerson implements IRequest
 {
     public function addPerson()
     {
@@ -21,6 +20,5 @@ class DeletePersonCommand implements IRequest
             ],
             'expire' => null,
         ];
-        return $this->emMedia->getRepository(Media::class);
     }
 }

@@ -45,10 +45,10 @@ class Config
         $route = new Route();
         $route->mapRoute(
             "DefaultAPI", // name
-            "api/{controller}/{id}", //routeTemplate
+            "default/{controller}/{id:int}", //routeTemplate
             new class ()
             {
-                public $id = 2;
+                public $id = 0;
             } //defaults
         );
 
@@ -58,7 +58,7 @@ class Config
             ->enableCache($this->enableProdMode)
             ->authGuard() // takes in list objects for authorization with interface CanActivate
             ->defaultContentType('application/json')
-            ->controllerNamespaceMap('Spatial\\{name}\\Controllers\\'); // {name} refers to the route name
+            ->controllerNamespaceMap('Presentation\\{name}\\Controllers\\'); // {name} refers to the route name
     }
 
     public function render()

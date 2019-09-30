@@ -1,8 +1,14 @@
 <?php
+
 namespace Presentation\DefaultAPI\Controllers;
 
-use Spatial\MediatR\Mediator;
-use Spatial\Router\Response;
+use Core\Application\Logics\DefaultApp\Commands\DeleteEntity;
+use Core\Application\Logics\DefaultApp\Commands\UpdateEntity;
+use Core\Application\Logics\DefaultApp\Commands\CreateEntity;
+use Core\Application\Logics\DefaultApp\Queries\GetEntites;
+use Core\Application\Logics\DefaultApp\Queries\GetEntity;
+use Psr\Http\Message\ResponseInterface;
+use Spatial\Mediator\Mediator;
 
 /**
  * ValuesController Class exists in the Api\Controllers namespace
@@ -14,12 +20,14 @@ use Spatial\Router\Response;
 
 class ValuesController
 {
+
+    private $mediator;
     /**
      * Use constructor to Inject or instanciate dependecies
      */
     public function __construct()
     {
-        $this->mediator = new Mediator;
+        $this->mediator = new Mediator();
     }
 
     /**
@@ -27,10 +35,16 @@ class ValuesController
      * URI: POST: https://api.com/values
      * URI: POST: https://api.com/values/2 ,the number 2 in the uri is passed as int ...$id to the method
      */
-    public function httpGet(int...$id): ?Response
+    public function httpGet(?int ...$id): ?ResponseInterface
     {
-        return $this->mediator->process();
-     
+        if (is_null($id[0])) {
+            $query = new GetEntity();
+        } else {
+            $query = new GetEntites();
+        }
+
+        return $this->mediator->process($query);
+        // return $this->mediator->process();
     }
 
     /**
@@ -38,12 +52,12 @@ class ValuesController
      * This method requires a body(json) which is passed as the var array $form
      * URI: POST: https://api.com/values
      */
-    public function httpPost(array $form)
+    public function httpPost(array $form): ResponseInterface
     {
-        $postId = null;
-
         // code here
-        return ['success' => true, 'alert' => 'We have it at post', 'id' => $postId];
+        $command = new CreateEntity();
+        $command->data = $form;
+        return $this->mediator->process($command);
     }
 
     /**
@@ -52,20 +66,25 @@ class ValuesController
      * An id as part of the uri.
      * URI: POST: https://api.com/values/2 the number 2 in the uri is passed as int $id to the method
      */
-    public function httpPut(array $form, int $id)
+    public function httpPut(array $form, int $id): ResponseInterface
     {
 
         // code here
-        return ['success' => true, 'alert' => 'We have it at put'];
+        $command = new UpdateEntity();
+        $command->data = $form;
+        $command->id = $id;
+        return $this->mediator->process($command);
     }
 
     /**
      * The Method httpDelete() called to handle a DELETE request
      * URI: POST: https://api.com/values/2 ,the number 2 in the uri is passed as int ...$id to the method
      */
-    public function httpDelete(int $id)
+    public function httpDelete(int $id): ResponseInterface
     {
         // code here
-        return ['id' => $id];
+        $command = new DeleteEntity();
+        $command->id = $id;
+        return $this->mediator->process($command);
     }
 }

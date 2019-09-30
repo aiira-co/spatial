@@ -15,7 +15,7 @@
   "time": "2018/10/14",
   "license": "MIT",
   "require": {
-    "php": ">=7.2.0",
+    "php": "^7.2",
     "lcobucci/jwt": "4.0.0-alpha3",
     "spatial/doctrine": "dev-master",
     "spatial/mediator": "^1.0@dev",

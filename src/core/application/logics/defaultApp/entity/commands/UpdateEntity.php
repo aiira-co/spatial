@@ -1,17 +1,17 @@
 <?php
-namespace Core\Application\Logics\App\Queries;
 
-use Core\Domain\Media\Media;
-use Cqured\MediatR\IRequest;
+namespace Core\Application\Logics\DefaultApp\Commands;
+
+use Spatial\Psr7\Request;
 
 /**
  * Request To be passed to Its' Handler
  * Handler can use this class's properties and methods
  * for Server Request, etc
  */
-class GetPersonsQuery implements IRequest
+class UpdateEntity extends Request
 {
-    public function getPersons()
+    public function updatePerson()
     {
         return  [
             'id' => 3,
@@ -21,6 +21,5 @@ class GetPersonsQuery implements IRequest
             ],
             'expire' => null,
         ];
-        return $this->emMedia->getRepository(Media::class);
     }
 }
