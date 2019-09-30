@@ -1,7 +1,7 @@
 {
   "name": "spatial/spatial",
   "description": "PHP7+ WebAPI Clean Architecture Framework.",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "type": "project",
   "keywords": [
     "Clean Architecture",
@@ -41,10 +41,6 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Cqured\\Core\\": "vendor/cqured/cqured/core/",
-      "Cqured\\Router\\": "vendor/cqured/cqured/router/",
-      "Cqured\\Entity\\": "vendor/cqured/cqured/entity/",
-      "Cqured\\MediatR\\": "vendor/cqured/mediatr/src/",
       "Presentation\\": "src/presentation/",
       "Common\\": "src/common/",
       "Core\\": "src/core/",

@@ -1,5 +1,6 @@
 <?php
-namespace Common\Exceptions;
+declare(strict_types=1);
+namespace Core\Common\Exceptions;
 
 /**
  * Exeptions

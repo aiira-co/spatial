@@ -2,13 +2,15 @@
 
 namespace Presentation\DefaultAPI\Controllers;
 
-use Core\Application\Logics\DefaultApp\Commands\DeleteEntity;
-use Core\Application\Logics\DefaultApp\Commands\UpdateEntity;
-use Core\Application\Logics\DefaultApp\Commands\CreateEntity;
-use Core\Application\Logics\DefaultApp\Queries\GetEntites;
-use Core\Application\Logics\DefaultApp\Queries\GetEntity;
+use Core\Application\Logics\DefaultApp\{
+    Commands\DeleteEntity,
+    Commands\UpdateEntity,
+    Commands\CreateEntity,
+    Queries\GetEntites,
+    Queries\GetEntity,
+};
+use Core\Common\Libraries\Controller;
 use Psr\Http\Message\ResponseInterface;
-use Spatial\Mediator\Mediator;
 
 /**
  * ValuesController Class exists in the Api\Controllers namespace
@@ -18,24 +20,15 @@ use Spatial\Mediator\Mediator;
  * @category Controller
  */
 
-class ValuesController
+class ValuesController extends Controller
 {
-
-    private $mediator;
-    /**
-     * Use constructor to Inject or instanciate dependecies
-     */
-    public function __construct()
-    {
-        $this->mediator = new Mediator();
-    }
 
     /**
      * The Method httpGet() called to handle a GET request
      * URI: POST: https://api.com/values
      * URI: POST: https://api.com/values/2 ,the number 2 in the uri is passed as int ...$id to the method
      */
-    public function httpGet(?int ...$id): ?ResponseInterface
+    public function httpGet(?int ...$id): ResponseInterface
     {
         if (is_null($id[0])) {
             $query = new GetEntity();

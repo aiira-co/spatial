@@ -1,5 +1,8 @@
 <?php
-namespace Common\Constants;
+
+declare(strict_types=1);
+
+namespace Core\Common\Constants;
 
 /**
  * Constants - or genral functions
@@ -15,7 +18,5 @@ class Constants
 {
 
     public function __construct()
-    {
-
-    }
+    { }
 }

@@ -1,5 +1,6 @@
 <?php
-namespace Common\Libraries;
+declare(strict_types=1);
+namespace Core\Common\Libraries;
 
 /**
  * Libraries
