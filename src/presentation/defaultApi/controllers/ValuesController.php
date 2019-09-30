@@ -9,7 +9,7 @@ use Core\Application\Logics\DefaultApp\{
     Queries\GetEntites,
     Queries\GetEntity,
 };
-use Core\Common\Libraries\Controller;
+use Common\Libraries\Controller;
 use Psr\Http\Message\ResponseInterface;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Common\Libraries;
+namespace Common\Libraries;
 
 use Spatial\Mediator\Mediator;
 use Spatial\Router\ActivatedRoute;
