@@ -49,6 +49,11 @@ class Config
             new class ()
             {
                 public $id = 0;
+                public $content;
+                function __construct()
+                {
+                    $this->content = file_get_contents('php://input');
+                }
             } //defaults
         );
 

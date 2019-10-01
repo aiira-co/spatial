@@ -11,6 +11,9 @@ use Spatial\Psr7\Request;
  */
 class UpdateEntity extends Request
 {
+    public $data;
+    public $id;
+
     public function updatePerson()
     {
         return  [

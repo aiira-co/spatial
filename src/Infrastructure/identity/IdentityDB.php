@@ -1,7 +1,8 @@
 <?php
+
 namespace Infrastructure\Identity;
 
-use Cqured\Entity\DoctrineEntity;
+use Spatial\Entity\DoctrineEntity;
 
 /**
  * identityDB Class exists in the Api\Models namespace
@@ -18,12 +19,10 @@ class IdentityDB
      */
     public function __construct()
     {
-        $connection = ['url' => 'mysql://root:glory@localhost/galaxyId'];
+        $connection = ['url' => 'mysql://root:glory@localhost/identityDB'];
         $this->emIdentity = (new DoctrineEntity('identity'))
             ->setProxyDir('./src/core/domain/identity/proxies')
             ->setProxyNamespace('Core\Domain\Identity')
             ->entityManager($connection);
-
     }
-
 }

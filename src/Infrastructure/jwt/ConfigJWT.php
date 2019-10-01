@@ -1,4 +1,5 @@
 <?php
+
 namespace Infrastructure\JWT;
 
 use Lcobucci\JWT\Configuration;
@@ -9,9 +10,7 @@ class ConfigJWT
 {
 
     public function __construct()
-    {
-
-    }
+    { }
 
     public function tokenConfig()
     {

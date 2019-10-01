@@ -2,5 +2,5 @@
 
 namespace Infrastructure\Service;
 
-class SmsService
+class PaymentService
 { }

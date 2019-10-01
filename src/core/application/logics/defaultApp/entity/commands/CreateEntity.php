@@ -11,6 +11,7 @@ use Spatial\Psr7\Request;
  */
 class CreateEntity extends Request
 {
+    public $data;
     public function addPerson()
     {
         return  [

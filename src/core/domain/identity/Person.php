@@ -1,36 +1,39 @@
 <?php
+
 namespace Core\Domain\Identity;
+
 
 // src/core/domain/identity/User.php
 /**
- * User
- *
- * @Entity @Table(name="user")
+ * @Entity @Table(name="person")
  */
-class User
+class Person
 {
     /**
+     * @Id @Column(type="integer") @GeneratedValue
      * @var int
-     *
-     * @Column(name="id", type="integer")
-     * @Id
-     * @GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
     /**
      * @var string
      *
-     * @Column(name="person_id", type="string", nullable=false)
+     * @Column(name="person_id", type="string",nullable=true)
      */
     protected $personId;
 
     /**
      * @var string
      *
-     * @Column(name="image", type="text", length=65535, nullable=false)
+     * @Column(name="image", type="text", length=65535,nullable=true)
      */
     protected $image;
+    /**
+     * @var string
+     *
+     * @Column(name="cover", type="text", length=65535,nullable=true)
+     */
+    protected $cover;
 
     /**
      * @var string
@@ -42,14 +45,28 @@ class User
     /**
      * @var string
      *
-     * @Column(name="surname", type="string", length=32, nullable=false)
+     * @Column(name="tagline", type="string", length=20, nullable=false)
+     */
+    protected $tagline;
+
+    /**
+     * @var string
+     *
+     * @Column(name="bio", type="string", length=256, nullable=true)
+     */
+    protected $bio;
+
+    /**
+     * @var string
+     *
+     * @Column(name="surname", type="string", length=32, nullable=true )
      */
     protected $surname;
 
     /**
      * @var string
      *
-     * @Column(name="othername", type="string", length=32, nullable=false)
+     * @Column(name="othername", type="string", length=32,nullable=true )
      */
     protected $othername;
 
@@ -70,7 +87,7 @@ class User
     /**
      * @var \DateTime
      *
-     * @Column(name="birth_date", type="date", nullable=false)
+     * @Column(name="birth_date", type="date",nullable=true)
      */
     protected $birthdate;
 
@@ -84,14 +101,14 @@ class User
     /**
      * @var string
      *
-     * @Column(name="phone_one", type="string", length=15, nullable=false)
+     * @Column(name="phone_one", type="string", length=15,nullable=true)
      */
     protected $phoneOne;
 
     /**
      * @var string
      *
-     * @Column(name="phone_two", type="string", length=15, nullable=false)
+     * @Column(name="phone_two", type="string", length=15,nullable=true)
      */
     protected $phoneTwo;
 
@@ -119,7 +136,7 @@ class User
     /**
      * @var \DateTime
      *
-     * @Column(name="lockout_end", type="datetime", nullable=false)
+     * @Column(name="lockout_end", type="datetime", nullable=true)
      */
     protected $lockoutEnd;
 
@@ -140,9 +157,9 @@ class User
     /**
      * @var string
      *
-     * @Column(name="passHashed", type="text", length=65535, nullable=false)
+     * @Column(name="hashed", type="text", length=65535, nullable=false)
      */
-    protected $passHashed;
+    protected $hashed;
 
     /**
      * @var \DateTime
@@ -150,6 +167,49 @@ class User
      * @Column(name="created", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
     protected $created = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var string
+     *
+     * @Column(type="string", length=32)
+     */
+    protected $city;
+
+    // /**
+    //  * @ManyToOne(targetEntity="Country")
+    //  * @JoinColumn(name="country", referencedColumnName="code")
+    //  * @var Country
+    //  */
+
+    /**
+     * @var string
+     *
+     * @Column(type="string", length=32)
+     */
+    protected $country;
+
+    /**
+     * @var string
+     *
+     * @Column(type="string", length=32)
+     */
+    protected $timezone;
+
+    /**
+     * @var string
+     *
+     * @Column(type="string", length=32)
+     */
+    protected $language;
+
+    /**
+     * @ManyToOne(targetEntity="Groups")
+     * @JoinColumn(name="account_type_id", referencedColumnName="id")
+     * @var Groups
+     */
+    protected $accountType;
+
+
 
     /**
      * Get the value of id
@@ -279,6 +339,16 @@ class User
         $this->othername = $othername;
 
         return $this;
+    }
+
+    /**
+     * Get the value of othername
+     *
+     * @return  string
+     */
+    public function getName(): string
+    {
+        return  $this->othername . ' ' . $this->surname;
     }
 
     /**
@@ -570,25 +640,25 @@ class User
     }
 
     /**
-     * Get the value of passHashed
+     * Get the value of hashed
      *
      * @return  string
      */
-    public function getpassHashed()
+    public function getHashed()
     {
-        return $this->passHashed;
+        return $this->hashed;
     }
 
     /**
-     * Set the value of passHashed
+     * Set the value of hashed
      *
-     * @param  string  $passHashed
+     * @param  string  $hashed
      *
      * @return  self
      */
-    public function setpassHashed(string $passHashed)
+    public function setHashed(string $hashed)
     {
-        $this->passHashed = $passHashed;
+        $this->hashed = $hashed;
 
         return $this;
     }
@@ -617,13 +687,188 @@ class User
         return $this;
     }
 
-    public function authenticate(string $password, callable $checkHash): bool
+    public function authenticate(string $password): bool
     {
-        return $checkHash($password, $this->passHashed) && !$this->hasActiveBans();
+        return password_verify($password, $this->hashed);
+        // && !$this->hasActiveBans();
     }
 
-    public function changePassword(string $password, callable $hash): void
+    public function changePassword(string $password): void
     {
-        $this->passHashed = $hash($password);
+        $this->hashed = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    /**
+     * Get the value of tagline
+     *
+     * @return  string
+     */
+    public function getTagline()
+    {
+        return $this->tagline;
+    }
+
+    /**
+     * Set the value of tagline
+     *
+     * @param  string  $tagline
+     *
+     * @return  self
+     */
+    public function setTagline(string $tagline)
+    {
+        $this->tagline = $tagline;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     *
+     * @return  string
+     */
+    public function getLocation()
+    {
+        return [
+            'city' => $this->city,
+            'country' => $this->country,
+        ];
+    }
+
+    /**
+     * Set the value of tagline
+     *
+     * @param string $city
+     * @param string $country
+     * @return void
+     */
+    public function setLocation(string $city, string $country)
+    {
+        $this->city = $city;
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of language
+     *
+     * @return  string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Set the value of language
+     *
+     * @param  string  $language
+     *
+     * @return  self
+     */
+    public function setLanguage(string $language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of accountType
+     *
+     * @return  Groups
+     */
+    public function getAccountType()
+    {
+        return $this->accountType;
+    }
+
+    /**
+     * Set the value of accountType
+     *
+     * @param  Groups  $accountType
+     *
+     * @return  self
+     */
+    public function setAccountType(Groups $accountType)
+    {
+        $this->accountType = $accountType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of bio
+     *
+     * @return  string
+     */
+    public function getBio()
+    {
+        return $this->bio;
+    }
+
+    /**
+     * Set the value of bio
+     *
+     * @param  string  $bio
+     *
+     * @return  self
+     */
+    public function setBio(string $bio)
+    {
+        $this->bio = $bio;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of timezone
+     *
+     * @return  string
+     */
+    public function getTimezone()
+    {
+        return $this->timezone;
+    }
+
+    /**
+     * Set the value of timezone
+     *
+     * @param  string  $timezone
+     *
+     * @return  self
+     */
+    public function setTimezone(string $timezone)
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cover
+     *
+     * @return  string
+     */
+    public function getCover()
+    {
+        return $this->cover;
+    }
+
+    /**
+     * Set the value of cover
+     *
+     * @param  string  $cover
+     *
+     * @return  self
+     */
+    public function setCover(string $cover)
+    {
+        $this->cover = $cover;
+
+        return $this;
     }
 }

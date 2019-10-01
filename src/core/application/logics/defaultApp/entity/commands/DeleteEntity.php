@@ -11,6 +11,8 @@ use Spatial\Psr7\Request;
  */
 class DeleteEntity extends Request
 {
+    public $id;
+
     public function addPerson()
     {
         return  [
