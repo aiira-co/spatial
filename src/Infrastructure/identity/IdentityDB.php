@@ -2,6 +2,7 @@
 
 namespace Infrastructure\Identity;
 
+use Doctrine\ORM\EntityManager;
 use Spatial\Entity\DoctrineEntity;
 
 /**
@@ -12,7 +13,7 @@ use Spatial\Entity\DoctrineEntity;
  */
 class IdentityDB
 {
-    public $emIdentity;
+    public EntityManager $emIdentity;
 
     /**
      * Connect to database in constructor

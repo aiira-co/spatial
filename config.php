@@ -14,20 +14,20 @@ use Spatial\Router\RouterModule;
 class Config
 {
     // General & PHP Doctrine Config
-    public $enableProdMode = false;
+    public bool $enableProdMode = false;
 
-    public $appName = 'Spatial';
-    public $offline = [
+    public string $appName = 'Spatial';
+    public array $offline = [
         'value' => false,
-        'offlineMessage' => 'This site is down for maintenance.<br />Please check back again soon.',
-        'displayOfflineMessage' => '1',
-        'offlineImage' => '',
+        'message' => 'This site is down for maintenance.<br />Please check back again soon.',
+        'displayMessage' => '1',
+        'image' => '',
     ];
 
 
-    public $cliConfig = [
+    public array $cliConfig = [
         'class' => 'playDB', //entityManager will be $em{{dbClassName}}
-        'namespace' => 'resource', //namspace & file Location will be Infrastructure/{{dbNamespace}}
+        'namespace' => 'resource', //namespace & file Location will be Infrastructure/{{dbNamespace}}
     ];
 
 
@@ -46,10 +46,10 @@ class Config
         $route->mapRoute(
             "DefaultAPI", // name
             "default/{controller}/{id:int}", //routeTemplate
-            new class ()
-            {
+            new class () {
                 public $id = 0;
                 public $content;
+
                 function __construct()
                 {
                     $this->content = file_get_contents('php://input');

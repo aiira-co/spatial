@@ -44,8 +44,6 @@
 
 declare(strict_types=1);
 
-use Cqured\Core\Program;
-
 /**
  * Boostrap the app
  */
@@ -62,7 +60,7 @@ class Startup
         $this->webConfig = new Config;
 
         if ($this->webConfig->offline['value']) {
-            echo json_encode(["noti" => "success", "result" => $webConfig->offlineMessage]);
+            echo json_encode(["notify" => "success", "result" => $this->webConfig->offline['message']]);
         } else {
             $this->_bootstrapApp();
         }

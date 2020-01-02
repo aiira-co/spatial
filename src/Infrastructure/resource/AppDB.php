@@ -2,6 +2,7 @@
 
 namespace Infrastructure\Resource;
 
+use Doctrine\ORM\EntityManager;
 use Spatial\Entity\DoctrineEntity;
 
 /**
@@ -12,7 +13,7 @@ use Spatial\Entity\DoctrineEntity;
  */
 class AppDB
 {
-    public $emApp;
+    public EntityManager $emApp;
 
     public function __construct()
     {
