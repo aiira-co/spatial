@@ -45,32 +45,42 @@
 declare(strict_types=1);
 
 /**
- * Boostrap the app
+ * Bootstrap the app
  */
 class Startup
 {
-    private $webConfig;
+    private Config $webConfig;
 
+    /**
+     * Startup constructor.
+     * @throws ReflectionException
+     */
     public function __construct()
     {
         define('DS', DIRECTORY_SEPARATOR);
         require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
         require_once 'config.php';
 
-        $this->webConfig = new Config;
+        $this->webConfig = new Config();
 
         if ($this->webConfig->offline['value']) {
-            echo json_encode(["notify" => "success", "result" => $this->webConfig->offline['message']]);
+            echo json_encode(
+                ['notify' => 'success', 'result' => $this->webConfig->offline['message']],
+                JSON_THROW_ON_ERROR,
+                512
+            );
         } else {
             $this->_bootstrapApp();
         }
     }
 
 
-
-    private function _bootstrapApp()
+    /**
+     *
+     * @throws ReflectionException
+     */
+    private function _bootstrapApp(): void
     {
-
         $this->webConfig->render();
     }
 }

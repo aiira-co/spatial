@@ -1,7 +1,7 @@
 <?php
 // cli-config.php
 require_once './config.php';
-$config = (new Config)->cliConfig;
+$config = (new Config())->cliConfig;
 
 $filePath = './src/Infrastructure/' . $config['namespace'] . '/' . $config['class'] . '.php';
 if (file_exists($filePath)) {

@@ -29,28 +29,38 @@ class Config
         'class' => 'playDB', //entityManager will be $em{{dbClassName}}
         'namespace' => 'resource', //namespace & file Location will be Infrastructure/{{dbNamespace}}
     ];
+    private RouterModule $routeModule;
 
-
-    function __construct()
+    public function __construct()
     {
         if (!$this->offline['value']) {
-
             $this->routeModule = new RouterModule();
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
+    public function render(): void
+    {
+        $this->_appRoute();
+        $this->routeModule->render();
+    }
 
-    private function _appRoute()
+    /**
+     *
+     */
+    private function _appRoute(): void
     {
         $route = new Route();
         $route->mapRoute(
-            "DefaultAPI", // name
-            "default/{controller}/{id:int}", //routeTemplate
+            'DefaultAPI', // name
+            'default/{controller}/{id:int}', //routeTemplate
             new class () {
-                public $id = 0;
-                public $content;
+                public int $id = 0;
+                public string $content;
 
-                function __construct()
+                public function __construct()
                 {
                     $this->content = file_get_contents('php://input');
                 }
@@ -64,12 +74,6 @@ class Config
             ->authGuard() // takes in list objects for authorization with interface CanActivate
             ->defaultContentType('application/json')
             ->controllerNamespaceMap('Presentation\\{name}\\Controllers\\'); // {name} refers to the route name
-    }
-
-    public function render()
-    {
-        $this->_appRoute();
-        $this->routeModule->render();
     }
 
 
