@@ -2,16 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="php 7.4+ required">
-      <change afterPath="$PROJECT_DIR$/.idea/composerJson.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/spatial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cli-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/cli-config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +18,7 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution>
-      <executable />
-    </execution>
+    <execution />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -64,26 +60,27 @@
   <component name="ProjectId" id="1Vd7iOmBzicj0tS44ctc6eppOlu" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../spatial-doctrine" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="I:\Code\PHP\Frameworks\spatial\public" />
+      <recent name="I:\Code\PHP\Frameworks\spatial" />
+      <recent name="I:\Code\PHP\Frameworks\spatial\config" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -99,6 +96,11 @@
       <workItem from="1577962658441" duration="386000" />
       <workItem from="1577963391096" duration="1756000" />
       <workItem from="1578333746147" duration="187000" />
+      <workItem from="1590680115661" duration="43000" />
+      <workItem from="1590680678292" duration="18000" />
+      <workItem from="1592953703815" duration="1694000" />
+      <workItem from="1592989728811" duration="5171000" />
+      <workItem from="1593010320637" duration="3619000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
@@ -118,7 +120,7 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="required 7.4+" />
@@ -126,21 +128,9 @@
     <option name="LAST_COMMIT_MESSAGE" value="php 7.4+ required" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1230" y="282" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1577575684439">
-      <screen x="-1920" y="1" width="1920" height="1050" />
+    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1590680157961">
+      <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="-1230" y="282" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1366.738/-1920.1.1920.1050/-3840.0.1920.1050@-1920.1.1920.1050" timestamp="1577575684439" />
-    <state x="-1337" y="34" key="CommitChangelistDialog2" timestamp="1577964494346">
-      <screen x="-1920" y="1" width="1920" height="1050" />
-    </state>
-    <state x="-1337" y="34" key="CommitChangelistDialog2/0.0.1366.738/-1920.1.1920.1050/-3840.0.1920.1050@-1920.1.1920.1050" timestamp="1577964494346" />
-    <state x="-1197" y="437" key="ComposerInitDialogKey" timestamp="1577964167291">
-      <screen x="-1920" y="1" width="1920" height="1050" />
-    </state>
-    <state x="-1197" y="437" key="ComposerInitDialogKey/0.0.1366.738/-1920.1.1920.1050/-3840.0.1920.1050@-1920.1.1920.1050" timestamp="1577964167291" />
-    <state x="-1368" y="256" key="Vcs.Push.Dialog.v2" timestamp="1577964203611">
-      <screen x="-1920" y="1" width="1920" height="1050" />
-    </state>
-    <state x="-1368" y="256" key="Vcs.Push.Dialog.v2/0.0.1366.738/-1920.1.1920.1050/-3840.0.1920.1050@-1920.1.1920.1050" timestamp="1577964203611" />
+    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1590680157961" />
   </component>
 </project>

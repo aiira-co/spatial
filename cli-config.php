@@ -1,9 +1,9 @@
 <?php
 // cli-config.php
-require_once './config.php';
-$config = (new Config())->cliConfig;
+require_once '.' . DS . 'config' . DS . 'config.php';
+$config = (new Config)->cliConfig;
 
-$filePath = './src/Infrastructure/' . $config['namespace'] . '/' . $config['class'] . '.php';
+$filePath = '.' . DS . 'src' . DS . 'Infrastructure' . DS . $config['namespace'] . DS . $config['class'] . '.php';
 if (file_exists($filePath)) {
     include_once $filePath;
 

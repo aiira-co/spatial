@@ -42,7 +42,24 @@
  * @version     @@2.00@@
  */
 
-declare(strict_types=1);
+// declare(strict_types=1);
+
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400'); // cache for 1 day
+
+}
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+    }
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+    }
+    exit(0);
+}
 
 /**
  * Bootstrap the app
@@ -51,29 +68,30 @@ class Startup
 {
     private Config $webConfig;
 
-    /**
-     * Startup constructor.
-     * @throws ReflectionException
-     */
     public function __construct()
     {
+        // echo  $_SERVER['REQUEST_URI'];
+
         define('DS', DIRECTORY_SEPARATOR);
-        require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
-        require_once 'config.php';
+        require_once __DIR__ . DS . '..' . DS . 'vendor' . DS . 'autoload.php';
+        require_once __DIR__ . DS . '..' . DS . 'config' . DS . 'config.php';
 
         $this->webConfig = new Config();
 
         if ($this->webConfig->offline['value']) {
-            echo json_encode(
-                ['notify' => 'success', 'result' => $this->webConfig->offline['message']],
-                JSON_THROW_ON_ERROR,
-                512
-            );
+            try {
+                echo json_encode(
+                    ['notify' => 'success', 'result' => $this->webConfig->offline['message']],
+                    JSON_THROW_ON_ERROR,
+                    512
+                );
+            } catch (JsonException $e) {
+                echo $e->getMessage();
+            }
         } else {
             $this->_bootstrapApp();
         }
     }
-
 
     /**
      *
@@ -84,5 +102,6 @@ class Startup
         $this->webConfig->render();
     }
 }
+
 
 $app = new Startup();
