@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="php 7.4+ required">
-      <change beforePath="$PROJECT_DIR$/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/spatial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
+    <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/cli-config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +94,8 @@
       <workItem from="1590680678292" duration="18000" />
       <workItem from="1592953703815" duration="1694000" />
       <workItem from="1592989728811" duration="5171000" />
-      <workItem from="1593010320637" duration="3619000" />
+      <workItem from="1593010320637" duration="3796000" />
+      <workItem from="1593014317494" duration="52000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
@@ -116,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577964497022</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Framework Directory Refactored to enhance Security and Web Server Configs">
+      <created>1593014077250</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1593014077250</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,12 +127,25 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="required 7.4+" />
     <MESSAGE value="php 7.4+ required" />
-    <option name="LAST_COMMIT_MESSAGE" value="php 7.4+ required" />
+    <MESSAGE value="Framework Directory Refactored to enhance Security and Web Server Configs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Framework Directory Refactored to enhance Security and Web Server Configs" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="-1337" y="6" key="CommitChangelistDialog2" timestamp="1593014076325">
+      <screen x="-1920" y="0" width="1920" height="1050" />
+    </state>
+    <state x="-1337" y="6" key="CommitChangelistDialog2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014076325" />
     <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1590680157961">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1590680157961" />
+    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2" timestamp="1593014099520">
+      <screen x="-1920" y="0" width="1920" height="1050" />
+    </state>
+    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014099520" />
+    <state x="-1153" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1593014005026">
+      <screen x="-1920" y="0" width="1920" height="1050" />
+    </state>
+    <state x="-1153" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014005026" />
   </component>
 </project>
