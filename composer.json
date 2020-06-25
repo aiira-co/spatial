@@ -5,10 +5,9 @@
   "type": "project",
   "keywords": [
     "Clean Architecture",
+    "Spatial",
     "framework",
-    "api",
-    "database",
-    "cqured"
+    "api"
   ],
   "homepage": "https://github.com/air-Design/cqured",
   "readme": "https://github.com/air-Design/cqured/blob/master/README.md",
