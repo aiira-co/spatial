@@ -1,20 +1,23 @@
 <?php
+
+define('DS', DIRECTORY_SEPARATOR);
+require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
+
+use Symfony\Component\Yaml\Yaml;
+use \Doctrine\ORM\Tools\Console\ConsoleRunner;
+
 // cli-config.php
-require_once '.' . DS . 'config' . DS . 'config.php';
-$config = (new Config)->cliConfig;
+$serviceFile = '.' . DS . 'config' . DS . 'services.yaml';
 
-$filePath = '.' . DS . 'src' . DS . 'Infrastructure' . DS . $config['namespace'] . DS . $config['class'] . '.php';
-if (file_exists($filePath)) {
-    include_once $filePath;
 
-    if (class_exists('\\Infrastructure\\' . ucfirst($config['namespace']) . '\\' . $config['class'])) {
-        $em = 'em' . ucfirst(str_replace('DB', '', $config['class']));
-        $class = '\\Infrastructure\\' . ucfirst($config['namespace']) . '\\' . $config['class'];
+try {
+    $services = Yaml::parseFile($serviceFile);
 
-        return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet((new $class)->$em);
-    } else {
-        die('Class ' . '\\Infrastructure\\' . ucfirst($config['namespace']) . '\\' . $config['class'] . ' not found!');
-    }
-} else {
-    die('file not found --> ' . $filePath);
+    $dbClass = $serviceFile['doctrineCliConfig']['namespace'];
+    $entityManager = $serviceFile['doctrineCliConfig']['entityManager'];
+    return ConsoleRunner::createHelperSet((new $dbClass)->$entityManager);
+} catch (ParseException $exception) {
+    printf('Unable to parse the YAML string: %s', $exception->getMessage());
 }
+
+

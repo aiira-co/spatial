@@ -1,7 +1,5 @@
 # Spatial (CQured) MULTI-WebAPI Framework - Clean Architecture
 
-Still under-development.
-
 - To Access the appAPI's ValuesController, go to localhost/appApi/values -> this just returns the array in the controller's httpGet() method.
 - The real magic is to enter localhost/cqured/appApi/test to access the the controller's httpGet() method.
   This now calls the GetPersonQuery from the your 'app' application in the /src/core/applications/logics/app/person/queries folder.
@@ -10,7 +8,7 @@ Still under-development.
 Clean/Onion Architecture for multi-api framework
 
 - Spatial\Route for presentation(Api)
-- Spatial\Mediatr as middleware between \Presentation\\ and \Core\\ (PSR)
+- Spatial\Mediator as middleware between \Presentation\\ and \Core\\ (PSR)
 - Doctrine for DB
 - GuzzlePSR7 for http
 - lcobucci/jwt for Auth

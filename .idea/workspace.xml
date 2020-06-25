@@ -2,8 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/packages/framework.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/secrets/dev/id_rsa" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/secrets/dev/id_rsa.pub" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/spatial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cli-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/cli-config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/identity/IdentityDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/identity/IdentityDB.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/jwt/ConfigJWT.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/jwt/ConfigJWT.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/jwt/Token.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/jwt/Token.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/resource/AppDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/resource/AppDB.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/services/PaymentService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/services/PaymentService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Infrastructure/services/SmsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/services/SmsService.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +75,8 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../spatial-doctrine" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="yaml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/config/secrets/dev" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -70,6 +85,9 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="I:\Code\PHP\Frameworks\spatial\config\secrets\dev" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="I:\Code\PHP\Frameworks\spatial\public" />
       <recent name="I:\Code\PHP\Frameworks\spatial" />
@@ -95,7 +113,9 @@
       <workItem from="1592953703815" duration="1694000" />
       <workItem from="1592989728811" duration="5171000" />
       <workItem from="1593010320637" duration="3796000" />
-      <workItem from="1593014317494" duration="52000" />
+      <workItem from="1593014317494" duration="733000" />
+      <workItem from="1593087470339" duration="834000" />
+      <workItem from="1593095158245" duration="826000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
@@ -118,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1593014077250</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Framework Directory Refactored to enhance Security and Web Server Configs">
+      <created>1593014378970</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1593014378970</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,10 +158,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Framework Directory Refactored to enhance Security and Web Server Configs" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1337" y="6" key="CommitChangelistDialog2" timestamp="1593014076325">
+    <state x="-1337" y="6" key="CommitChangelistDialog2" timestamp="1593014378428">
       <screen x="-1920" y="0" width="1920" height="1050" />
     </state>
-    <state x="-1337" y="6" key="CommitChangelistDialog2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014076325" />
+    <state x="-1337" y="6" key="CommitChangelistDialog2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014378428" />
     <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1590680157961">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>

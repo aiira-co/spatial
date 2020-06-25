@@ -1,0 +1,9 @@
+# config/packages/doctrine.yaml
+parameters:
+  #template for params
+  database_driver: pdo_mysql
+  database_host: host.docker.internal
+  database_port: 3306
+  database_name: spatialDB
+  database_user: root
+  database_password: admin123

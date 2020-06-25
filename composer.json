@@ -47,5 +47,22 @@
       "Core\\": "src/core/",
       "Infrastructure\\": "src/infrastructure/"
     }
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  ,
+    "vendor/phpstan/phpstan": "^0.11.17"
+  },
+  "scripts": {
+    "ci": [
+      "@phpcs",
+      "@test"
+    ],
+    "phpstan": "phpstan analyse src --level=0",
+    "phpcs": "phpcs --standard=PSR12 src",
+    "test": "phpunit",
+    "phpcbf": "phpcbf --standard=PSR12 src",
+    "db:update": "doctrine orm:schema-tool:update --force"
   }
 }
+
