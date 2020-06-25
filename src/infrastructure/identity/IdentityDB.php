@@ -3,6 +3,7 @@
 namespace Infrastructure\Identity;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMException;
 use Spatial\Entity\DoctrineEntity;
 
 /**
@@ -17,13 +18,18 @@ class IdentityDB
 
     /**
      * Connect to database in constructor
+     * @throws ORMException
      */
     public function __construct()
     {
-        $connection = ['url' => 'mysql://root:glory@localhost/identityDB'];
+        $connection = [
+            'dbname' => DoctrineConfig['parameters']['database_identity_name'],
+            'user' => DoctrineConfig['parameters']['database_identity_user'],
+            'password' => DoctrineConfig['parameters']['database_identity_password'],
+            'host' => DoctrineConfig['parameters']['database_identity_host'],
+            'driver' => DoctrineConfig['parameters']['database_identity_driver'],
+        ];
         $this->emIdentity = (new DoctrineEntity('identity'))
-            ->setProxyDir('./src/core/domain/identity/proxies')
-            ->setProxyNamespace('Core\Domain\Identity')
             ->entityManager($connection);
     }
 }

@@ -1,4 +1,9 @@
-# config/packages/doctrine.yaml
+cli.config:
+  # entity manager of doctrine
+  entityManager: 'emSuite'
+  # namespace for doctrine connection class
+  namespace: '\Infrastructure\Resource\AppDB'
+
 parameters:
   #template for params
   database_driver: pdo_mysql
@@ -7,3 +12,11 @@ parameters:
   database_name: spatialDB
   database_user: root
   database_password: admin123
+
+  #galaxyIdentity
+  database_identity_driver: pdo_pgsql
+  database_identity_host: host.docker.internal
+  database_identity_port: 5432
+  database_identity_name: identityDB
+  database_identity_user: postgres
+  database_identity_password: admin123

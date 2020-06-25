@@ -17,7 +17,13 @@ class AppDB
 
     public function __construct()
     {
-        $connection = ['url' => 'mysql://root:glory@localhost/mydatabase'];
+        $connection = [
+            'dbname' => DoctrineConfig['parameters']['database_name'],
+            'user' => DoctrineConfig['parameters']['database_user'],
+            'password' => DoctrineConfig['parameters']['database_password'],
+            'host' => DoctrineConfig['parameters']['database_host'],
+            'driver' => DoctrineConfig['parameters']['database_driver'],
+        ];
         $this->emApp = (new DoctrineEntity('myapp'))
             ->entityManager($connection);
 
@@ -33,7 +39,6 @@ class AppDB
         //     ->setProxyDir('./src/core/domain/artist/proxies')
         //     ->setProxyNamespace('Core\Domain\Artist')
         //     ->entityManager($connection);
-
 
 
     }

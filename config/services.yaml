@@ -1,0 +1,11 @@
+# config/services.yaml
+parameters:
+  # don't do this: 'dir' is too generic and it doesn't convey any meaning
+  app.dir: '...'
+  # do this: short but easy to understand names
+  app.contents_dir: '...'
+  # it's OK to use dots, underscores, dashes or nothing, but always
+  # be consistent and use the same format for all the parameters
+  app.dir.contents: '...'
+  app.contents-dir: '...'
+

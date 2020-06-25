@@ -3,19 +3,25 @@
 define('DS', DIRECTORY_SEPARATOR);
 require_once __DIR__ . DS . 'vendor' . DS . 'autoload.php';
 
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use \Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 // cli-config.php
-$serviceFile = '.' . DS . 'config' . DS . 'services.yaml';
-
+$configDir = '.' . DS . 'config' . DS;
 
 try {
-    $services = Yaml::parseFile($serviceFile);
+//    config/service.yml
+    $services = Yaml::parseFile($configDir . 'services.yaml');
+    define('SpatialServices', $services);
+//    config/packages/doctrine.yaml
+    $doctrineConfigs = Yaml::parseFile($configDir . DS . 'packages' . DS . 'doctrine.yaml');
+    define('DoctrineConfig', $doctrineConfigs);
 
-    $dbClass = $serviceFile['doctrineCliConfig']['namespace'];
-    $entityManager = $serviceFile['doctrineCliConfig']['entityManager'];
-    return ConsoleRunner::createHelperSet((new $dbClass)->$entityManager);
+    $dbClass = ((array)$doctrineConfigs)['cli.config']['namespace'];
+    $entityManager = $doctrineConfigs['cli.config']['entityManager'];
+
+    return ConsoleRunner::createHelperSet((new $dbClass())->{$entityManager});
 } catch (ParseException $exception) {
     printf('Unable to parse the YAML string: %s', $exception->getMessage());
 }

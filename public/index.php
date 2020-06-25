@@ -44,6 +44,9 @@
 
 // declare(strict_types=1);
 
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
+
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
     header('Access-Control-Allow-Credentials: true');
@@ -95,10 +98,25 @@ class Startup
 
     /**
      *
-     * @throws ReflectionException
      */
     private function _bootstrapApp(): void
     {
+//        init params
+        $configDir = '..' . DS . 'config' . DS;
+
+        try {
+//    config/service.yml
+            $services = Yaml::parseFile($configDir . 'services.yaml');
+            define('SpatialServices', $services);
+//    config/packages/doctrine.yaml
+            $doctrineConfigs = Yaml::parseFile($configDir . DS . 'packages' . DS . 'doctrine.yaml');
+            define('DoctrineConfig', $doctrineConfigs);
+        } catch (ParseException $exception) {
+            printf('Unable to parse the YAML string: %s', $exception->getMessage());
+        }
+
+//        app render
+
         $this->webConfig->render();
     }
 }
