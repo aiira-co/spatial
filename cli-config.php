@@ -13,7 +13,7 @@ $configDir = '.' . DS . 'config' . DS;
 try {
 //    config/service.yml
     $services = Yaml::parseFile($configDir . 'services.yaml');
-    define('SpatialServices', $services);
+    define('SpatialServices', $services['parameters']);
 //    config/packages/doctrine.yaml
     $doctrineConfigs = Yaml::parseFile($configDir . DS . 'packages' . DS . 'doctrine.yaml');
     define('DoctrineConfig', $doctrineConfigs);

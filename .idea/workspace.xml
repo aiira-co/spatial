@@ -2,22 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/packages/framework.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/secrets/dev/id_rsa" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/secrets/dev/id_rsa.pub" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/spatial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cli-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/cli-config.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/identity/IdentityDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/identity/IdentityDB.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/jwt/ConfigJWT.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/jwt/ConfigJWT.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/jwt/Token.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/jwt/Token.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/resource/AppDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/resource/AppDB.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/services/PaymentService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/services/PaymentService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Infrastructure/services/SmsService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/services/SmsService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/application/interfaces/JwtInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/application/interfaces/JwtInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/application/interfaces/PaymentInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/application/interfaces/PaymentInterface.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/application/interfaces/SmsInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/application/interfaces/SmsInterface.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +21,9 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution />
+    <execution>
+      <executable path="composer" />
+    </execution>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -63,6 +60,24 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-server-middleware" />
       <path value="$PROJECT_DIR$/vendor/psr/container" />
       <path value="$PROJECT_DIR$/vendor/psr/http-server-handler" />
+      <path value="$PROJECT_DIR$/vendor/nette/bootstrap" />
+      <path value="$PROJECT_DIR$/vendor/nette/di" />
+      <path value="$PROJECT_DIR$/vendor/nette/finder" />
+      <path value="$PROJECT_DIR$/vendor/nette/neon" />
+      <path value="$PROJECT_DIR$/vendor/nette/php-generator" />
+      <path value="$PROJECT_DIR$/vendor/nette/robot-loader" />
+      <path value="$PROJECT_DIR$/vendor/nette/schema" />
+      <path value="$PROJECT_DIR$/vendor/nette/utils" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/jean85/pretty-package-versions" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpdoc-parser" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
+      <path value="$PROJECT_DIR$/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
     </include_path>
   </component>
   <component name="ProjectId" id="1Vd7iOmBzicj0tS44ctc6eppOlu" />
@@ -76,7 +91,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="yaml" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/config/secrets/dev" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/core/application/interfaces" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -85,13 +100,14 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="I:\Code\PHP\Frameworks\spatial\config\secrets\dev" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="I:\Code\PHP\Frameworks\spatial\public" />
       <recent name="I:\Code\PHP\Frameworks\spatial" />
       <recent name="I:\Code\PHP\Frameworks\spatial\config" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="I:\Code\PHP\Frameworks\spatial\src\core\application\interfaces" />
+      <recent name="I:\Code\PHP\Frameworks\spatial\config\secrets\dev" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -115,7 +131,10 @@
       <workItem from="1593010320637" duration="3796000" />
       <workItem from="1593014317494" duration="733000" />
       <workItem from="1593087470339" duration="834000" />
-      <workItem from="1593095158245" duration="826000" />
+      <workItem from="1593095158245" duration="2771000" />
+      <workItem from="1593097986054" duration="1333000" />
+      <workItem from="1593103075029" duration="420000" />
+      <workItem from="1594139764126" duration="473000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
@@ -145,7 +164,28 @@
       <option name="project" value="LOCAL" />
       <updated>1593014378970</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Framework Directory Refactored to enhance Security and Web Server Configs">
+      <created>1593096133528</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1593096133528</updated>
+    </task>
+    <task id="LOCAL-00006" summary="web.config added to public">
+      <created>1593098693207</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1593098693207</updated>
+    </task>
+    <task id="LOCAL-00007" summary="DocrtrineConfig constant added to hold /config/packages/doctine.yaml as array for both&#10;- connection string&#10;- cli config">
+      <created>1593103483131</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1593103483131</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,21 +195,31 @@
     <MESSAGE value="required 7.4+" />
     <MESSAGE value="php 7.4+ required" />
     <MESSAGE value="Framework Directory Refactored to enhance Security and Web Server Configs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Framework Directory Refactored to enhance Security and Web Server Configs" />
+    <MESSAGE value="web.config added to public" />
+    <MESSAGE value="DocrtrineConfig constant added to hold /config/packages/doctine.yaml as array for both&#10;- connection string&#10;- cli config" />
+    <option name="LAST_COMMIT_MESSAGE" value="DocrtrineConfig constant added to hold /config/packages/doctine.yaml as array for both&#10;- connection string&#10;- cli config" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1337" y="6" key="CommitChangelistDialog2" timestamp="1593014378428">
+    <state x="-1205" y="315" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1593097691620">
       <screen x="-1920" y="0" width="1920" height="1050" />
     </state>
-    <state x="-1337" y="6" key="CommitChangelistDialog2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014378428" />
+    <state x="-1205" y="315" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593097691620" />
+    <state x="-1337" y="6" key="CommitChangelistDialog2" timestamp="1593103482479">
+      <screen x="-1920" y="0" width="1920" height="1050" />
+    </state>
+    <state x="-1337" y="6" key="CommitChangelistDialog2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593103482479" />
+    <state x="-1197" y="435" key="ComposerInitDialogKey" timestamp="1593096647298">
+      <screen x="-1920" y="0" width="1920" height="1050" />
+    </state>
+    <state x="-1197" y="435" key="ComposerInitDialogKey/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593096647298" />
     <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1590680157961">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1590680157961" />
-    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2" timestamp="1593014099520">
+    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2" timestamp="1593103484446">
       <screen x="-1920" y="0" width="1920" height="1050" />
     </state>
-    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014099520" />
+    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593103484446" />
     <state x="-1153" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1593014005026">
       <screen x="-1920" y="0" width="1920" height="1050" />
     </state>
