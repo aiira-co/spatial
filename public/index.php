@@ -69,8 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
  */
 class Startup
 {
+    /**
+     * @var Config
+     */
     private Config $webConfig;
 
+    /**
+     * Startup constructor.
+     */
     public function __construct()
     {
         // echo  $_SERVER['REQUEST_URI'];
@@ -97,7 +103,7 @@ class Startup
     }
 
     /**
-     *
+     * @throws ReflectionException
      */
     private function _bootstrapApp(): void
     {
@@ -121,5 +127,20 @@ class Startup
     }
 }
 
+$app = null;
+/**
+ * Swoole Websocket Server
+ */
+if (isset($argv[1]) && $argv[1] === '--websocket') {
+    return (require __DIR__ . '../server/websocketServer.php')($app);
+}
 
+/**
+ * Swoole HttpServer
+ */
+(require __DIR__ . '../server/httpServer.php')($app);
+
+/**
+ * CGI NGNIX HttpServer
+ */
 $app = new Startup();

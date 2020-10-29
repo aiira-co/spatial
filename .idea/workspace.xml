@@ -2,17 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/README.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/nginx/nginx.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/php-fpm/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker/php-fpm/php-ini-overrides.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/httpServer.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/websocketServer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/spatial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/cli-config.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/public/.htaccess" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/application/interfaces/JwtInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/application/interfaces/JwtInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/application/interfaces/PaymentInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/application/interfaces/PaymentInterface.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/application/interfaces/SmsInterface.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/application/interfaces/SmsInterface.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,25 +92,44 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="yaml" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/core/application/interfaces" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/docker" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="I:\Code\PHP\Frameworks\spatial\docker" />
+      <recent name="I:\Code\PHP\Frameworks\spatial" />
+      <recent name="I:\Code\PHP\Frameworks\spatial\src\core\application\interfaces" />
+      <recent name="I:\Code\PHP\Frameworks\spatial\config\secrets\dev" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="I:\Code\PHP\Frameworks\spatial\public" />
       <recent name="I:\Code\PHP\Frameworks\spatial" />
       <recent name="I:\Code\PHP\Frameworks\spatial\config" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="I:\Code\PHP\Frameworks\spatial\src\core\application\interfaces" />
-      <recent name="I:\Code\PHP\Frameworks\spatial\config\secrets\dev" />
-    </key>
   </component>
+  <component name="RunManager">
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -134,7 +154,13 @@
       <workItem from="1593095158245" duration="2771000" />
       <workItem from="1593097986054" duration="1333000" />
       <workItem from="1593103075029" duration="420000" />
-      <workItem from="1594139764126" duration="473000" />
+      <workItem from="1594139764126" duration="703000" />
+      <workItem from="1597943357811" duration="154000" />
+      <workItem from="1602241375632" duration="52000" />
+      <workItem from="1602242119920" duration="653000" />
+      <workItem from="1602845385671" duration="105000" />
+      <workItem from="1602857364993" duration="5220000" />
+      <workItem from="1603879722185" duration="257000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
@@ -185,11 +211,18 @@
       <option name="project" value="LOCAL" />
       <updated>1593103483131</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="composer Spatial/Doctrine updated tp 1.2.0&#10;.htaccess corrected&#10;SpatialServices Constant points direct to parameters of config/services.yml">
+      <created>1594140381659</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1594140381659</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="required 7.4+" />
@@ -197,32 +230,7 @@
     <MESSAGE value="Framework Directory Refactored to enhance Security and Web Server Configs" />
     <MESSAGE value="web.config added to public" />
     <MESSAGE value="DocrtrineConfig constant added to hold /config/packages/doctine.yaml as array for both&#10;- connection string&#10;- cli config" />
-    <option name="LAST_COMMIT_MESSAGE" value="DocrtrineConfig constant added to hold /config/packages/doctine.yaml as array for both&#10;- connection string&#10;- cli config" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="-1205" y="315" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1593097691620">
-      <screen x="-1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="-1205" y="315" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593097691620" />
-    <state x="-1337" y="6" key="CommitChangelistDialog2" timestamp="1593103482479">
-      <screen x="-1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="-1337" y="6" key="CommitChangelistDialog2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593103482479" />
-    <state x="-1197" y="435" key="ComposerInitDialogKey" timestamp="1593096647298">
-      <screen x="-1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="-1197" y="435" key="ComposerInitDialogKey/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593096647298" />
-    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1590680157961">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050/-1920.0.1920.1050@0.0.1920.1050" timestamp="1590680157961" />
-    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2" timestamp="1593103484446">
-      <screen x="-1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="-1368" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593103484446" />
-    <state x="-1153" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1593014005026">
-      <screen x="-1920" y="0" width="1920" height="1050" />
-    </state>
-    <state x="-1153" y="435" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1050/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1593014005026" />
+    <MESSAGE value="composer Spatial/Doctrine updated tp 1.2.0&#10;.htaccess corrected&#10;SpatialServices Constant points direct to parameters of config/services.yml" />
+    <option name="LAST_COMMIT_MESSAGE" value="composer Spatial/Doctrine updated tp 1.2.0&#10;.htaccess corrected&#10;SpatialServices Constant points direct to parameters of config/services.yml" />
   </component>
 </project>
