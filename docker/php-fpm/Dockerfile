@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Install selected extensions and other stuff
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install  php-memcached php7.4-mysql php7.4-pgsql php-redis php-yaml php-gmp php-uuid \
+    && apt-get -y --no-install-recommends install  php-memcached php8.0-mysql php8.0-pgsql php-redis php-yaml php-gmp php-uuid \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Install git

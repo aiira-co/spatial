@@ -6,6 +6,11 @@ namespace Presentation\IdentityApi\Controllers;
 use Common\Libraries\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Core\Application\Logics\Identity\Commands\AuthenticateUser;
+use Spatial\Common\BindSourceAttributes\FromBody;
+use Spatial\Common\HttpAttributes\HttpPost;
+use Spatial\Core\Attributes\ApiController;
+use Spatial\Core\Attributes\Area;
+use Spatial\Core\Attributes\Route;
 
 /**
  * AuthorizationController Class exists in the Api\Controllers namespace
@@ -14,18 +19,24 @@ use Core\Application\Logics\Identity\Commands\AuthenticateUser;
  *
  * @category Controller
  */
+#[ApiController]
+#[Area('identity-api')]
+#[Route('[area]/[controller]')]
 class AuthorizationController extends Controller
 {
     /**
      * Login Requests
      *
-     * @param array $content
+     * @param string $content
      * @return ResponseInterface
+     * @throws \JsonException
      */
-    public function httpPost(string $content): ResponseInterface
-    {
+    #[HttpPost]
+    public function httpPost(
+        #[FromBody] string $content
+    ): ResponseInterface {
         $command = new AuthenticateUser();
-        $command->data = json_decode($content);
+        $command->data = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
         $command->params = $this->params;
         return $this->mediator->process($command);
     }

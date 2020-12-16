@@ -1,7 +1,7 @@
 {
   "name": "spatial/spatial",
   "description": "PHP7+ WebAPI Clean Architecture Framework.",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "type": "project",
   "keywords": [
     "Clean Architecture",
@@ -15,12 +15,12 @@
   "license": "MIT",
   "require": {
     "php": "^8.0",
-    "lcobucci/jwt": "4.0.0-alpha3",
-    "spatial/doctrine": "^1.2.0",
-    "spatial/mediator": "^1.0",
-    "spatial/route": "^1.0",
-    "symfony/yaml": "^5.1",
-    "ext-json": "*"
+    "ext-json": "*",
+    "lcobucci/jwt": "4.0.x-dev",
+    "spatial/doctrine": "dev-master",
+    "spatial/mediator": "dev-master",
+    "spatial/core": "dev-main",
+    "symfony/yaml": "^5.1"
   },
   "authors": [
     {
@@ -50,7 +50,7 @@
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
-    "phpstan/phpstan": "^0.11.17"
+    "phpstan/phpstan": "^0.12.62"
   },
   "scripts": {
     "ci": [

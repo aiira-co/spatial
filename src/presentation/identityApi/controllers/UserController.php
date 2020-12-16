@@ -12,6 +12,14 @@ use Core\Application\Logics\Identity\{
     Queries\GetUsers,
     Queries\ParamReserved,
 };
+use Spatial\Common\BindSourceAttributes\FromBody;
+use Spatial\Common\HttpAttributes\HttpDelete;
+use Spatial\Common\HttpAttributes\HttpGet;
+use Spatial\Common\HttpAttributes\HttpPost;
+use Spatial\Common\HttpAttributes\HttpPut;
+use Spatial\Core\Attributes\ApiController;
+use Spatial\Core\Attributes\Area;
+use Spatial\Core\Attributes\Route;
 
 /**
  * UserController Class exists in the Api\Controllers namespace
@@ -20,6 +28,9 @@ use Core\Application\Logics\Identity\{
  *
  * @category Controller
  */
+#[ApiController]
+#[Area('identity-api')]
+#[Route('[area]/[controller]')]
 class UserController extends Controller
 {
     /**
@@ -28,24 +39,24 @@ class UserController extends Controller
      * URI: GET: https://api.com/values/2 ,the number 2 in the uri is passed as int ...$id
      * to the methodUndocumented function
      *
-     * @param integer ...$id
+     * @param int $id
      * @return ResponseInterface
      */
-    public function httpGet(int $id): ResponseInterface
-    {
-
+    #[HttpGet('{?id:int}')]
+    public function httpGet(
+        int $id
+    ): ResponseInterface {
         // return ['users hre'];
         // --- use this if you are connected to the Databases ---
         if (!is_null($id)) {
             // print_r($id);
             $query = new GetUser();
-            $query->id = (int) $id[0];
+            $query->id = (int)$id[0];
         } else {
             $query = new GetUsers();
         }
         $query->params = $this->params;
-        return (array) $this->mediator->process($query);
-
+        return (array)$this->mediator->process($query);
         // return ['data'=>$users,'totalCount'=>count($users)];
     }
 
@@ -57,8 +68,10 @@ class UserController extends Controller
      * @param string $content
      * @return ResponseInterface
      */
-    public function httpPost(string $content): ResponseInterface
-    {
+    #[HttpPost]
+    public function httpPost(
+        #[FromBody] string $content
+    ): ResponseInterface {
         $content = (json_decode($content));
 
         $command = isset($content->field) ? new ParamReserved() : new CreateUser();
@@ -77,8 +90,11 @@ class UserController extends Controller
      * @param integer $id
      * @return ResponseInterface
      */
-    public function httpPut(string $content, int $id): ResponseInterface
-    {
+    #[HttpPut('{id:int}')]
+    public function httpPut(
+        #[FromBody] string $content,
+        int $id
+    ): ResponseInterface {
         $command = new UpdateUser();
         $command->id = $id;
         $command->data = json_decode($content);
@@ -92,10 +108,12 @@ class UserController extends Controller
      * the uri is passed as int ...$id to the method
      *
      * @param integer $id
-     * @return array|null
+     * @return ResponseInterface
      */
-    public function httpDelete(int $id): ResponseInterface
-    {
+    #[HttpDelete('{id:int}')]
+    public function httpDelete(
+        int $id
+    ): ResponseInterface {
         $command = new DeleteUser();
         $command->id = $id;
         return $this->mediator->process($command);

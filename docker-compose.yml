@@ -1,5 +1,5 @@
 ###############################################################################
-#                          Generated on phpdocker.io                          #
+#                          Generated on docker.io                          #
 ###############################################################################
 version: "3.1"
 services:
@@ -23,7 +23,7 @@ services:
        - "5000:80"
 
     php-fpm:
-      build: phpdocker/php-fpm
+      build: docker/php-fpm
       container_name: spatial-php-fpm
       working_dir: /application
       volumes:
