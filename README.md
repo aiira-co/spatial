@@ -18,7 +18,7 @@ The Spatial framework has a few system requirements. All of these requirements a
 
 However, if you are not using Homestead, you will need to make sure your server meets the following requirements:
 
-- PHP >= 7.4.2
+- PHP >= 8.0
 - BCMath PHP Extension
 - Ctype PHP Extension
 - Fileinfo PHP extension
