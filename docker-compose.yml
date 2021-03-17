@@ -1,32 +1,23 @@
-###############################################################################
-#                          Generated on docker.io                          #
-###############################################################################
-version: "3.1"
+# This docker-compose.yml file shows how Supervisor program(s) are reloaded automatically when file changes detected
+# under web root /var/www. There are two environment variables used:
+#     1. AUTORELOAD_PROGRAMS: space-separated Supervisor program(s) to be reloaded when file changes detected. e.g.,
+#            AUTORELOAD_PROGRAMS: "swoole"       # Autoreload Supervisor program "swoole" only.
+#            AUTORELOAD_PROGRAMS: "swoole nginx" # Autoreload Supervisor program "swoole" and "nginx".
+#     2. AUTORELOAD_ANY_FILES: Optional. If set to "true", "1", "yes", or "y", reload Supervisor program(s) when any
+#        files under the root directory (/var/www in this example) is changed; otherwise, reload only when PHP file(s)
+#        are changed.
+#
+version: "3"
 services:
-
-    memcached:
-      image: memcached:alpine
-      container_name: spatial-memcached
-
-    redis:
-      image: redis:alpine
-      container_name: spatial-redis
-
-    webserver:
-      image: nginx:alpine
-      container_name: spatial-webserver
-      working_dir: /application
-      volumes:
-          - .:/application
-          - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      ports:
-       - "5000:80"
-
-    php-fpm:
-      build: docker/php-fpm
-      container_name: spatial-php-fpm
-      working_dir: /application
-      volumes:
-        - .:/application
-        - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+  app:
+    build: .
+    environment:
+      AUTORELOAD_PROGRAMS: "swoole"
+      AUTORELAD_ANY_FILES: 0
+    ports:
+      - 80:9501
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./config/server/swoole.conf:/etc/supervisor/service.d/swoole.conf
 

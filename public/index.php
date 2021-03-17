@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2018 ProjectAIIR.
+ * Copyright (c) 2021 Aiira Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,114 +33,82 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package     [ ProjectAIIR ]
- * @subpackage  [ cqured ]
+ * @package     [ aiira ]
+ * @subpackage  [ spatial ]
  * @author      Owusu-Afriyie Kofi <koathecedi@gmail.com>
- * @copyright   2018 ProjectAIIR.
+ * @copyright   2021 Aiira Inc.
  * @license     http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link        http://airDesign.co.nf
- * @version     @@2.00@@
+ * @link        http://aiira.co
+ * @version     @@3.00@@
  */
 
-// declare(strict_types=1);
+declare(strict_types=1);
 
-use Symfony\Component\Yaml\Exception\ParseException;
-use Symfony\Component\Yaml\Yaml;
 
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-    header('Access-Control-Allow-Credentials: true');
-    header('Access-Control-Max-Age: 86400'); // cache for 1 day
+use Spatial\Api\TestModule;
+use Spatial\Core\App;
+use Spatial\Swoole\BridgeManager;
+use Swoole\Http\Request;
+use Swoole\Http\Response;
+use Swoole\Http\Server;
 
-}
-// Access-Control headers are received during OPTIONS requests
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
-        header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-    }
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
-        header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-    }
-    exit(0);
-}
+
+const DS = DIRECTORY_SEPARATOR;
+require_once __DIR__ . DS . '..' . DS . 'vendor' . DS . 'autoload.php';
 
 /**
- * Bootstrap the app
+ * This is how you would normally bootstrap your Spatial application
+ * For the sake of demonstration, we also add a simple middleware
+ * to check that the entire app stack is being setup and executed
+ * properly.
  */
-class Startup
-{
-    /**
-     * @var Config
-     */
-    private Config $webConfig;
+$app = new App();
 
-    /**
-     * Startup constructor.
-     */
-    public function __construct()
-    {
-        // echo  $_SERVER['REQUEST_URI'];
-
-        define('DS', DIRECTORY_SEPARATOR);
-        require_once __DIR__ . DS . '..' . DS . 'vendor' . DS . 'autoload.php';
-        require_once __DIR__ . DS . '..' . DS . 'config' . DS . 'config.php';
-
-        $this->webConfig = new Config();
-
-        if ($this->webConfig->offline['value']) {
-            try {
-                echo json_encode(
-                    ['notify' => 'success', 'result' => $this->webConfig->offline['message']],
-                    JSON_THROW_ON_ERROR,
-                    512
-                );
-            } catch (JsonException $e) {
-                echo $e->getMessage();
-            }
-        } else {
-            $this->_bootstrapApp();
-        }
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    private function _bootstrapApp(): void
-    {
-//        init params
-        $configDir = '..' . DS . 'config' . DS;
-
-        try {
-//    config/service.yml
-            $services = Yaml::parseFile($configDir . 'services.yaml');
-            define('SpatialServices', $services['parameters']);
-//    config/packages/doctrine.yaml
-            $doctrineConfigs = Yaml::parseFile($configDir . DS . 'packages' . DS . 'doctrine.yaml');
-            define('DoctrineConfig', $doctrineConfigs);
-        } catch (ParseException $exception) {
-            printf('Unable to parse the YAML string: %s', $exception->getMessage());
-        }
-
-//        app render
-
-        $this->webConfig->render();
-    }
+try {
+    $app->boot(TestModule::class);
+} catch (ReflectionException | Exception $e) {
 }
 
-$app = null;
-/**
- * Swoole Websocket Server
- */
-if (isset($argv[1]) && $argv[1] === '--websocket') {
-    return (require __DIR__ . '../server/websocketServer.php')($app);
-}
-
-/**
- * Swoole HttpServer
- */
-(require __DIR__ . '../server/httpServer.php')($app);
 
 /**
  * CGI NGNIX HttpServer
  */
-$app = new Startup();
+
+//$response = $app->processX();
+//http_response_code($response->getStatusCode());
+//echo $response->getBody();
+
+/**
+ *
+ * We instanciate the BridgeManager(this library)
+ */
+$bridgeManager = new BridgeManager($app);
+
+/**
+ * We start the Swoole server
+ */
+$http = new Server("0.0.0.0", 8081);
+
+/**
+ * We register the on "start" event
+ */
+$http->on(
+    "start",
+    function (Server $server) {
+        echo sprintf('Swoole http server is started at http://%s:%s', $server->host, $server->port), PHP_EOL;
+    }
+);
+
+/**
+ * We register the on "request event, which will use the BridgeManager to transform request, process it
+ * as a Spatial request and merge back the response
+ *
+ */
+$http->on(
+    "request",
+    function (Request $request, Response $response) use ($bridgeManager) {
+        $bridgeManager->process($request, $response)->end();
+    }
+);
+
+$http->start();

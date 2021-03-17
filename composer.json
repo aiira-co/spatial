@@ -1,13 +1,16 @@
 {
   "name": "spatial/spatial",
   "description": "PHP8+ WebAPI Clean Architecture Framework.",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "project",
   "keywords": [
-    "Clean Architecture",
+    "PHP",
     "Spatial",
-    "framework",
-    "api"
+    "Swoole",
+    "Async",
+    "API",
+    "Docker",
+    "Clean-Architecture"
   ],
   "homepage": "https://github.com/air-Design/cqured",
   "readme": "https://github.com/air-Design/cqured/blob/master/README.md",
@@ -17,9 +20,9 @@
     "php": "^8.0",
     "ext-json": "*",
     "lcobucci/jwt": "4.0.x-dev",
-    "spatial/doctrine": "^2.0",
-    "spatial/mediator": "^2.0",
-    "spatial/core": "^2.0",
+    "spatial/doctrine": "^3.0",
+    "spatial/mediator": "^3.0",
+    "spatial/core": "^3.0",
     "symfony/yaml": "^5.1"
   },
   "authors": [
@@ -50,7 +53,7 @@
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
-    "phpstan/phpstan": "^0.12.62"
+    "phpstan/phpstan": "^0.12.81"
   },
   "scripts": {
     "ci": [
