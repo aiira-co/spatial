@@ -20,9 +20,9 @@
     "php": "^8.0",
     "ext-json": "*",
     "lcobucci/jwt": "4.0.x-dev",
-    "spatial/doctrine": "^3.0",
-    "spatial/mediator": "^3.0",
-    "spatial/core": "^3.0",
+    "spatial/doctrine": "^2.0",
+    "spatial/mediator": "^2.0",
+    "spatial/core": "^2.0",
     "symfony/yaml": "^5.1"
   },
   "authors": [
