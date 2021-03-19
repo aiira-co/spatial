@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Application\Logics\Identity\Commands;
+namespace Core\Application\Logics\Identity\Authorization\Commands;
 
 use Core\Domain\Identity\Person;
 use Infrastructure\Identity\IdentityDB;

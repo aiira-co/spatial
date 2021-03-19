@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Application\Logics\Identity\Commands;
+namespace Core\Application\Logics\Identity\User\Commands;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

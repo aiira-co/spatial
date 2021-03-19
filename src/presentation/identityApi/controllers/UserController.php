@@ -2,7 +2,7 @@
 
 namespace Presentation\IdentityApi\Controllers;
 
-use Common\Libraries\Controller;
+//use Common\Libraries\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Core\Application\Logics\Identity\{
     Commands\CreateUser,
@@ -20,6 +20,7 @@ use Spatial\Common\HttpAttributes\HttpPut;
 use Spatial\Core\Attributes\ApiController;
 use Spatial\Core\Attributes\Area;
 use Spatial\Core\Attributes\Route;
+use Spatial\Core\Controller;
 
 /**
  * UserController Class exists in the Api\Controllers namespace

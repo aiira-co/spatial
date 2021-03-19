@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Application\Logics\Identity\Commands;
+namespace Core\Application\Logics\Identity\User\Commands;
 
 use Core\Application\Logics\Identity\Queries\ParamReserved;
 use Psr\Http\Message\ResponseInterface;

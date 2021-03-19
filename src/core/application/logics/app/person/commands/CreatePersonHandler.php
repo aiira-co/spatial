@@ -1,5 +1,5 @@
 <?php
-namespace Core\Application\Logics\Myapp\Commands;
+namespace Core\Application\Logics\App\Person\Commands;
 
 use Cqured\Mediator\IRequest;
 use Cqured\Mediator\IRequestHandler;

@@ -45,7 +45,7 @@
 declare(strict_types=1);
 
 
-use Spatial\Api\TestModule;
+use Presentation\AppModule;
 use Spatial\Core\App;
 use Spatial\Swoole\BridgeManager;
 use Swoole\Http\Request;
@@ -64,10 +64,8 @@ require_once __DIR__ . DS . '..' . DS . 'vendor' . DS . 'autoload.php';
  */
 $app = new App();
 
-try {
-    $app->boot(TestModule::class);
-} catch (ReflectionException | Exception $e) {
-}
+
+$app->boot(AppModule::class);
 
 
 /**
@@ -87,14 +85,14 @@ $bridgeManager = new BridgeManager($app);
 /**
  * We start the Swoole server
  */
-$http = new Server("0.0.0.0", 8081);
+$http = new Server("0.0.0.0", 9501);
 
 /**
  * We register the on "start" event
  */
 $http->on(
     "start",
-    function (Server $server) {
+    function (Server $server) use ($app) {
         echo sprintf('Swoole http server is started at http://%s:%s', $server->host, $server->port), PHP_EOL;
     }
 );
@@ -107,6 +105,8 @@ $http->on(
 $http->on(
     "request",
     function (Request $request, Response $response) use ($bridgeManager) {
+//        $response->end("Hello World, Swoole @Work, this is Ghana");
+//        echo 'new request sent';
         $bridgeManager->process($request, $response)->end();
     }
 );

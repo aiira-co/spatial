@@ -1,5 +1,5 @@
 <?php
-namespace Core\Domain\Myapp;
+namespace Core\Domain\MyApp;
 // src/core/domain/myapp/Product.php
 /**
  * @Entity @Table(name="products")

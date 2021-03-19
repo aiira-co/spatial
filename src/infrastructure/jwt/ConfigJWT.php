@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\JWT;
+namespace Infrastructure\Jwt;
 
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key;

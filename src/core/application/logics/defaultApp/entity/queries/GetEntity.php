@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Application\Logics\DefaultApp\Queries;
+namespace Core\Application\Logics\DefaultApp\Entity\Queries;
 
 use Spatial\Psr7\Request;
 

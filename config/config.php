@@ -16,4 +16,7 @@ class Config
 {
     // General & PHP Doctrine Config
     public bool $enableProdMode = false;
+    public string $appName = 'Spatial API';
+
+
 }

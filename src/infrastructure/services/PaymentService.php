@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Service;
+namespace Infrastructure\Services;
 
 class PaymentService
 { }

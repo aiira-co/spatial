@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Application\Logics\App\Queries;
+namespace Core\Application\Logics\App\Person\Queries;
 
 use Cqured\Mediator\IRequest;
 

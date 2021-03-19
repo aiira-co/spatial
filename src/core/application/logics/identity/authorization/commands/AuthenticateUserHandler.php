@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\Application\Logics\Identity\Commands;
+namespace Core\Application\Logics\Identity\Authorization\Commands;
 
 use Core\Application\Logics\General\Commands\CreatePerson;
 use Core\Domain\Identity\Person;

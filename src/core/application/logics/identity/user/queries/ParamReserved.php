@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Core\Application\Logics\Identity\Queries;
+namespace Core\Application\Logics\Identity\User\Queries;
 
 use Core\Domain\Identity\Person;
 use Cqured\MediatR\IRequest;

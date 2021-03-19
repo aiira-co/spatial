@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Application\Logics\DefaultApp\Queries;
+namespace Core\Application\Logics\DefaultApp\Entity\Queries;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

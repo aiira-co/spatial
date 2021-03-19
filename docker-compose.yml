@@ -15,7 +15,7 @@ services:
       AUTORELOAD_PROGRAMS: "swoole"
       AUTORELAD_ANY_FILES: 0
     ports:
-      - 80:9501
+      - 9501:9501
     working_dir: /var/www
     volumes:
       - .:/var/www

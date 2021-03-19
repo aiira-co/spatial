@@ -2,15 +2,16 @@
 
 namespace Presentation\DefaultApi\Controllers;
 
-use Core\Application\Logics\DefaultApp\{
+use Core\Application\Logics\DefaultApp\Entity\{
     Commands\DeleteEntity,
     Commands\UpdateEntity,
     Commands\CreateEntity,
-    Queries\GetEntites,
+    Queries\GetEntities,
     Queries\GetEntity,
 };
-use Common\Libraries\Controller;
+use Infrastructure\Services\AuthUser;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Spatial\Common\BindSourceAttributes\FromBody;
 use Spatial\Common\HttpAttributes\HttpDelete;
 use Spatial\Common\HttpAttributes\HttpGet;
@@ -18,7 +19,9 @@ use Spatial\Common\HttpAttributes\HttpPost;
 use Spatial\Common\HttpAttributes\HttpPut;
 use Spatial\Core\Attributes\ApiController;
 use Spatial\Core\Attributes\Area;
+use Spatial\Core\Attributes\Authorize;
 use Spatial\Core\Attributes\Route;
+use Spatial\Mediator\Mediator;
 
 /**
  * ValuesController Class exists in the Api\Controllers namespace
@@ -30,26 +33,38 @@ use Spatial\Core\Attributes\Route;
 #[ApiController]
 #[Area('default-api')]
 #[Route('[area]/[controller]')]
-class ValuesController extends Controller
+class ValuesController
 {
+
+
+    private MiddlewareInterface $mediator;
+
+    public function __construct()
+    {
+        $this->mediator = new Mediator();
+    }
 
     /**
      * The Method httpGet() called to handle a GET request
      * URI: GET: https://api.com/values
      * URI: GET: https://api.com/values/2 ,the number 2 in the uri is passed as int ...$id to the method
-     * @param int|null $id
      * @return ResponseInterface
      */
-    #[HttpGet('{?id:int}')]
-    public function httpGet(
-        ?int $id
-    ): ResponseInterface {
-        if (!is_null($id)) {
-            $query = new GetEntity();
-        } else {
-            $query = new GetEntites();
-        }
+    #[HttpGet]
+    #[Authorize(AuthUser::class)]
+    public function getValues(): ResponseInterface
+    {
+        $query = new GetEntities();
+        return $this->mediator->process($query);
+        // return $this->mediator->process();
+    }
 
+
+    #[HttpGet('{id:int}')]
+    public function httpGet(
+        int $id
+    ): ResponseInterface {
+        $query = new GetEntity();
         return $this->mediator->process($query);
         // return $this->mediator->process();
     }
