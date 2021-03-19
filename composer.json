@@ -12,9 +12,9 @@
     "Docker",
     "Clean-Architecture"
   ],
-  "homepage": "https://github.com/air-Design/cqured",
-  "readme": "https://github.com/air-Design/cqured/blob/master/README.md",
-  "time": "2018/10/14",
+  "homepage": "https://github.com/aiira_co/spatial",
+  "readme": "https://github.com/aiira_co/spatial/blob/master/README.md",
+  "time": "2021/03/19",
   "license": "MIT",
   "require": {
     "php": "^8.0",
