@@ -4,12 +4,13 @@
 namespace Infrastructure\Services;
 
 
-use Spatial\Router\Interfaces\CanActivate;
+use Spatial\Router\Interfaces\IsAuthorizeInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AuthUser implements CanActivate
 {
 
-    public function canActivate(string $url): bool
+    public function isAuthorized(ServerRequestInterface $request): bool
     {
         return true;
         // TODO: Implement canActivate() method.

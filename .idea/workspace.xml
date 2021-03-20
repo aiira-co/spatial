@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="- Initialized spatial libs in composer to ^2.0&#10;- PHP 8 required">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/presentation/AppModule.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/presentation/AppModule.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +110,9 @@
       <workItem from="1616001668864" duration="554000" />
       <workItem from="1616031425888" duration="336000" />
       <workItem from="1616151388447" duration="512000" />
-      <workItem from="1616152644440" duration="100000" />
+      <workItem from="1616152644440" duration="1111000" />
+      <workItem from="1616153918591" duration="1826000" />
+      <workItem from="1616247722914" duration="229000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
