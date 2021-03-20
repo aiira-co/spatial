@@ -4,10 +4,10 @@
 namespace Infrastructure\Services;
 
 
-use Spatial\Router\Interfaces\IsAuthorizeInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Spatial\Router\Interfaces\IsAuthorizeInterface;
 
-class AuthUser implements CanActivate
+class AuthUser implements IsAuthorizeInterface
 {
 
     public function isAuthorized(ServerRequestInterface $request): bool

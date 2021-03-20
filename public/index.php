@@ -106,7 +106,6 @@ $http->on(
     "request",
     function (Request $request, Response $response) use ($bridgeManager) {
 //        $response->end("Hello World, Swoole @Work, this is Ghana");
-//        echo 'new request sent';
         $bridgeManager->process($request, $response)->end();
     }
 );
