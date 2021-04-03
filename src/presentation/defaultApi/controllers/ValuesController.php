@@ -21,6 +21,7 @@ use Spatial\Core\Attributes\ApiController;
 use Spatial\Core\Attributes\Area;
 use Spatial\Core\Attributes\Authorize;
 use Spatial\Core\Attributes\Route;
+use Spatial\Core\ControllerBase;
 use Spatial\Mediator\Mediator;
 
 /**
@@ -33,16 +34,9 @@ use Spatial\Mediator\Mediator;
 #[ApiController]
 #[Area('default-api')]
 #[Route('[area]/[controller]')]
-class ValuesController
+class ValuesController extends ControllerBase
 {
 
-
-    private MiddlewareInterface $mediator;
-
-    public function __construct()
-    {
-        $this->mediator = new Mediator();
-    }
 
     /**
      * The Method httpGet() called to handle a GET request
