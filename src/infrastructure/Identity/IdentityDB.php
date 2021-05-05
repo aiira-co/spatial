@@ -22,14 +22,7 @@ class IdentityDB
      */
     public function __construct()
     {
-        $connection = [
-            'dbname' => DoctrineConfig['parameters']['database_identity_name'],
-            'user' => DoctrineConfig['parameters']['database_identity_user'],
-            'password' => DoctrineConfig['parameters']['database_identity_password'],
-            'host' => DoctrineConfig['parameters']['database_identity_host'],
-            'driver' => DoctrineConfig['parameters']['database_identity_driver'],
-        ];
         $this->emIdentity = (new DoctrineEntity('identity'))
-            ->entityManager($connection);
+            ->entityManager(DoctrineConfig['doctrine']['dbal']['connections']['identity']);
     }
 }

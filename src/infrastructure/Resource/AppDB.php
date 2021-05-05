@@ -15,17 +15,13 @@ class AppDB
 {
     public EntityManager $emApp;
 
+    /**
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function __construct()
     {
-        $connection = [
-            'dbname' => DoctrineConfig['parameters']['database_name'],
-            'user' => DoctrineConfig['parameters']['database_user'],
-            'password' => DoctrineConfig['parameters']['database_password'],
-            'host' => DoctrineConfig['parameters']['database_host'],
-            'driver' => DoctrineConfig['parameters']['database_driver'],
-        ];
         $this->emApp = (new DoctrineEntity('myapp'))
-            ->entityManager($connection);
+            ->entityManager(DoctrineConfig['doctrine']['dbal']['connections']['defaultDB']);
 
         // or
         // $connection = [
