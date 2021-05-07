@@ -1,3 +1,8 @@
 header:
-  allowed_domains: [ 'http://localhost', 'https://aiira.co' ]
-enableProdMode: false
+  allowed_domains: [ 'http://127.0.0.1',
+                     'https://localhost',
+  ]
+  allowed_methods: [ 'GET','POST','PUT','DELETE','OPTIONS' ]
+  allow_credentials: true,
+  max_cache_age: 86400
+enableProdMode: true
