@@ -72,6 +72,7 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-server-handler" />
       <path value="$PROJECT_DIR$/vendor/psr/http-server-middleware" />
       <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/deprecations" />
     </include_path>
   </component>
   <component name="ProjectId" id="1Vd7iOmBzicj0tS44ctc6eppOlu" />
@@ -178,7 +179,8 @@
       <workItem from="1620068227980" duration="344000" />
       <workItem from="1620081737792" duration="22000" />
       <workItem from="1620210039840" duration="1807000" />
-      <workItem from="1620409057429" duration="101000" />
+      <workItem from="1620409057429" duration="200000" />
+      <workItem from="1620410485355" duration="58000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
