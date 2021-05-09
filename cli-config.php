@@ -13,9 +13,17 @@ $configDir = '.' . DS . 'config' . DS;
 try {
 //    config/service.yml
     $services = Yaml::parseFile($configDir . 'services.yaml');
-    define('SpatialServices', $services['parameters']);
+    define('SpatialServices', $services);
+
+    //    config/packages/framework.yaml
+    $appConfigs = Yaml::parseFile($configDir . DS . 'packages' . DS . 'framework.yaml');
+    define('AppConfig', $appConfigs);
+
+    $isProdMode = $appConfigs['enableProdMode'];
 //    config/packages/doctrine.yaml
-    $doctrineConfigs = Yaml::parseFile($configDir . DS . 'packages' . DS . 'doctrine.yaml');
+    $doctrineConfigs = Yaml::parseFile(
+        $configDir . DS . 'packages' . DS . ($isProdMode ? 'doctrine.yaml' : 'doctrine.dev.yaml')
+    );
     define('DoctrineConfig', $doctrineConfigs);
 
     $dbClass = ((array)$doctrineConfigs)['cli.config']['namespace'];

@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="- Initialized spatial libs in composer to ^2.0&#10;- PHP 8 required">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/framework.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/framework.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cli-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/cli-config.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,7 +180,8 @@
       <workItem from="1620210039840" duration="1807000" />
       <workItem from="1620409057429" duration="200000" />
       <workItem from="1620410485355" duration="106000" />
-      <workItem from="1620413981884" duration="10000" />
+      <workItem from="1620413981884" duration="660000" />
+      <workItem from="1620569882452" duration="6000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
