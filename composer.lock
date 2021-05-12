@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d21d4e481e2ed347efcc2daece431e1d",
+    "content-hash": "1657b3800a6358fcf3389bd13f41f521",
     "packages": [
         {
             "name": "brick/math",
@@ -2223,16 +2223,16 @@
         },
         {
             "name": "spatial/core",
-            "version": "3.2.0",
+            "version": "3.2.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aiira-co/spatial-core.git",
-                "reference": "66d4025697b030db839acb1919b221161ef6d15d"
+                "reference": "1c29c7df21cdc5cb3277fece842425c7d7e9379b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aiira-co/spatial-core/zipball/66d4025697b030db839acb1919b221161ef6d15d",
-                "reference": "66d4025697b030db839acb1919b221161ef6d15d",
+                "url": "https://api.github.com/repos/aiira-co/spatial-core/zipball/1c29c7df21cdc5cb3277fece842425c7d7e9379b",
+                "reference": "1c29c7df21cdc5cb3277fece842425c7d7e9379b",
                 "shasum": ""
             },
             "require": {
@@ -2272,9 +2272,9 @@
             "description": "Spatial API Core Contains Attributes",
             "support": {
                 "issues": "https://github.com/aiira-co/spatial-core/issues",
-                "source": "https://github.com/aiira-co/spatial-core/tree/3.2.0"
+                "source": "https://github.com/aiira-co/spatial-core/tree/3.2.23"
             },
-            "time": "2021-05-07T17:20:36+00:00"
+            "time": "2021-05-12T09:33:23+00:00"
         },
         {
             "name": "spatial/doctrine",
@@ -3317,16 +3317,16 @@
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.85",
+            "version": "0.12.86",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "20e6333c0067875ad7697cd8acdf245c6ef69d03"
+                "reference": "a84fdc53ecca7643dbc89ef8880d8b393a6c155a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/20e6333c0067875ad7697cd8acdf245c6ef69d03",
-                "reference": "20e6333c0067875ad7697cd8acdf245c6ef69d03",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a84fdc53ecca7643dbc89ef8880d8b393a6c155a",
+                "reference": "a84fdc53ecca7643dbc89ef8880d8b393a6c155a",
                 "shasum": ""
             },
             "require": {
@@ -3357,7 +3357,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.85"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.86"
             },
             "funding": [
                 {
@@ -3373,7 +3373,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-27T14:13:16+00:00"
+            "time": "2021-05-08T11:29:01+00:00"
         },
         {
             "name": "roave/security-advisories",

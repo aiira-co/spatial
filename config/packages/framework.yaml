@@ -3,6 +3,6 @@ header:
                      'https://localhost', ]
   allowed_methods: 'GET, POST, PUT, DELETE, OPTIONS'
   allowed_headers: 'AccountKey, X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Host, Date, Cookie, Cookie2'
-  allow_credentials: true,
+  allow_credentials: true
   max_cache_age: 60
-enableProdMode: true
+enableProdMode: false
