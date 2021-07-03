@@ -6,7 +6,7 @@ FROM phpswoole/swoole
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync
-ARG PHP_EXT_ARGS="pdo_pgsql"
+ARG PHP_EXT_ARGS="pdo_pgsql, pdo_mysql"
 RUN install-php-extensions ${PHP_EXT_ARGS}
 
 COPY ./config/server/swoole.conf /etc/supervisor/service.d/swoole.conf
