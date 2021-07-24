@@ -12,12 +12,12 @@ doctrine:
     connections:
       #template for params
       defaultDB:
-        driver: pdo_mysql
-        host: host.docker.internal
-        port: 3306
-        dbname: spatialDB
-        user: root
-        password: admin123
+        driver: '%env(DB_CONNECTION)%'
+        host: '%env(DB_HOST)%'
+        port: '%env(DB_PORT)%'
+        dbname: '%env(DB_NAME)%'
+        user: '%env(DB_USERNAME)%'
+        password: '%env(DB_PASSWORD)%'
         charset: ~
         path: ~
         memory: ~
@@ -37,12 +37,12 @@ doctrine:
 
       #galaxyIdentity
       identity:
-        driver: pdo_pgsql
-        host: host.docker.internal
-        port: 5432
-        dbname: identityDB
-        user: postgres
-        password: admin123
+        driver: '%env(DB_CONNECTION)%'
+        host: '%env(DB_HOST)%'
+        port: '%env(DB_PORT)%'
+        dbname: '%env(DB_NAME_IDENTITY)%'
+        user: '%env(DB_USERNAME)%'
+        password: '%env(DB_PASSWORD)%'
         charset: ~
         path: ~
         memory: ~

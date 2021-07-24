@@ -1,43 +1,23 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Core\Domain\MyApp;
+
 // src/core/domain/myapp/Product.php
-/**
- * @Entity @Table(name="products")
- **/
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\Table;
+
+#[\Doctrine\ORM\Mapping\Entity]
+#[Table(name: "products")]
 class Product
 {
-    /** @Id @Column(type="integer") @GeneratedValue **/
-    protected $id;
-    
-    /** @Column(type="string") **/
-    protected $name;
+    #[Id, Column, GeneratedValue]
+    public int $id;
 
+    #[Column]
+    public string $name;
 
-    /**
-     * Get the value of id
-     */ 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Get the value of name
-     */ 
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set the value of name
-     *
-     * @return  self
-     */ 
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 }

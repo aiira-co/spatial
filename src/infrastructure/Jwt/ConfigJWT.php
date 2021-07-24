@@ -4,20 +4,24 @@ namespace Infrastructure\Jwt;
 
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Key\LocalFileReference;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 class ConfigJWT
 {
 
-    public function __construct()
-    { }
-
-    public function tokenConfig()
+    /**
+     * @return \Lcobucci\JWT\Configuration
+     */
+    public function tokenConfig(): Configuration
     {
         return Configuration::forAsymmetricSigner(
             new Sha256(),
-            new Key('file://../id_rsa', 'glory'),
-            new Key('file://../id_rsa.pub')
+            LocalFileReference::file(
+                'file:/' . getenv('JWT_SECRET_KEY'),
+                getenv('JWT_PASS_PHRASE')
+            ),
+            LocalFileReference::file('file:/' . getenv('JWT_PUBLIC_KEY'))
         );
     }
 }

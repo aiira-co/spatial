@@ -16,10 +16,10 @@ use Spatial\Psr7\Request;
  */
 class GetUser extends Request
 {
-    public $id;
-    public $params;
+    public int $id;
+    public object $params;
 
-    private $_user;
+    private Person $_user;
 
     /**
      * Check if User exists
@@ -49,11 +49,11 @@ class GetUser extends Request
     public function getUser(): array
     {
         return [
-            'id' => $this->_user->getId(),
-            'image' => $this->_user->getImage(),
-            'username' => $this->_user->getUsername(),
-            'surname' => $this->_user->getSurname(),
-            'othername' => $this->_user->getOthername(),
+            'id' => $this->_user->id,
+            'image' => $this->_user->image,
+            'username' => $this->_user->username,
+            'surname' => $this->_user->surname,
+            'othername' => $this->_user->othername,
         ];
     }
 
@@ -65,16 +65,18 @@ class GetUser extends Request
     public function getUserProfile(): array
     {
         return [
-            'username' => $this->_user->getUsername(),
-            'surname' => $this->_user->getSurname(),
-            'othername' => $this->_user->getOthername(),
-            'gender' => $this->_user->getGender()->getId(),
-            'accountTypeId' => $this->_user->getAccountType()->getId(),
-            'bio' => $this->_user->getBio(),
-            'tagline' => $this->_user->getTagline(),
-            'location' => $this->_user->getLocation(),
-            'language' => $this->_user->getLanguage(),
-            'links' => $this->_user->getLinks(),
+            'username' => $this->_user->username,
+            'surname' => $this->_user->surname,
+            'othername' => $this->_user->othername,
+            'gender' => $this->_user->gender->id,
+            'accountTypeId' => $this->_user->accountType->id,
+            'bio' => $this->_user->bio,
+            'tagline' => $this->_user->tagline,
+            'location' => [
+                'city' => $this->_user->city,
+                'country' => $this->_user->country
+            ],
+            'language' => $this->_user->language,
             // 'timezone' => $this->_user->getTimezone(),
         ];
     }
@@ -87,7 +89,7 @@ class GetUser extends Request
     public function getUserAvatar(): array
     {
         return [
-            'image' => $this->_user->getImage(),
+            'image' => $this->_user->image,
         ];
     }
 
@@ -99,10 +101,10 @@ class GetUser extends Request
     public function getUserContact(): array
     {
         return [
-            'email' => $this->_user->getEmail(),
-            'emailVerified' => $this->_user->getEmailVerified(),
-            'phone' => $this->_user->getPhoneOne(),
-            'phoneVerified' => $this->_user->getPhoneVerified(),
+            'email' => $this->_user->email,
+            'emailVerified' => $this->_user->emailVerified,
+            'phone' => $this->_user->phoneOne,
+            'phoneVerified' => $this->_user->phoneVerified,
         ];
     }
 
@@ -114,7 +116,7 @@ class GetUser extends Request
     public function getUserNotification(): array
     {
         return [
-            'image' => $this->_user->getImage(),
+            'image' => $this->_user->image,
         ];
     }
 
@@ -126,7 +128,7 @@ class GetUser extends Request
     public function getUserAppClaims(): array
     {
         return [
-            'image' => $this->_user->getImage(),
+            'image' => $this->_user->image,
         ];
     }
 
@@ -139,8 +141,8 @@ class GetUser extends Request
     {
         //get plan for the appClaim. basic / member
         return [
-            'created' => $this->_user->getCreated(),
-            'type' => $this->_user->getImage(),
+            'created' => $this->_user->created->getTimestamp(),
+            'type' => $this->_user->image,
         ];
     }
 }
