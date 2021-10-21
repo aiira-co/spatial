@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="- Initialized spatial libs in composer to ^2.0&#10;- PHP 8 required">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/core/Domain/Identity/GroupType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/core/Domain/Identity/Groups.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli-config.php" beforeDir="false" afterPath="$PROJECT_DIR$/cli-config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.dev.yaml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/Libraries/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/Libraries/Controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Application/Logics/Identity/User/Queries/GetUser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Application/Logics/Identity/User/Queries/GetUser.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Domain/Identity/Person.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Domain/Identity/Person.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/Domain/MyApp/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/Domain/MyApp/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/Jwt/ConfigJWT.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/Jwt/ConfigJWT.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/infrastructure/Jwt/Token.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/Jwt/Token.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,10 +85,16 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ACTIVE_CLOUD_PROJECT_ACCOUNT" value="airdesign.code@gmail.com" />
+    <property name="ACTIVE_CLOUD_PROJECT_ID" value="aiira-apps" />
+    <property name="ACTIVE_CLOUD_PROJECT_NAME" value="aiira apps" />
+    <property name="ACTIVE_CLOUD_PROJECT_NUMBER" value="985201409614" />
+    <property name="NEW_TOOLWINDOW_STRIPE_DEFAULTS" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.google.cloudcode.ide_session_index" value="20211021_0000" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="yaml" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/core/Domain/Identity" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -201,7 +199,10 @@
       <workItem from="1625736876686" duration="49000" />
       <workItem from="1627138743147" duration="311000" />
       <workItem from="1627139164083" duration="106000" />
-      <workItem from="1627160565797" duration="1358000" />
+      <workItem from="1627160565797" duration="1430000" />
+      <workItem from="1627162244431" duration="176000" />
+      <workItem from="1628504887755" duration="919000" />
+      <workItem from="1634818955549" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
