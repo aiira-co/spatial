@@ -14,7 +14,7 @@ services:
     env_file:
       - .env
     ports:
-      - 9501:9501
+      - 8000:8080
     working_dir: /var/www
     volumes:
       - .:/var/www

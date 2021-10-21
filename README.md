@@ -1,9 +1,14 @@
 # Spatial (CQured) MULTI-WebAPI Framework - Clean Architecture
 
-- To Access the appAPI's ValuesController, go to localhost/appApi/values -> this just returns the array in the controller's httpGet() method.
-- The real magic is to enter localhost/cqured/appApi/test to access the the controller's httpGet() method.
-  This now calls the GetPersonQuery from the your 'app' application in the /src/core/applications/logics/app/person/queries folder.
-    - The Query Class automatically calls its Handler class (done with the Spatial\Mediatr class).
+[comment]: <> (- To Access the appAPI's ValuesController, go to localhost:8000/appApi/values -> this just returns the array in the controller's httpGet&#40;&#41; method.)
+
+[comment]: <> (- The real magic is to enter localhost:8000/appApi/test to access the controller's httpGet&#40;&#41; method.)
+
+[comment]: <> (  This now calls the GetPersonQuery from the your 'app' application in the /src/core/applications/logics/app/person/queries folder.)
+
+[comment]: <> (    - The Query Class automatically calls its Handler class &#40;done with the Spatial\Mediatr class&#41;.)
+- Documentation: https://aiira.co/developer
+- Twitter: https://twitter.com/aiira_co
 
 Clean/Onion Architecture for multi-api framework
 
@@ -14,11 +19,12 @@ Clean/Onion Architecture for multi-api framework
 - lcobucci/jwt for Auth
 
 ## Server Requirements
-The Spatial framework has a few system requirements. All of these requirements are satisfied by the Spatial Homestead Docker, so it's highly recommended that you use Homestead as your local Spatial development environment.
+The Spatial framework has a few system requirements. All of these requirements are satisfied by the Spatial docker-compose.yml and Dockerfile, so it's highly recommended that you use Docker as your local Spatial development environment.
 
-However, if you are not using Homestead, you will need to make sure your server meets the following requirements:
+However, if you are not using Docker, you will need to make sure your server meets the following requirements:
 
 - PHP >= 8.0
+- Openswoole as Server
 - BCMath PHP Extension
 - Ctype PHP Extension
 - Fileinfo PHP extension
@@ -39,6 +45,7 @@ composer create-project spatial/spatial webapi
 # Configuration
 ### Public Directory
 After installing Spatial, you should configure your web server's document / web root to be the public directory. The index.php in this directory serves as the front controller for all HTTP requests entering your API.
+In there, you will find the swoole http server configured after booting the app
 
 ### Configuration Files
 All of the configuration files for the Spatial framework are stored in the config directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
@@ -71,31 +78,6 @@ You may also want to configure a few additional components of Spatial, such as:
 
 ### Directory Configuration
 Spatial should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Spatial application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
-
-
-## Pretty URLs
-### Apache
-Spatial includes a public/.htaccess file that is used to provide URLs without the index.php front controller in the path. Before serving Spatial with Apache, be sure to enable the mod_rewrite module so the .htaccess file will be honored by the server.
-
-If the .htaccess file that ships with Spatial does not work with your Apache installation, try this alternative:
-```apacheconfig
-Options +FollowSymLinks -Indexes
-RewriteEngine On
-
-RewriteCond %{HTTP:Authorization} .
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [L]
-```
-### Nginx
-If you are using Nginx, the following directive in your site configuration will direct all requests to the index.php front controller:
-```
-location / {
-    try_files $uri $uri/ /index.php?$query_string;
-}
-```
 
 # Use the Default Directory Structure¶
 Unless your project follows a development practice that imposes a certain directory structure, follow the default Spatial directory structure. It's flat, self-explanatory and not coupled to Spatial:
