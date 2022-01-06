@@ -9,9 +9,10 @@ doctrine:
   dbal:
     types:
     #      uuid: Ramsey\Uuid\Doctrine\UuidType
+    default_connection: default
     connections:
       #template for params
-      defaultDB:
+      default:
         driver: '%env(DB_CONNECTION)%'
         host: '%env(DB_HOST)%'
         port: '%env(DB_PORT)%'
@@ -60,6 +61,14 @@ doctrine:
         pooled: ~
 
   orm:
+    auto-generate_proxy_classes: true
+    proxy_namespace: Proxies
+    proxy_dir: '/var/cache/dev/doctrine/orm/Proxies'
+    default_entity_manager: default
+    metadata_driver_implementation: attribute
+    metadata_cache_driver: redis
+    query_cache_driver: redis
+    result_cache_driver: redis
     #comment if you don't need these custom functions in your dql
     dql:
       datetime_functions:

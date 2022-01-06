@@ -7,7 +7,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use \Doctrine\ORM\Tools\Console\ConsoleRunner;
 
-// cli-config.php
+// cli-config
 $configDir = '.' . DS . 'config' . DS;
 
 try {

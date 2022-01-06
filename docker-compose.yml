@@ -9,7 +9,20 @@
 #
 version: "3"
 services:
-  app:
+
+  #  db:
+  #    image: postgres
+  #    environment:
+  #      POSTGRES_PASSWORD: postgres
+
+  composer:
+    build: .
+    entrypoint: composer
+    command: validate
+    volumes:
+      - ./:/var/www
+
+  php:
     build: .
     env_file:
       - .env
@@ -17,6 +30,6 @@ services:
       - 8000:8080
     working_dir: /var/www
     volumes:
-      - .:/var/www
+      - ./:/var/www
       - ./config/server/swoole.conf:/etc/supervisor/service.d/swoole.conf
 
