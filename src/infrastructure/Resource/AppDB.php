@@ -2,8 +2,13 @@
 
 namespace Infrastructure\Resource;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManagerInterface;
+use OpsWay\Doctrine\DBAL\Swoole\PgSQL\ConnectionPoolFactory;
+use OpsWay\Doctrine\DBAL\Swoole\PgSQL\DriverMiddleware;
+use OpsWay\Doctrine\DBAL\Swoole\PgSQL\Scaler;
 use Spatial\Entity\DoctrineEntity;
+use OpsWay\Doctrine\ORM\Swoole\EntityManager;
 
 /**
  * AppDB Class exists in the Api\Models namespace
@@ -13,12 +18,20 @@ use Spatial\Entity\DoctrineEntity;
  */
 class AppDB
 {
-    public EntityManager $emApp;
+    public EntityManagerInterface $emApp;
 
     public function __construct()
     {
-        $this->emApp = (new DoctrineEntity('myapp'))
-            ->entityManager(DoctrineConfig['dbal']['connections']['defaultDB']);
+        $doctrine = new DoctrineEntity('myapp');
+        $connectionParams = DoctrineConfig['doctrine']['dbal']['connections']['default'];
+
+        if ($connectionParams['driverClass'] === '\OpsWay\Doctrine\DBAL\Swoole\PgSQL\Driver') {
+            $pool = (new ConnectionPoolFactory())($connectionParams);
+            $doctrine->getDoctrineConfig()->setMiddlewares([new DriverMiddlewareware($pool)]);
+            $scaler = new Scaler($pool, $connectionParams['tickFrequency']); // will try to free idle connect on connectionTtl overdue
+        }
+
+        $this->emApp = new EntityManager(fn()=>$doctrine->entityManager($connectionParams));
 
         // or
         // $connection = [
