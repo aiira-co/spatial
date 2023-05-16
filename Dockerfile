@@ -1,4 +1,4 @@
-FROM openswoole/swoole
+FROM openswoole/swoole:22
 
 # COPY ./bin/rootfilesystem/ /
 
