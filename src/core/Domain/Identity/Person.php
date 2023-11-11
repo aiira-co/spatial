@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Core\Domain\Identity;
 
-
+use Core\Application\Enums\AccountTypeEnum;
+use Core\Application\Enums\GenderEnum;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
-use \DateTime;
+use JetBrains\PhpStorm\Pure;
 
-#[Entity]
+// src/core/domain/identity/User.php
+
+#[\Doctrine\ORM\Mapping\Entity]
 #[Table(name: "person")]
 class Person
 {
@@ -45,13 +49,8 @@ class Person
     #[Column(length: 32, nullable: true)]
     public ?string $othername;
 
-    #[ManyToOne]
-    #[JoinColumn(name: 'gender_id', referencedColumnName: "id")]
-    public Groups $gender;
-
-    #[ManyToOne]
-    #[JoinColumn(name: 'provider_id', referencedColumnName: "id")]
-    public ?Groups $provider;
+    #[Column(type: 'int', enumType: GenderEnum::class)]
+    public GenderEnum $gender;
 
     #[Column(name: 'birth_date', nullable: true)]
     public ?DateTime $birthdate;
@@ -101,7 +100,23 @@ class Person
     #[Column(length: 32)]
     public string $language;
 
-    #[ManyToOne]
-    #[JoinColumn(name: 'account_type_id', referencedColumnName: "id")]
-    public Groups $accountType;
+    #[Column(type: 'int', enumType: AccountTypeEnum::class)]
+    public AccountTypeEnum $accountType;
+
+    #[Column(name: 'is_verified')]
+    public ?bool $isVerified;
+
+
+    #[OneToMany(mappedBy: 'person', targetEntity: Signature::class)]
+    public Collection $signatures;
+
+
+    /**
+     * Constructor
+     */
+    #[Pure] public function __construct()
+    {
+        $this->signatures = new ArrayCollection();
+    }
+
 }

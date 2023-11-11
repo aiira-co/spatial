@@ -4,7 +4,7 @@ namespace Presentation\IdentityApi\Controllers;
 
 // use Api\Controller\BaseController;
 use Psr\Http\Message\ResponseInterface;
-use Core\Application\Logics\Identity\Commands\AuthenticateUser;
+use Core\Application\Logics\Identity\Authorization\Commands\AuthenticateUser;
 use Spatial\Common\BindSourceAttributes\FromBody;
 use Spatial\Common\HttpAttributes\HttpPost;
 use Spatial\Core\Attributes\ApiController;

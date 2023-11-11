@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Core\Application\Logics\Identity\User\Queries;
 
+use Common\Libraries\SearchAlg;
+use Core\Application\Traits\IdentityTrait;
 use Core\Domain\Identity\Person;
-use Cqured\MediatR\IRequest;
-use Infrastructure\Identity\IdentityDB;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Spatial\Psr7\Request;
 
 /**
  * Request To be passed to Its' Handler
@@ -16,37 +20,37 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class GetUsers extends Request
 {
-    public $params = [];
-    public $query = '';
-    public $page = 1;
-    public $total;
-    public $limit = 20;
+    use IdentityTrait;
 
-    public function getUsers(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public SearchAlg $searchAlg;
+
+    /**
+     * GetEntity Query
+     *
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param int|null $limit
+     * @param int|null $offset
+     * @return array|null
+     * @throws \JsonException
+     */
+    public function getUsers(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): ?array
     {
-        $this->emIdentity = (new IdentityDB)->emIdentity;
-
-        $parameters = [
-            'search' => $criteria['search'],
-            'activated' => true,
-        ];
-
-        // get all
         $query = $this->emIdentity
             ->getRepository(Person::class)
             ->createQueryBuilder('t');
-        $query = $query->where('t.activated = :activated')
-            ->andWhere(
-                $query->expr()->orX(
-                    $query->expr()->like('t.username', ':search'),
-                    $query->expr()->like('t.othername', ':search'),
-                    $query->expr()->like('t.surname', ':search')
-                )
-            )
-            ->orderBy('t.id', 'DESC');
 
-        // print_r($parameters);
-        $query = $query->setParameters($parameters)
+        $this->searchParams = $this->searchAlg->genSearchParams($query, ['t.email', 't.username', 't.othername', 't.surname']);
+
+        $orderByFields = '';
+        foreach ($orderBy as $key) {
+            $orderByFields .= ', t.' . trim($key);
+        }
+
+        $query = $this->getQueryConditions($query, $criteria)
+            ->orderBy(ltrim($orderByFields, ','), 'DESC');
+
+        $query = $query->setParameters($this->searchParams->params)
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->getQuery();
@@ -57,66 +61,70 @@ class GetUsers extends Request
         $c = count($paginator);
 
         foreach ($paginator as $user) {
-            array_push(
-                $data,
+            $data[] =
                 [
-                    'id' => $user->getId(),
-                    'image' => $user->getImage(),
-                    'username' => $user->getUsername(),
-                    'name' => $user->getName(),
-                    'tagline' => $user->getTagline(),
+                    'id' => $user->id,
+                    'image' => $user->image,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'name' => $user->othername . ' ' . $user->surname,
+                    'accountType' => $user->accountType,
+                    'gender' => $user->gender,
+                    'tagline' => $user->tagline,
+                    'isVerified' => $user->isVerified,
 
-                ]
-            );
+                ];
         }
-
-        // print_r($data);
 
         return $data;
     }
 
-    public function countAllGroups()
+    /**
+     * @param QueryBuilder $query
+     * @param array $criteria
+     * @return QueryBuilder
+     */
+    private
+    function getQueryConditions(
+        QueryBuilder $query,
+        array        $criteria
+    ): QueryBuilder
     {
-        // get all
-        $userRepository = $this->emIdentity
-            ->getRepository(Groups::class);
-        $groups = $userRepository->findAll();
+        $this->searchParams->params['activated'] = true;
 
-        return [
-            $groups,
-        ];
+        $query = $query
+            ->where('t.activated = :activated')
+            ->andWhere($query->expr()->orX(...$this->searchParams->search));
+
+
+        return $query;
     }
 
 
     /**
      * Count Entity
      *
+     * @param array $criteria
      * @return int
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function countTotalUsers($criteria): int
+    public
+    function countTotalUsers(
+        array $criteria
+    ): int
     {
-        $parameters = [
-            'search' => '%' . $criteria['search'] . '%',
-            'activated' => true,
-        ];
-
         $query = $this->emIdentity
             ->getRepository(Person::class)
-            ->createQueryBuilder('t');
+            ->createQueryBuilder('t')
+            ->select('count(t.id)');
 
-        $query = $query->select('count(t.id)')
-            ->where('t.activated = :activated')
-            ->andWhere(
-                $query->expr()->orX(
-                    $query->expr()->like('t.username', ':search'),
-                    $query->expr()->like('t.othername', ':search'),
-                    $query->expr()->like('t.surname', ':search')
-                )
-            );
-
-        return $query
-            ->setParameters($parameters)
+        $total = (int)$this->getQueryConditions($query, $criteria)
+            ->setParameters($this->searchParams->params)
             ->getQuery()
             ->getSingleScalarResult();
+
+        $this->emIdentity->close();
+        return $total;
     }
 }

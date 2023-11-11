@@ -1,7 +1,7 @@
 {
   "name": "spatial/spatial",
   "description": "PHP8+ WebAPI Clean Architecture Framework.",
-  "version": "3.4.1",
+  "version": "3.4.3",
   "type": "project",
   "keywords": [
     "PHP",
@@ -14,10 +14,10 @@
   ],
   "homepage": "https://github.com/aiira_co/spatial",
   "readme": "https://github.com/aiira_co/spatial/blob/master/README.md",
-  "time": "2021/03/19",
+  "time": "2023/11/11",
   "license": "MIT",
   "require": {
-    "php": "^8.0",
+    "php": "^8.2",
     "ext-json": "*",
     "ext-sodium": "*",
     "lcobucci/jwt": "^5",
@@ -62,7 +62,6 @@
     "phpstan": "phpstan analyse src --level=0",
     "phpcs": "phpcs --standard=PSR12 src",
     "test": "phpunit",
-    "phpcbf": "phpcbf --standard=PSR12 src",
-    "db:update": "doctrine orm:schema-tool:update --force"
+    "phpcbf": "phpcbf --standard=PSR12 src"
   }
 }

@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spatial\Psr7\RequestHandler;
 
+use function json_encode;
+
 class ParamReservedHandler extends RequestHandler
 {
     /**
@@ -23,7 +25,7 @@ class ParamReservedHandler extends RequestHandler
             'paramExist' => $request->checkParam()
         ];
 
-        $payload = \json_encode($data ?? []);
+        $payload = json_encode($data ?? [], JSON_THROW_ON_ERROR, 512);
         $this->response->getBody()->write($payload);
         return $this->response;
     }

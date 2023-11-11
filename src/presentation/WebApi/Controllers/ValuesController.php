@@ -1,13 +1,13 @@
 <?php
 
-namespace Presentation\DefaultApi\Controllers;
+namespace Presentation\WebApi\Controllers;
 
-use Core\Application\Logics\DefaultApp\Entity\{
-    Commands\DeleteEntity,
-    Commands\UpdateEntity,
-    Commands\CreateEntity,
-    Queries\GetEntities,
-    Queries\GetEntity,
+use Core\Application\Logics\App\Person\{
+    Commands\DeletePerson,
+    Commands\UpdatePerson,
+    Commands\CreatePerson,
+    Queries\GetPersons,
+    Queries\GetPerson,
 };
 use Infrastructure\Services\AuthUser;
 use Psr\Http\Message\ResponseInterface;
@@ -32,7 +32,7 @@ use Spatial\Mediator\Mediator;
  * @category Controller
  */
 #[ApiController]
-#[Area('default-api')]
+#[Area('web-api')]
 #[Route('[area]/[controller]')]
 class ValuesController extends ControllerBase
 {
@@ -48,7 +48,7 @@ class ValuesController extends ControllerBase
     #[Authorize(AuthUser::class)]
     public function getValues(): ResponseInterface
     {
-        $query = new GetEntities();
+        $query = new GetPersons();
         return $this->mediator->process($query);
         // return $this->mediator->process();
     }
@@ -58,7 +58,7 @@ class ValuesController extends ControllerBase
     public function httpGet(
         int $id
     ): ResponseInterface {
-        $query = new GetEntity();
+        $query = new GetPerson();
         return $this->mediator->process($query);
         // return $this->mediator->process();
     }
@@ -76,7 +76,7 @@ class ValuesController extends ControllerBase
         #[FromBody] string $content
     ): ResponseInterface {
         // code here
-        $command = new CreateEntity();
+        $command = new CreatePerson();
         $command->data = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
         return $this->mediator->process($command);
     }
@@ -96,7 +96,7 @@ class ValuesController extends ControllerBase
         int $id
     ): ResponseInterface {
         // code here
-        $command = new UpdateEntity();
+        $command = new UpdatePerson();
         $command->data = json_decode($content, false, 512, JSON_THROW_ON_ERROR);
         $command->id = $id;
         return $this->mediator->process($command);
@@ -113,7 +113,7 @@ class ValuesController extends ControllerBase
         int $id
     ): ResponseInterface {
         // code here
-        $command = new DeleteEntity();
+        $command = new DeletePerson();
         $command->id = $id;
         return $this->mediator->process($command);
     }

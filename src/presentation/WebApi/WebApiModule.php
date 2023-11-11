@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Presentation\DefaultApi;
+namespace Presentation\WebApi;
 
 use Presentation\DefaultApi\Controllers\ValuesController;
 use Spatial\Core\Attributes\ApiModule;
@@ -17,7 +17,7 @@ use Spatial\Core\Attributes\ApiModule;
         ValuesController::class
     ]
 )]
-class DefaultApiModule
+class WebApiModule
 {
 
 }

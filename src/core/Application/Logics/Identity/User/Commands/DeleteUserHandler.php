@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spatial\Psr7\RequestHandler;
 
+use function json_encode;
+
 class DeleteUserHandler extends RequestHandler
 {
     /**
@@ -19,8 +21,8 @@ class DeleteUserHandler extends RequestHandler
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         // Return response
-        $data = $request->getDeleteUser();
-        $payload = \json_encode($data ?? []);
+        $data = $request->deleteUser();
+        $payload = json_encode($data ?? [], JSON_THROW_ON_ERROR, 512);
         $this->response->getBody()->write($payload);
         return $this->response;
     }

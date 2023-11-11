@@ -4,7 +4,7 @@
 namespace Presentation;
 
 
-use Presentation\DefaultApi\DefaultApiModule;
+use Presentation\DefaultApi\WebApiModule;
 use Presentation\IdentityApi\IdentityApiModule;
 use Spatial\Core\Interfaces\ApplicationBuilderInterface;
 use Spatial\Core\Interfaces\WebHostEnvironmentInterface;
@@ -14,7 +14,7 @@ use Spatial\Core\Attributes\ApiModule;
 #[ApiModule(
     imports: [
     IdentityApiModule::class,
-    DefaultApiModule::class,
+    WebApiModule::class,
 ],
     declarations: [],
     providers: [

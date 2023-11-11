@@ -1,6 +1,6 @@
 cli.config:
   # entity manager of doctrine
-  entityManager: 'emSuite'
+  entityManager: 'entityManager'
   # namespace for doctrine connection class
   namespace: '\Infrastructure\Resource\AppDB'
 

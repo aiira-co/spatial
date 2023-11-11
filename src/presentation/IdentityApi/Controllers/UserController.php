@@ -4,7 +4,7 @@ namespace Presentation\IdentityApi\Controllers;
 
 //use Common\Libraries\Controller;
 use Psr\Http\Message\ResponseInterface;
-use Core\Application\Logics\Identity\{
+use Core\Application\Logics\Identity\User\{
     Commands\CreateUser,
     Commands\DeleteUser,
     Commands\UpdateUser,

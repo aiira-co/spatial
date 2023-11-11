@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spatial\Psr7\RequestHandler;
 
+use function json_encode;
+
 class GetUserHandler extends RequestHandler
 {
     /**
@@ -18,12 +20,15 @@ class GetUserHandler extends RequestHandler
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $userInfo = [];
         // Return response
         if (!$request->userExist()) {
-            return null;
+            $userInfo = [
+                'success' => false,
+                'message' => 'User was not found'
+            ];
         }
 
-        $userInfo = [];
 
         if ($request->params->categoryType === 'setting') {
             switch ($request->params->category) {
@@ -54,7 +59,7 @@ class GetUserHandler extends RequestHandler
             $userInfo = $request->getUser();
         }
         $data = $userInfo;
-        $payload = \json_encode($data ?? []);
+        $payload = json_encode($data ?? [], JSON_THROW_ON_ERROR, 512);
         $this->response->getBody()->write($payload);
         return $this->response;
     }

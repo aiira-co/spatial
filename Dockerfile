@@ -1,4 +1,4 @@
-FROM openswoole/swoole:22
+FROM openswoole/swoole:php8.2
 
 # COPY ./bin/rootfilesystem/ /
 
@@ -15,9 +15,11 @@ WORKDIR "/var/www"
 
 COPY . .
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer validate
 ARG COMPOSER_ARGS="install"
-RUN composer ${COMPOSER_ARGS} --no-progress --no-suggest --no-scripts --no-autoloader --no-dev --ansi
+RUN composer ${COMPOSER_ARGS} --no-progress --no-scripts --no-autoloader --no-dev --ansi
 RUN composer dump-autoload --optimize --apcu --ansi

@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Infrastructure\Resource;
 
-use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
-use OpsWay\Doctrine\DBAL\Swoole\PgSQL\ConnectionPoolFactory;
-use OpsWay\Doctrine\DBAL\Swoole\PgSQL\DriverMiddleware;
-use OpsWay\Doctrine\DBAL\Swoole\PgSQL\Scaler;
-use Spatial\Entity\DoctrineEntity;
 use OpsWay\Doctrine\ORM\Swoole\EntityManager;
+use Doctrine\ORM\ORMException;
+use Spatial\Core\Attributes\Injectable;
+use Spatial\Entity\DoctrineEntity;
+use OpsWay\Doctrine\DBAL\Swoole\PgSQL\Scaler;
+use OpsWay\Doctrine\DBAL\Swoole\PgSQL\DriverMiddleware;
+use OpsWay\Doctrine\DBAL\Swoole\PgSQL\ConnectionPoolFactory;
 
 /**
  * AppDB Class exists in the Api\Models namespace
@@ -19,33 +22,28 @@ use OpsWay\Doctrine\ORM\Swoole\EntityManager;
 class AppDB
 {
     public EntityManagerInterface $emApp;
+    public \Closure $entityManager;
 
+    /**
+     * Connect to database in constructor
+     * @throws ORMException
+     */
     public function __construct()
     {
-        $doctrine = new DoctrineEntity('myapp');
-        $connectionParams = DoctrineConfig['doctrine']['dbal']['connections']['default'];
+        $doctrine = new DoctrineEntity('pixbay');
+        $connectionParams = DoctrineConfig['doctrine']['dbal']['connections']['defaultDB'];
 
         if ($connectionParams['driverClass'] === '\OpsWay\Doctrine\DBAL\Swoole\PgSQL\Driver') {
             $pool = (new ConnectionPoolFactory())($connectionParams);
-            $doctrine->getDoctrineConfig()->setMiddlewares([new DriverMiddlewareware($pool)]);
+            $doctrine->getDoctrineConfig()->setMiddlewares([new DriverMiddleware($pool)]);
             $scaler = new Scaler($pool, $connectionParams['tickFrequency']); // will try to free idle connect on connectionTtl overdue
         }
+        $this->entityManager = fn() => $doctrine->entityManager($connectionParams);
+        $this->emApp = new EntityManager($this->entityManager);
 
-        $this->emApp = new EntityManager(fn()=>$doctrine->entityManager($connectionParams));
+//        $this->emSocial = $doctrine->entityManager($connectionParams);
 
-        // or
-        // $connection = [
-        //     'dbname' => 'mydatabase',
-        //     'user' => 'postgres',
-        //     'password' => 'password',
-        //     'host' => '127.0.0.1',
-        //     'driver' => 'pdo_pgsql',
-        // ];
-        // $this->emArtist = (new DoctrineEntity('artist'))
-        //     ->setProxyDir('./src/core/domain/artist/proxies')
-        //     ->setProxyNamespace('Core\Domain\Artist')
-        //     ->entityManager($connection);
-
-
+//        $connectionParams['driver']='pdo_pgsql';
+//        $this->emSocial = $doctrine->entityManager($connectionParams);
     }
 }

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Core\Application\Logics\Identity\User\Queries;
 
+use Core\Application\Traits\IdentityTrait;
 use Core\Domain\Identity\Person;
-use Cqured\MediatR\IRequest;
-use Infrastructure\Identity\IdentityDB;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\TransactionRequiredException;
 use Spatial\Psr7\Request;
 
 /**
@@ -16,29 +18,24 @@ use Spatial\Psr7\Request;
  */
 class GetUser extends Request
 {
-    public int $id;
-    public object $params;
+    use IdentityTrait;
 
-    private Person $_user;
+    public int $id;
+    private ?Person $user;
 
     /**
      * Check if User exists
      *
-     * @return boolean
+     * @return bool
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
      */
     public function userExist(): bool
     {
-        $this->emIdentity = (new IdentityDB)->emIdentity;
-
-        $user = $this->emIdentity->find(Person::class, $this->id);
-
-        if (!$user) {
-            return false;
-        }
-
-        $this->_user = $user;
-
-        return true;
+        $this->getEntityManager();
+        $this->user = $this->emIdentity->find(Person::class, $this->id);
+        return $this->user !== null;
     }
 
     /**
@@ -49,11 +46,12 @@ class GetUser extends Request
     public function getUser(): array
     {
         return [
-            'id' => $this->_user->id,
-            'image' => $this->_user->image,
-            'username' => $this->_user->username,
-            'surname' => $this->_user->surname,
-            'othername' => $this->_user->othername,
+            'id' => $this->user->id,
+            'image' => $this->user->image,
+            'username' => $this->user->username,
+            'surname' => $this->user->surname,
+            'othername' => $this->user->othername,
+            'isVerified' => $this->user->isVerified,
         ];
     }
 
@@ -65,19 +63,19 @@ class GetUser extends Request
     public function getUserProfile(): array
     {
         return [
-            'username' => $this->_user->username,
-            'surname' => $this->_user->surname,
-            'othername' => $this->_user->othername,
-            'gender' => $this->_user->gender->id,
-            'accountTypeId' => $this->_user->accountType->id,
-            'bio' => $this->_user->bio,
-            'tagline' => $this->_user->tagline,
+            'username' => $this->user->username,
+            'surname' => $this->user->surname,
+            'othername' => $this->user->othername,
+            'gender' => $this->user->gender,
+            'accountTypeId' => $this->user->accountType,
+            'bio' => $this->user->bio,
+            'tagline' => $this->user->tagline,
             'location' => [
-                'city' => $this->_user->city,
-                'country' => $this->_user->country
+                'city' => $this->user->city,
+                'country' => $this->user->country
             ],
-            'language' => $this->_user->language,
-            // 'timezone' => $this->_user->getTimezone(),
+            'language' => $this->user->language,
+            'isVerified' => $this->user->isVerified,
         ];
     }
 
@@ -89,7 +87,7 @@ class GetUser extends Request
     public function getUserAvatar(): array
     {
         return [
-            'image' => $this->_user->image,
+            'image' => $this->user->image,
         ];
     }
 
@@ -101,10 +99,10 @@ class GetUser extends Request
     public function getUserContact(): array
     {
         return [
-            'email' => $this->_user->email,
-            'emailVerified' => $this->_user->emailVerified,
-            'phone' => $this->_user->phoneOne,
-            'phoneVerified' => $this->_user->phoneVerified,
+            'email' => $this->user->email,
+            'emailVerified' => $this->user->emailVerified,
+            'phone' => $this->user->phoneOne,
+            'phoneVerified' => $this->user->phoneVerified,
         ];
     }
 
@@ -116,7 +114,7 @@ class GetUser extends Request
     public function getUserNotification(): array
     {
         return [
-            'image' => $this->_user->image,
+            'image' => $this->user->image,
         ];
     }
 
@@ -128,7 +126,7 @@ class GetUser extends Request
     public function getUserAppClaims(): array
     {
         return [
-            'image' => $this->_user->image,
+            'image' => $this->user->image,
         ];
     }
 
@@ -141,8 +139,8 @@ class GetUser extends Request
     {
         //get plan for the appClaim. basic / member
         return [
-            'created' => $this->_user->created->getTimestamp(),
-            'type' => $this->_user->image,
+            'created' => $this->user->created,
+            'type' => $this->user->image,
         ];
     }
 }

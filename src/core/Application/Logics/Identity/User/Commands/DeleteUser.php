@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Core\Application\Logics\Identity\User\Commands;
 
+use Core\Application\Traits\IdentityTrait;
 use Core\Domain\Identity\Person;
-use Cqured\MediatR\IRequest;
-use Infrastructure\Identity\IdentityDB;
+use Doctrine\ORM\ORMException;
 use Spatial\Psr7\Request;
 
 /**
@@ -17,14 +17,37 @@ use Spatial\Psr7\Request;
 class DeleteUser extends Request
 {
 
-    public function deleteUser(int $id)
-    {
-        $this->emIdentity = (new IdentityDB)->emIdentity;
-        // get all
-        $UserRepository = $this->emIdentity
-            ->getRepository(Person::class);
-        $Users = $UserRepository->findAll();
+    use IdentityTrait;
 
-        return [$Users];
+    public int $id;
+    private ?Person $person;
+
+    /**
+     * @param int $id
+     * @return array
+     * @throws ORMException
+     */
+    public function deleteUser(): array
+    {
+        $this->getEntityManager();
+        // get all
+        $this->person = $this->emIdentity
+            ->find(Person::class, $this->id);
+
+        if ($this->person === null) {
+            return [
+                'success' => false,
+                'message' => 'Person was not found'
+            ];
+        }
+
+        $this->person->activated = false;
+        $this->emIdentity->persist($this->person);
+        $this->emIdentity->flush();
+        return [
+            'success' => true,
+            'message' => 'Person successfully deleted'
+        ];
+
     }
 }

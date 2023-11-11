@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Core\Application\Logics\Identity\User\Queries;
 
-use Core\Application\Logics\Model\SearchAlg;
+use Common\Libraries\SearchAlg;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Spatial\Psr7\RequestHandler;
+
+use function json_encode;
 
 class GetUsersHandler extends RequestHandler
 {
@@ -19,39 +21,34 @@ class GetUsersHandler extends RequestHandler
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-
-        // searchAlg
-        $searchQuery = $request->params->searchValue ?? null;
-        if (!is_null($searchQuery) &&  trim($searchQuery) !== '') {
-            $searchQuery = (new SearchAlg())->wordSearch($searchQuery);
-        } else {
-            $searchQuery = '';
-        }
+        $request->searchAlg = new SearchAlg($request->params->searchValue ?? null);
 
         // Return response
-        $criteria = [
-
-            'search' => $searchQuery,
-            'type' => (int) $request->params->category ?? 39,
-        ];
+        $criteria = [];
 
         $offset = ($request->params->page - 1) * $request->params->pageSize;
+        
+        $request->getEntityManager();
 
+        $passCount = false;
+
+
+        // echo 'sdff';
         $data = $request->getUsers(
             $criteria,
-            $request->params->orderBy ?? null,
-            $request->params->pageSize,
+            $request->params->orderBy ?? ['id'],
+            (int)$request->params->pageSize,
             $offset
         );
         // Return response
         $data = [
             'data' => $data,
-            'page' => (int) $request->params->page,
+            'page' => (int)$request->params->page,
             'pageSize' => count($data) ?? 0,
-            'total' => (int) $request->countTotalUsers($criteria),
+            'total' => $request->countTotalUsers($criteria),
         ];
 
-        $payload = \json_encode($data ?? []);
+        $payload = json_encode($data ?? [], JSON_THROW_ON_ERROR, 512);
         $this->response->getBody()->write($payload);
         return $this->response;
     }

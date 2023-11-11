@@ -4,8 +4,16 @@ declare(strict_types=1);
 
 namespace Core\Application\Logics\Identity\User\Commands;
 
-use Core\Domain\Identity\{Groups, Person};
-use Infrastructure\Identity\IdentityDB;
+use Core\Application\Enums\AccountTypeEnum;
+use Core\Application\Enums\GenderEnum;
+use Core\Application\Enums\SignatureTypeEnum;
+use Core\Application\Traits\IdentityTrait;
+use Core\Domain\Identity\{Person, Signature};
+use DateTime;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\TransactionRequiredException;
+use Infrastructure\Services\EmailService;
 use Spatial\Psr7\Request;
 
 /**
@@ -15,47 +23,96 @@ use Spatial\Psr7\Request;
  */
 class CreateUser extends Request
 {
-    public $data = [];
-    private $_acType = 41; // Individual Account Type
-    private $_lang = 'en'; // Individual Account Type
+    use IdentityTrait;
 
-    public function createUser()
+    public object $data;
+    private int $accountType = 41; // Individual Account Type
+    private int $genderId = 45;
+    private string $lang = 'en'; // Individual Account Type
+    private int $signatureType = 1; // 1 - password, 2 - pin, 3 - fingerprint, 4 -faceId
+
+
+    /**
+     * @return int|null
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
+     * @throws \JsonException
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function createUser(): ?int
     {
-        $this->emIdentity = (new IdentityDB)->emIdentity;
+        $this->getEntityManager();
 
         $user = new Person();
-        // $accountType 41 for Individual, 42 = Organization, 43 A, 44 Cr
-        $accountType = $this->emIdentity->find(Groups::class, $this->_acType);
-        // $language = $this->emIdentity->find(Groups::class, $this->_lang);
+
+
         //create account phase 1
-        $user->setTagline('I Am New Here');
-        $user->setBio('About Myself');
-
-        $user->setUsername($this->data->username);
-        $user->setImage('avatar/default.jpg');
-        $user->setEmail($this->data->email);
-        $user->changePassword($this->data->password);
-
-        $user->setCreated(new \DateTime("now"));
-
-        $user->setEmailVerified(false);
-        $user->setPhoneVerified(false);
-
-        $user->setActivated(true);
-        $user->setLockoutEnabled(false);
-
-        $user->setAccessFailedCount(0);
-        $user->setAccountType($accountType);
-        $user->setLanguage($this->_lang);
-
-        $user->setLocation('Accra', 'GH');
-        $user->setTimezone('UTC 0:00');
+        $user->tagline = 'I Am New Here';
+        $user->bio = 'About Myself';
+        $user->username = $this->data->username;
+        $user->image = 'avatar/default.jpg';
+        $user->email = $this->data->email;
+        $user->gender = GenderEnum::from((int)$this->data->gender);
+        $user->created = new DateTime('now');
+        $user->emailVerified = true;
+        $user->phoneVerified = false;
+        $user->twoWayAuth = false;
+        $user->isVerified = false;
+        $user->activated = true;
+        $user->lockoutEnabled = false;
+        $user->accessFailedCount = 0;
+        $user->accountType = AccountTypeEnum::from((int)$this->data->accountType);
+        $user->language = $this->lang;
+        $user->country = $this->geoPlugin->countryCode ?? 'Ghana';
+        $user->city = $this->geoPlugin->city ?? 'Kumasi';
+        $user->timezone = 'UTC 0:00';
 
         $this->emIdentity->persist($user);
+
+//        create set signature
+        $signature = new Signature();
+//        66 - password, 67 - pin, 68 - fingerprint, 69 -faceId
+        $signature->person = $user;
+        $signature->setHashed($this->data->password);
+        $signature->type = SignatureTypeEnum::from($this->signatureType);
+        $signature->created = new DateTime('now');
+
+        $this->emIdentity->persist($signature);
+
         $this->emIdentity->flush();
+        $this->emIdentity->close();
 
-        return $user->getId();
+        $this->sendEmail($user);
 
+        return $user->id;
         // return $this->emIdentity->getRepository(Identity::class);
+    }
+
+    /**
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    private function sendEmail($user): void
+    {
+        $description = "Hi {$user->username},
+ <p style='padding:0 16px'>
+We wanted to confirm that your new Pixbay account is registered and good to go.
+ </p>
+ <p style='padding:0 16px'>
+ We hope you enjoy your time with us.
+ </p>
+ <p style='padding:0 16px'>
+ If you have any questions, please don't hesitate to contact us at support@aiira.co
+</p>
+";
+        $mail = new EmailService();
+        $payload = $mail->from('no_reply@aiira.co', 'Team Aiira')
+            ->to([
+                (object)[
+                    'name' => $user->username,
+                    'email' => $user->email
+                ]
+            ])
+            ->send('Welcome to Pixaby. Let’s Get Started!', $description);
     }
 }
