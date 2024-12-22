@@ -1,4 +1,4 @@
-FROM openswoole/swoole:php8.2
+FROM openswoole/swoole:php8.3
 
 # COPY ./bin/rootfilesystem/ /
 
@@ -6,7 +6,7 @@ FROM openswoole/swoole:php8.2
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions && sync
-ARG PHP_EXT_ARGS="pdo_pgsql pdo_mysql apcu"
+ARG PHP_EXT_ARGS="pdo_pgsql pdo_mysql apcu intl bcmath zip"
 RUN install-php-extensions ${PHP_EXT_ARGS}
 
 COPY ./config/server/swoole.conf /etc/supervisor/service.d/swoole.conf

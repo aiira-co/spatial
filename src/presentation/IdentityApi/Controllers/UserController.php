@@ -45,19 +45,19 @@ class UserController extends Controller
      */
     #[HttpGet('{?id:int}')]
     public function httpGet(
-        int $id
+        ?int $id
     ): ResponseInterface {
         // return ['users hre'];
         // --- use this if you are connected to the Databases ---
         if (!is_null($id)) {
-            // print_r($id);
+
             $query = new GetUser();
-            $query->id = (int)$id[0];
+            $query->id = $id;
         } else {
             $query = new GetUsers();
         }
         $query->params = $this->params;
-        return (array)$this->mediator->process($query);
+        return $this->mediator->process($query);
         // return ['data'=>$users,'totalCount'=>count($users)];
     }
 

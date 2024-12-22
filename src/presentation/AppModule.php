@@ -4,7 +4,7 @@
 namespace Presentation;
 
 
-use Presentation\DefaultApi\WebApiModule;
+use Presentation\WebApi\WebApiModule;
 use Presentation\IdentityApi\IdentityApiModule;
 use Spatial\Core\Interfaces\ApplicationBuilderInterface;
 use Spatial\Core\Interfaces\WebHostEnvironmentInterface;

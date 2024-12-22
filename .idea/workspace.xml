@@ -5,7 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="- Initialized spatial libs in composer to ^2.0&#10;- PHP 8 required">
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/common/Enums/StatusEnum.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/common/Interfaces/JwtInterface.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Feature/ArchTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Feature/ExampleTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Feature/StressTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Pest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/TestCase.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Unit/ExampleTest.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/Unit/SumTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/spatial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/Identity/IdentityDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/Identity/IdentityDB.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/Resource/AppDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/Resource/AppDB.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/presentation/AppModule.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/presentation/AppModule.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/presentation/IdentityApi/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/presentation/IdentityApi/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/presentation/WebApi/Controllers/ValuesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/presentation/WebApi/Controllers/ValuesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/presentation/WebApi/WebApiModule.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/presentation/WebApi/WebApiModule.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,98 +44,45 @@
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="2" />
   </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration">
-    <include_path>
-      <path value="$PROJECT_DIR$/vendor/http-interop/http-factory-guzzle" />
-      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
-      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
-      <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
-      <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
-      <path value="$PROJECT_DIR$/vendor/spatial/psr7" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/orm" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/common" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
-      <path value="$PROJECT_DIR$/vendor/spatial/mediator" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/instantiator" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/collections" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/event-manager" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/persistence" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
-      <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
-      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts" />
-      <path value="$PROJECT_DIR$/vendor/symfony/string" />
-      <path value="$PROJECT_DIR$/vendor/symfony/console" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
-      <path value="$PROJECT_DIR$/vendor/spatial/doctrine" />
-      <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
-      <path value="$PROJECT_DIR$/vendor/dflydev/fig-cookies" />
-      <path value="$PROJECT_DIR$/vendor/ramsey/uuid-doctrine" />
-      <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
-      <path value="$PROJECT_DIR$/vendor/ramsey/collection" />
-      <path value="$PROJECT_DIR$/vendor/php-di/invoker" />
-      <path value="$PROJECT_DIR$/vendor/spatial/core" />
-      <path value="$PROJECT_DIR$/vendor/php-di/php-di" />
-      <path value="$PROJECT_DIR$/vendor/brick/math" />
-      <path value="$PROJECT_DIR$/vendor/opis/closure" />
-      <path value="$PROJECT_DIR$/vendor/psr/container" />
-      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
-      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
-      <path value="$PROJECT_DIR$/vendor/psr/http-server-handler" />
-      <path value="$PROJECT_DIR$/vendor/psr/http-server-middleware" />
-      <path value="$PROJECT_DIR$/vendor/composer" />
-      <path value="$PROJECT_DIR$/vendor/doctrine/deprecations" />
-      <path value="$PROJECT_DIR$/vendor/psr/cache" />
-      <path value="$PROJECT_DIR$/vendor/psr/log" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php81" />
-      <path value="$PROJECT_DIR$/vendor/oro/doctrine-extensions" />
-    </include_path>
-  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\tools\php82\php.exe" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="1Vd7iOmBzicj0tS44ctc6eppOlu" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ACTIVE_CLOUD_PROJECT_ACCOUNT" value="airdesign.code@gmail.com" />
-    <property name="ACTIVE_CLOUD_PROJECT_ID" value="aiira-apps" />
-    <property name="ACTIVE_CLOUD_PROJECT_NAME" value="aiira apps" />
-    <property name="ACTIVE_CLOUD_PROJECT_NUMBER" value="985201409614" />
-    <property name="NEW_TOOLWINDOW_STRIPE_DEFAULTS" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="com.google.cloudcode.ide_session_index" value="20220106_0000" />
-    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="yaml" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "I:/Code/PHP/Frameworks/spatial/test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="I:\Code\PHP\Frameworks\spatial\test" />
       <recent name="I:\Code\PHP\Frameworks\spatial" />
       <recent name="I:\Code\PHP\Frameworks\spatial\src\core\Domain\Identity" />
       <recent name="I:\Code\PHP\Frameworks\spatial\config\packages" />
       <recent name="I:\Code\PHP\Frameworks\spatial\src\presentation" />
-      <recent name="I:\Code\PHP\Frameworks\spatial\docker" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="I:\Code\PHP\Frameworks\spatial\public" />
@@ -137,6 +104,14 @@
         <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-PS-243.22562.164" />
+        <option value="bundled-php-predefined-a98d8de5180a-7980c7aaca61-com.jetbrains.php.sharedIndexes-PS-243.22562.164" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -211,6 +186,9 @@
       <workItem from="1641123714758" duration="66000" />
       <workItem from="1641123806197" duration="1688000" />
       <workItem from="1641438336420" duration="252000" />
+      <workItem from="1720109558699" duration="9110000" />
+      <workItem from="1720561161867" duration="3000" />
+      <workItem from="1734875273052" duration="592000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>

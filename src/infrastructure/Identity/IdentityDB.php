@@ -2,9 +2,9 @@
 
 namespace Infrastructure\Identity;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMException;
-use Spatial\Entity\DoctrineEntity;
+use Doctrine\ORM\EntityManagerInterface;
+use Spatial\Core\Attributes\Injectable;
+use Spatial\Entity\DbConnection;
 
 /**
  * identityDB Class exists in the Api\Models namespace
@@ -12,18 +12,19 @@ use Spatial\Entity\DoctrineEntity;
  *
  * @category Model
  */
-class IdentityDB
+#[Injectable]
+class IdentityDB extends DBConnection
 {
-    public EntityManager $emIdentity;
+    public EntityManagerInterface $emIdentity;
 
-    /**
-     * Connect to database in constructor
-     * @throws ORMException
-     */
     public function __construct()
     {
+        parent::__construct();
 
-        $this->emIdentity = (new DoctrineEntity('identity'))
-            ->entityManager(DoctrineConfig['dbal']['connections']['identity']);
+        $this->emIdentity = $this->connect(
+            domain: 'identity',
+            params:DoctrineConfig['dbal']['connections']['identity']
+        );
+
     }
 }

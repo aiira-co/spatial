@@ -3,7 +3,7 @@
 
 namespace Presentation\WebApi;
 
-use Presentation\DefaultApi\Controllers\ValuesController;
+use Presentation\WebApi\Controllers\ValuesController;
 use Spatial\Core\Attributes\ApiModule;
 
 #[ApiModule(

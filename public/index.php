@@ -104,8 +104,8 @@ $http->on(
  */
 $http->on(
     "request",
-    function (Request $request, Response $response) use ($bridgeManager) {
-        $bridgeManager->process($request, $response)->end();
+    function (Request $request, Response $response) use ($bridgeManager, $http) {
+        $bridgeManager->process($request, $response, $http)->end();
     }
 );
 

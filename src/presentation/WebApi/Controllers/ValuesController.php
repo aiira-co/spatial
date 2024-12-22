@@ -7,7 +7,6 @@ use Core\Application\Logics\App\Person\{
     Commands\UpdatePerson,
     Commands\CreatePerson,
     Queries\GetPersons,
-    Queries\GetPerson,
 };
 use Infrastructure\Services\AuthUser;
 use Psr\Http\Message\ResponseInterface;
