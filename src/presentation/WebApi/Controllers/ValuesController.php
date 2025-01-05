@@ -49,7 +49,6 @@ class ValuesController extends ControllerBase
     {
         $query = new GetPersons();
         return $this->mediator->process($query);
-        // return $this->mediator->process();
     }
 
 
@@ -59,7 +58,6 @@ class ValuesController extends ControllerBase
     ): ResponseInterface {
         $query = new GetPerson();
         return $this->mediator->process($query);
-        // return $this->mediator->process();
     }
 
     /**
