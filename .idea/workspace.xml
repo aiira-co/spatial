@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="- Initialized spatial libs in composer to ^2.0&#10;- PHP 8 required">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/spatial.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spatial.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/presentation/WebApi/Controllers/ValuesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/presentation/WebApi/Controllers/ValuesController.php" afterDir="false" />
-    </list>
+    <list default="true" id="95eaf418-c0aa-4f48-abfb-4d3dc56f869e" name="Default Changelist" comment="- Initialized spatial libs in composer to ^2.0&#10;- PHP 8 required" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -276,7 +270,7 @@
       <workItem from="1720561161867" duration="3000" />
       <workItem from="1734875273052" duration="1455000" />
       <workItem from="1734891330865" duration="1745000" />
-      <workItem from="1736086424483" duration="65000" />
+      <workItem from="1736086424483" duration="120000" />
     </task>
     <task id="LOCAL-00001" summary="php 7.4+ required">
       <created>1577964194978</created>
