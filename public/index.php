@@ -65,8 +65,9 @@ require_once __DIR__ . DS . '..' . DS . 'vendor' . DS . 'autoload.php';
 $app = new App();
 
 
-$app->boot(AppModule::class);
-
+co::run(function () use ($app) {
+    $app->boot(AppModule::class);
+});
 
 /**
  * CGI NGNIX HttpServer

@@ -1,8 +1,8 @@
 cli.config:
-  # entity manager of doctrine
-  entityManager: 'entityManager'
-  # namespace for doctrine connection class
-  namespace: '\Infrastructure\Resource\AppDB'
+  # namespace for doctrine connection class (for doctrine console)
+  namespace:
+    - \Infrastructure\Identity\IdentityDB
+    - \Infrastructure\Resource\AppDB
 
 # config/packages/doctrine.yaml
 doctrine:

@@ -1,7 +1,7 @@
 {
   "name": "spatial/spatial",
   "description": "PHP8+ WebAPI Clean Architecture Framework.",
-  "version": "4.0.0-alpha4",
+  "version": "4.0.0-RC1",
   "type": "project",
   "keywords": [
     "PHP",
@@ -21,12 +21,11 @@
     "ext-json": "*",
     "ext-sodium": "*",
     "ext-openswoole": "*",
-    "azjezz/psl": "^3.1.0",
+    "azjezz/psl": "^3.230",
     "lcobucci/jwt": "^5",
-    "openswoole/core": "^22",
-    "openswoole/ide-helper": "^22",
-    "spatial/core": "^4.0.0-alpha3",
-    "spatial/doctrine": "^4.0-alpha4",
+    "openswoole/core": "^22.1",
+    "spatial/core": "^4.0.0-RC1",
+    "spatial/doctrine": "^4.0-RC1",
     "symfony/yaml": "^6"
   },
   "authors": [
@@ -59,6 +58,7 @@
     }
   },
   "require-dev": {
+    "openswoole/ide-helper": "~22.1.5",
     "pestphp/pest": "^3.7",
     "roave/security-advisories": "dev-master"
   },
