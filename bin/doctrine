@@ -1,0 +1,76 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use OpenSwoole\Coroutine\Channel;
+use OpenSwoole\Coroutine as Co;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+const DS = DIRECTORY_SEPARATOR;
+
+// Load configuration files
+$configDir = '.' . DS . 'config' . DS;
+
+try {
+    $services = Yaml::parseFile($configDir . 'services.yaml');
+    $appConfigs = Yaml::parseFile($configDir . 'packages' . DS . 'framework.yaml');
+    $doctrineConfigs = Yaml::parseFile($configDir . 'packages' . DS . 'doctrine.yaml');
+
+    // Resolve environment variables in doctrine configuration
+    $doctrineConfigs = resolveEnv($doctrineConfigs);
+    define('DoctrineConfig', $doctrineConfigs);
+    define('AppConfig', ['enableProdMode'=>false]);
+
+    // Get necessary configuration values
+    $dbClassNamespaces = $doctrineConfigs['cli.config']['namespace'];
+    foreach ($dbClassNamespaces as $dbClass) {
+
+        Co::create(function () use ($dbClass) {
+            // Create EntityManager
+            $em = (new $dbClass())->getEntityManager();
+            // Define custom console commands (if any)
+            $commands = [
+                // ... your custom commands here ...
+            ];
+
+            try{
+                // Run console commands
+                ConsoleRunner::run(
+                    new SingleManagerProvider($em()),
+                    $commands
+                );
+            }catch (\Exception $exception){
+                var_dump($exception->getMessage());
+
+            }
+
+        });
+    }
+
+
+} catch (ParseException $exception) {
+    printf('Unable to parse the YAML string: %s', $exception->getMessage());
+}
+
+/**
+ * Resolves environment variables within a given array.
+ *
+ * @param array $param The array to process.
+ * @return array The array with environment variables resolved.
+ */
+function resolveEnv(array $param): array
+{
+    foreach ($param as $key => $value) {
+        if (is_array($value)) {
+            $param[$key] = resolveEnv($value);
+        } elseif (is_string($value) && str_starts_with($value, '%env(')) {
+            $envVarName = substr($value, 5, -2); // Extract environment variable name
+            $param[$key] = getenv($envVarName);
+        }
+    }
+
+    return $param;
+}

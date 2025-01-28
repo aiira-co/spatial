@@ -5,34 +5,48 @@ declare(strict_types=1);
 namespace Infrastructure\Resource;
 
 use Doctrine\ORM\EntityManagerInterface;
-use OpsWay\Doctrine\ORM\Swoole\EntityManager;
 use Spatial\Core\Attributes\Injectable;
 use Spatial\Entity\DbConnection;
-use Spatial\Entity\DoctrineEntity;
-use OpsWay\Doctrine\DBAL\Swoole\PgSQL\Scaler;
-use OpsWay\Doctrine\DBAL\Swoole\PgSQL\DriverMiddleware;
-use OpsWay\Doctrine\DBAL\Swoole\PgSQL\ConnectionPoolFactory;
 
 /**
- * AppDB Class exists in the Api\Models namespace
- * A Model interacts with database, and return the results to a Controller
+ * SuiteDB Class exists in the Api\Models namespace
+ * A Model interacts with the database and returns the results to a Controller.
  *
  * @category Model
  */
-#[Injectable]
-class AppDB extends DBConnection
+#[Injectable()]
+class AppDB extends DbConnection
 {
     public EntityManagerInterface $emApp;
 
-    /**
-     * Connect to database in constructor
-     */
     public function __construct()
     {
-        parent::__construct();
-       $this->emApp = $this->connect(
-            domain: 'MyApp',
-            params:DoctrineConfig['dbal']['connections']['default']
+        // Call parent constructor with the pool ID
+        parent::__construct(
+            poolId: 'app_db_pool', // Define a unique pool ID for this database connection
+            domain:'MyApp',
+            params:DoctrineConfig['doctrine']['dbal']['connections']['default']
         );
+
+        // Acquire a connection from the pool
+        $this->emApp = $this->getConnection();
+    }
+
+    /**
+     * Initialize any specific logic if needed.
+     */
+    public function onInit(): void
+    {
+        // Add custom initialization logic here, if necessary.
+    }
+
+    /**
+     * Release the connection back to the pool on destruction.
+     */
+    public function __destruct()
+    {
+        if (isset($this->emApp)) {
+            $this->releaseConnection($this->emApp);
+        }
     }
 }
