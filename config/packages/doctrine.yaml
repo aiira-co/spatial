@@ -118,3 +118,12 @@ doctrine:
         cast: Oro\ORM\Query\AST\Functions\Cast
         replace: Oro\ORM\Query\AST\Functions\String\Replace
         date_format: Oro\ORM\Query\AST\Functions\String\DateFormat
+
+
+
+
+    # php bin/doctrine list    //list all doctrine commands
+
+    # php bin/doctrine orm:schema-tool:update  // update database tables
+
+    # php bin/doctrine orm:generate-proxies  // generate proxy files

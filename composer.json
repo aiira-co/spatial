@@ -1,7 +1,7 @@
 {
   "name": "spatial/spatial",
   "description": "PHP8+ WebAPI Clean Architecture Framework.",
-  "version": "4.0.0-RC1",
+  "version": "4.0.0-RC3",
   "type": "project",
   "keywords": [
     "PHP",
@@ -18,20 +18,25 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
+    "ext-curl": "*",
+    "ext-intl": "*",
     "ext-json": "*",
-    "ext-sodium": "*",
+    "ext-openssl": "*",
     "ext-openswoole": "*",
+    "ext-opentelemetry": "*",
+    "ext-pcntl": "*",
+    "ext-sodium": "*",
     "azjezz/psl": "^3.230",
     "lcobucci/jwt": "^5",
     "openswoole/core": "^22.1",
-    "spatial/core": "^4.0.0-RC1",
-    "spatial/doctrine": "^4.0-RC1",
+    "spatial/core": "^4.0.0-RC3",
+    "spatial/doctrine": "^4.0-RC2",
     "symfony/yaml": "^6"
   },
   "authors": [
     {
       "name": "Kofi Owusu-Afriyie",
-      "email": "koathecedi@gmail.com",
+      "email": "hello@aiira.co",
       "homepage": "https://aiira.co",
       "role": "Developer"
     }
