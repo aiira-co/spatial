@@ -26,11 +26,11 @@
     "ext-opentelemetry": "*",
     "ext-pcntl": "*",
     "ext-sodium": "*",
-    "azjezz/psl": "^3.230",
+    "azjezz/psl": "^4.2.0",
     "lcobucci/jwt": "^5",
     "openswoole/core": "^22.1",
-    "spatial/core": "^4.0.0-RC3",
-    "spatial/doctrine": "^4.0-RC2",
+    "spatial/core": "^4.1",
+    "spatial/doctrine": "^4.0.0-RC2",
     "symfony/yaml": "^6"
   },
   "authors": [
@@ -49,7 +49,9 @@
     "sort-packages": true,
     "optimize-autoloader": true,
     "allow-plugins": {
-      "pestphp/pest-plugin": true
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true,
+      "tbachert/spi": true
     }
   },
   "minimum-stability": "dev",
@@ -65,7 +67,8 @@
   "require-dev": {
     "openswoole/ide-helper": "~22.1.5",
     "pestphp/pest": "^3.7",
-    "roave/security-advisories": "dev-master"
+    "roave/security-advisories": "dev-master",
+    "spatial/cli": "^1.0"
   },
   "scripts": {
     "ci": [
