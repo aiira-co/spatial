@@ -1,144 +1,323 @@
-# Spatial (CQured) MULTI-WebAPI Framework - Clean Architecture
+# Spatial Framework
 
-[comment]: <> (- To Access the appAPI's ValuesController, go to localhost:8000/appApi/values -> this just returns the array in the controller's httpGet&#40;&#41; method.)
+A modern **Clean Architecture** PHP 8.2+ framework for building high-performance APIs with OpenSwoole, CQRS, and attribute-based routing.
 
-[comment]: <> (- The real magic is to enter localhost:8000/appApi/test to access the controller's httpGet&#40;&#41; method.)
+[![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-blue)](https://php.net)
+[![OpenSwoole](https://img.shields.io/badge/OpenSwoole-22.1%2B-purple)](https://openswoole.com)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-[comment]: <> (  This now calls the GetPersonQuery from the your 'app' application in the /src/core/applications/logics/app/person/queries folder.)
+## Features
 
-[comment]: <> (    - The Query Class automatically calls its Handler class &#40;done with the Spatial\Mediatr class&#41;.)
-- Documentation: https://aiira.co/developer
-- Twitter: https://twitter.com/aiira_co
+- ⚡ **High Performance** - Async HTTP server with OpenSwoole
+- 🏛️ **Clean Architecture** - Layered design with CQRS
+- 🎯 **Attribute Routing** - Routes via PHP 8 attributes
+- 📊 **OpenTelemetry** - Built-in tracing and logging
+- 📄 **OpenAPI Generator** - Auto-generate API documentation
+- 🗄️ **Database Migrations** - Multi-connection support
+- 📡 **Event System** - Domain events with auto-discovery
+- 🌐 **WebSocket Support** - Real-time communication
+- 📦 **Job Queue** - Background job processing
+- 🚀 **Deploy Build** - Production packaging
+- 🛠️ **26 CLI Commands** - Complete development toolkit
 
-Clean/Onion Architecture for multi-api framework
+## Quick Start
 
-- Spatial\Route for presentation(Api)
-- Spatial\Mediator as middleware between \Presentation\\ and \Core\\ (PSR)
-- Doctrine for DB
-- GuzzlePSR7 for http
-- lcobucci/jwt for Auth
-
-## Server Requirements
-The Spatial framework has a few system requirements. All of these requirements are satisfied by the Spatial docker-compose.yml and Dockerfile, so it's highly recommended that you use Docker as your local Spatial development environment.
-
-However, if you are not using Docker, you will need to make sure your server meets the following requirements:
-
-- PHP >= 8.0
-- Openswoole as Server
-- BCMath PHP Extension
-- Ctype PHP Extension
-- Fileinfo PHP extension
-- JSON PHP Extension
-- Mbstring PHP Extension
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
-
-## Installing Spatial
-Spatial utilizes Composer to manage its dependencies. So, before using Spatial, make sure you have Composer installed on your machine.
-Install Spatial by issuing the Composer create-project command in your terminal:
-```
-composer create-project spatial/spatial webapi
+```bash
+composer create-project spatial/spatial my-api
+cd my-api
+php public/index.php  # Runs on http://localhost:8080
 ```
 
-# Configuration
-### Public Directory
-After installing Spatial, you should configure your web server's document / web root to be the public directory. The index.php in this directory serves as the front controller for all HTTP requests entering your API.
-In there, you will find the swoole http server configured after booting the app
+---
 
-### Configuration Files
-All of the configuration files for the Spatial framework are stored in the config directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+## CLI Tool (26 Commands)
 
-### Directory Permissions
-After installing Spatial, you may need to configure some permissions. Directories within the assets, common/domain and the var/cache directories should be writable by your web server or Spatial will not run. If you are using the Homestead virtual machine, these permissions should already be set.
-
-### Use Secret for Sensitive Information¶
-When your application has sensitive configuration - like an API key - you should store those securely via secrets(config/secrets/).
-Assuming you're coding locally in the dev environment, this will create:
-```
-config/secrets/dev/dev.encrypt.public.php
-```
-Used to encrypt/add secrets to the vault. Can be safely committed.
-```
-config/secrets/dev/dev.decrypt.private.php
-```
-Used to decrypt/read secrets from the vault. The dev decryption key can be committed (assuming no highly-sensitive secrets are stored in the dev vault) but the prod decryption key should never be committed.
-
-### Additional Configuration
-Spatial needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the config/services.yaml file and its documentation. It contains several options such as timezone and locale that you may wish to change according to your application.
-
-You may also want to configure a few additional components of Spatial, such as:
-
-- Cache
-- Database
-- Session
-
-# Web Server Configuration
-
-### Directory Configuration
-Spatial should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Spatial application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
-
-# Use the Default Directory Structure¶
-Unless your project follows a development practice that imposes a certain directory structure, follow the default Spatial directory structure. It's flat, self-explanatory and not coupled to Spatial:
-```$xslt
-your_project/
-├─ assets/
-├─ bin/
-│  └─ console
-├─ config/
-│  ├─ packages/
-│  └─ services.yaml
-└─ public/
-│  ├─ build/
-│  └─ index.php
-├─ src/
-│  ├─ common/
-│  ├─ core/
-│  ├─ presentaion/
-│  ├─ infrastructure/
-├─ templates/
-├─ tests/
-├─ var/
-│  ├─ cache/
-│  └─ log/
-└─ vendor/
+```bash
+php spatial --help
 ```
 
-### The Src Directory
-The app directory contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
+### Code Generators (13)
 
-### The Config Directory
-The config directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
+| Command | Description |
+|---------|-------------|
+| `make:controller` | Controller with Area + CQRS |
+| `make:command` | CQRS command + OpenTelemetry handler |
+| `make:query` | CQRS query + pagination |
+| `make:module` | API module with structure |
+| `make:dto` | DTO with validation |
+| `make:entity` | Doctrine entity |
+| `make:service` | Infrastructure service |
+| `make:middleware` | PSR-15 middleware |
+| `make:trait` | Domain DB access trait |
+| `make:event` | Domain event |
+| `make:listener` | Event listener |
+| `make:seeder` | Database seeder |
+| `make:job` | Background job |
 
-### The Database Directory
-The database directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
+### Database (4)
 
-### The Public Directory
-The public directory contains the index.php file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+| Command | Description |
+|---------|-------------|
+| `migrate:create` | Create migration (multi-connection) |
+| `migrate:run` | Run pending migrations |
+| `migrate:status` | Show migration status |
+| `db:seed` | Run database seeders |
 
-### The Tests Directory
-The tests directory contains your automated tests. An example PHPUnit test is provided out of the box. Each test class should be suffixed with the word Test. You may run your tests using the phpunit or php vendor/bin/phpunit commands.
+### Queue (1)
 
-### The Vendor Directory
-The vendor directory contains your Composer dependencies.
+| Command | Description |
+|---------|-------------|
+| `queue:work` | Process background jobs |
 
-# The Src Directory
-### The Presentation Directory
-The Presentation layer/folder holds your individual Api(s) for each app being created.
-presentation api is registered at the config.php file for access.
-### The Common Directory
-The Common layer/folder holds your 
-- constants, 
-- general functions, 
-- exceptions, 
-- libraries etc. 
-which will be used by the entire workspace: therefore these are independent of any app or api.
-### The Core Directory
-The Core layer/folder holds your Application (logics, interface, traits) and their Domain(Entity)
+### Utilities (6)
 
-- The Application folder collects your logics, interfaces and models
-- The Domain folder collects your entities generated with Doctrine ORM
-### The Infrastructure Directory
-The Infrastructure layer/folder holds services and database connections.
-Hences, services like, SMS, Generating Tokens, Database Connections Goes here.
+| Command | Description |
+|---------|-------------|
+| `route:list` | List all routes |
+| `route:cache` | Cache routes for production |
+| `cache:clear` | Clear all cache |
+| `config:cache` | Cache configuration |
+| `openapi:generate` | Generate OpenAPI 3.0 spec |
+| `deploy:build` | Package for deployment |
+
+### Code Quality (2)
+
+| Command | Description |
+|---------|-------------|
+| `lint` | PSR-12 code style check |
+| `analyze` | PHPStan static analysis |
+
+---
+
+## API Versioning
+
+```php
+#[ApiController]
+#[ApiVersion('v1')]
+#[Route('[version]/users')]
+class UserController extends Controller
+{
+    // Routes: /v1/users, /v1/users/{id}
+}
+
+#[ApiController]
+#[ApiVersion('v2', deprecated: true, sunset: '2025-12-01')]
+class UserControllerV2 extends Controller
+{
+    // Deprecated version
+}
+```
+
+---
+
+## Health Check
+
+Built-in Kubernetes-ready health endpoints:
+
+```php
+// In your bootstrap
+$health = HealthCheck::create()
+    ->withDatabase(fn() => $entityManager->getConnection())
+    ->withCache(fn() => $redis)
+    ->with('api', fn() => $externalApi->ping());
+
+// Endpoints:
+// GET /health       - Full health check
+// GET /health/live  - Liveness probe
+// GET /health/ready - Readiness probe
+```
+
+Response:
+```json
+{
+  "status": "healthy",
+  "version": "1.0.0",
+  "uptime": "5d 3h 42m",
+  "checks": {
+    "database": { "healthy": true, "latency_ms": 2.3 },
+    "cache": { "healthy": true, "latency_ms": 0.5 }
+  }
+}
+```
+
+---
+
+## Database Seeders
+
+```bash
+# Create seeder
+php spatial make:seeder UsersSeeder
+
+# Run all seeders
+php spatial db:seed
+
+# Run specific seeder
+php spatial db:seed --class=UsersSeeder
+```
+
+---
+
+## Job Queue
+
+```bash
+# Create job
+php spatial make:job SendEmailJob
+
+# Dispatch job (in code)
+$queue = new Queue();
+$queue->dispatch(new SendEmailJob($email));
+
+# Process jobs
+php spatial queue:work --queue=default
+```
+
+---
+
+## WebSocket Support
+
+```php
+#[WebSocketController('/chat')]
+class ChatController
+{
+    #[OnConnect]
+    public function onConnect(Server $server, int $fd): void
+    {
+        echo "Client {$fd} connected";
+    }
+
+    #[OnMessage]
+    public function onMessage(Server $server, Frame $frame): void
+    {
+        $server->push($frame->fd, 'Hello!');
+    }
+
+    #[OnClose]
+    public function onClose(Server $server, int $fd): void
+    {
+        echo "Client {$fd} disconnected";
+    }
+}
+```
+
+---
+
+## Request Validation
+
+```php
+use Spatial\Validation\RequestValidator;
+
+$dto = new CreateOrderDto();
+$dto->email = 'invalid';
+$dto->quantity = -5;
+
+$validator = new RequestValidator();
+$result = $validator->validate($dto);
+
+if (!$result->isValid()) {
+    return $this->badRequest($result->getErrors());
+}
+```
+
+---
+
+## Production Deployment
+
+```bash
+# Build optimized package
+php spatial deploy:build --output=dist --no-dev
+
+# Cache everything
+php spatial route:cache
+php spatial config:cache
+
+# Code quality
+php spatial lint --fix
+php spatial analyze --level=5
+
+# Docker
+cd dist
+docker build -t my-api .
+docker run -p 8080:8080 my-api
+```
+
+---
+
+## Full Feature Example
+
+```bash
+# 1. Module
+php spatial make:module OrdersApi
+
+# 2. Entity
+php spatial make:entity Order --schema=Orders
+
+# 3. CQRS
+php spatial make:command CreateOrder --module=Orders --entity=Order
+php spatial make:query GetOrders --module=Orders --entity=Order
+
+# 4. Controller
+php spatial make:controller Order --module=OrdersApi
+
+# 5. Events
+php spatial make:event OrderCreated --module=Orders
+php spatial make:listener NotifyWarehouse --event=OrderCreatedEvent
+
+# 6. Jobs
+php spatial make:job ProcessOrderJob --queue=orders
+
+# 7. Migrations
+php spatial migrate:create CreateOrdersTable
+php spatial migrate:run
+
+# 8. Seeders
+php spatial make:seeder OrdersSeeder
+php spatial db:seed
+
+# 9. API Docs
+php spatial openapi:generate
+
+# 10. Deploy
+php spatial deploy:build --output=dist
+```
+
+---
+
+## Project Structure
+
+```
+spatial/
+├── public/index.php
+├── config/packages/
+│   └── doctrine.yaml
+├── src/
+│   ├── common/
+│   │   ├── Libraries/Controller.php
+│   │   └── Response/ServerResponse.php
+│   ├── core/
+│   │   ├── Application/
+│   │   │   ├── Events/
+│   │   │   ├── Listeners/
+│   │   │   ├── Traits/
+│   │   │   └── Logics/{Module}/{Entity}/
+│   │   ├── Database/Seeders/
+│   │   ├── Domain/{Schema}/Migrations/
+│   │   └── Jobs/
+│   ├── infrastructure/
+│   └── presentation/
+├── docs/openapi.yaml
+└── var/
+    ├── cache/
+    ├── queue/
+    └── migrations/
+```
+
+---
+
+## Links
+
+- **Documentation**: https://aiira.co/developer
+- **GitHub**: https://github.com/aiira-co/spatial
+
+## License
+
+MIT License - Created by [Kofi Owusu-Afriyie](https://aiira.co) and the Spatial Framework Team.
