@@ -3,7 +3,7 @@
 
 namespace Presentation;
 
-
+use Infrastructure\Middlewares\ValidatorMiddleware;
 use Presentation\WebApi\WebApiModule;
 use Presentation\IdentityApi\IdentityApiModule;
 use Spatial\Core\Interfaces\ApplicationBuilderInterface;
@@ -13,12 +13,13 @@ use Spatial\Core\Attributes\ApiModule;
 
 #[ApiModule(
     imports: [
-    IdentityApiModule::class,
-    WebApiModule::class,
-],
+        IdentityApiModule::class,
+        WebApiModule::class,
+    ],
     declarations: [],
     providers: [
-],
+        ValidatorMiddleware::class,
+    ],
     bootstrap: []
 )]
 class AppModule
@@ -31,11 +32,11 @@ class AppModule
      */
     public function configure(ApplicationBuilderInterface $app, ?WebHostEnvironmentInterface $env = null): void
     {
-//        if ($env->isDevelopment()) {
-//            $app->useDeveloperExceptionPage();
-//        }
+        //        if ($env->isDevelopment()) {
+        //            $app->useDeveloperExceptionPage();
+        //        }
 
-//        $endpoints = new RouteBuilder();
+        //        $endpoints = new RouteBuilder();
 
 
         $app->useHttpsRedirection();

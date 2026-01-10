@@ -1,144 +1,276 @@
-# Spatial (CQured) MULTI-WebAPI Framework - Clean Architecture
+# Spatial Framework - Starter Project
 
-[comment]: <> (- To Access the appAPI's ValuesController, go to localhost:8000/appApi/values -> this just returns the array in the controller's httpGet&#40;&#41; method.)
+This is the official starter template for the Spatial PHP Framework, showcasing best practices and modern patterns.
 
-[comment]: <> (- The real magic is to enter localhost:8000/appApi/test to access the controller's httpGet&#40;&#41; method.)
+## Quick Start
 
-[comment]: <> (  This now calls the GetPersonQuery from the your 'app' application in the /src/core/applications/logics/app/person/queries folder.)
+```bash
+# Create a new project from Packagist
+composer create-project spatial/spatial my-api
+cd my-api
 
-[comment]: <> (    - The Query Class automatically calls its Handler class &#40;done with the Spatial\Mediatr class&#41;.)
-- Documentation: https://aiira.co/developer
-- Twitter: https://twitter.com/aiira_co
+# Configure environment
+cp .env.example .env
+# Edit .env with your database credentials
 
-Clean/Onion Architecture for multi-api framework
+# Run the application
+docker-compose up -d
 
-- Spatial\Route for presentation(Api)
-- Spatial\Mediator as middleware between \Presentation\\ and \Core\\ (PSR)
-- Doctrine for DB
-- GuzzlePSR7 for http
-- lcobucci/jwt for Auth
-
-## Server Requirements
-The Spatial framework has a few system requirements. All of these requirements are satisfied by the Spatial docker-compose.yml and Dockerfile, so it's highly recommended that you use Docker as your local Spatial development environment.
-
-However, if you are not using Docker, you will need to make sure your server meets the following requirements:
-
-- PHP >= 8.0
-- Openswoole as Server
-- BCMath PHP Extension
-- Ctype PHP Extension
-- Fileinfo PHP extension
-- JSON PHP Extension
-- Mbstring PHP Extension
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
-
-## Installing Spatial
-Spatial utilizes Composer to manage its dependencies. So, before using Spatial, make sure you have Composer installed on your machine.
-Install Spatial by issuing the Composer create-project command in your terminal:
-```
-composer create-project spatial/spatial webapi
+# Access the API
+curl http://localhost:8800/web-api/health
 ```
 
-# Configuration
-### Public Directory
-After installing Spatial, you should configure your web server's document / web root to be the public directory. The index.php in this directory serves as the front controller for all HTTP requests entering your API.
-In there, you will find the swoole http server configured after booting the app
+## Project Structure
 
-### Configuration Files
-All of the configuration files for the Spatial framework are stored in the config directory. Each option is documented, so feel free to look through the files and get familiar with the options available to you.
+This project demonstrates Spatial's **Clean Architecture** approach:
 
-### Directory Permissions
-After installing Spatial, you may need to configure some permissions. Directories within the assets, common/domain and the var/cache directories should be writable by your web server or Spatial will not run. If you are using the Homestead virtual machine, these permissions should already be set.
-
-### Use Secret for Sensitive Information¶
-When your application has sensitive configuration - like an API key - you should store those securely via secrets(config/secrets/).
-Assuming you're coding locally in the dev environment, this will create:
 ```
-config/secrets/dev/dev.encrypt.public.php
-```
-Used to encrypt/add secrets to the vault. Can be safely committed.
-```
-config/secrets/dev/dev.decrypt.private.php
-```
-Used to decrypt/read secrets from the vault. The dev decryption key can be committed (assuming no highly-sensitive secrets are stored in the dev vault) but the prod decryption key should never be committed.
-
-### Additional Configuration
-Spatial needs almost no other configuration out of the box. You are free to get started developing! However, you may wish to review the config/services.yaml file and its documentation. It contains several options such as timezone and locale that you may wish to change according to your application.
-
-You may also want to configure a few additional components of Spatial, such as:
-
-- Cache
-- Database
-- Session
-
-# Web Server Configuration
-
-### Directory Configuration
-Spatial should always be served out of the root of the "web directory" configured for your web server. You should not attempt to serve a Spatial application out of a subdirectory of the "web directory". Attempting to do so could expose sensitive files present within your application.
-
-# Use the Default Directory Structure¶
-Unless your project follows a development practice that imposes a certain directory structure, follow the default Spatial directory structure. It's flat, self-explanatory and not coupled to Spatial:
-```$xslt
-your_project/
-├─ assets/
-├─ bin/
-│  └─ console
-├─ config/
-│  ├─ packages/
-│  └─ services.yaml
-└─ public/
-│  ├─ build/
-│  └─ index.php
-├─ src/
-│  ├─ common/
-│  ├─ core/
-│  ├─ presentaion/
-│  ├─ infrastructure/
-├─ templates/
-├─ tests/
-├─ var/
-│  ├─ cache/
-│  └─ log/
-└─ vendor/
+src/
+├── presentation/          # API Layer (Controllers, Modules)
+│   ├── IdentityApi/      # User authentication & management
+│   ├── WebApi/           # Public web API
+│   └── AppModule.php     # Main application module
+├── core/Application/      # Business Logic (CQRS Handlers)
+│   └── Logics/
+│       ├── Identity/     # User domain logic
+│       └── App/          # Application domain logic
+├── infrastructure/        # External concerns (Services, Middleware)
+└── common/               # Shared utilities & DTOs
 ```
 
-### The Src Directory
-The app directory contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
+## Generated Code Examples
 
-### The Config Directory
-The config directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
+This project uses **Spatial CLI v1.1+** with all modern features:
 
-### The Database Directory
-The database directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
+### Example 1: Health Check (Simple)
 
-### The Public Directory
-The public directory contains the index.php file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+**Clean code without observability** - Perfect for simple endpoints:
 
-### The Tests Directory
-The tests directory contains your automated tests. An example PHPUnit test is provided out of the box. Each test class should be suffixed with the word Test. You may run your tests using the phpunit or php vendor/bin/phpunit commands.
+```bash
+php vendor/bin/spatial make:controller Health --module=WebApi
+```
 
-### The Vendor Directory
-The vendor directory contains your Composer dependencies.
+See: `src/presentation/WebApi/Controllers/HealthController.php`
 
-# The Src Directory
-### The Presentation Directory
-The Presentation layer/folder holds your individual Api(s) for each app being created.
-presentation api is registered at the config.php file for access.
-### The Common Directory
-The Common layer/folder holds your 
-- constants, 
-- general functions, 
-- exceptions, 
-- libraries etc. 
-which will be used by the entire workspace: therefore these are independent of any app or api.
-### The Core Directory
-The Core layer/folder holds your Application (logics, interface, traits) and their Domain(Entity)
+### Example 2: Products API (With Configuration)
 
-- The Application folder collects your logics, interfaces and models
-- The Domain folder collects your entities generated with Doctrine ORM
-### The Infrastructure Directory
-The Infrastructure layer/folder holds services and database connections.
-Hences, services like, SMS, Generating Tokens, Database Connections Goes here.
+**Uses .spatial.yml defaults** - Logging enabled automatically:
+
+```bash
+# With .spatial.yml, this automatically includes:
+# - Logging (from config defaults)
+# - Auth (from controller overrides)
+php vendor/bin/spatial make:controller Products --module=WebApi
+```
+
+See: `src/presentation/WebApi/Controllers/ProductsController.php`
+
+### Example 3: User Management (Full Observability)
+
+**Critical business endpoints** - Full logging, tracing, and auth:
+
+```bash
+php vendor/bin/spatial make:controller User --module=IdentityApi --logging --tracing --auth
+```
+
+See: `src/presentation/IdentityApi/Controllers/UserController.php`
+
+## Configuration File (.spatial.yml)
+
+This project includes a `.spatial.yml` file with sensible defaults:
+
+```yaml
+generators:
+  defaults:
+    logging: true # Log by default
+    tracing: false # Trace only critical paths
+    releaseEntity: true # Prevent memory leaks
+
+  overrides:
+    make:controller:
+      auth: true # Protected by default
+    make:query:
+      tracing: true # Monitor query performance
+    make:command:
+      tracing: true # Track business operations
+```
+
+### Benefits of Configuration:
+
+- **Consistency**: Team-wide coding standards
+- **DRY**: No repetitive flags
+- **Flexibility**: Override per-command when needed
+
+## CLI Features Showcase
+
+### 1. Dry-Run Mode
+
+Preview code before creating:
+
+```bash
+php vendor/bin/spatial make:query GetProducts --module=App --entity=Product --dry-run
+```
+
+### 2. Smart Error Messages
+
+Helpful suggestions for typos:
+
+```bash
+php vendor/bin/spatial make:query GetUsers --module=Identty --entity=User
+# ❌ Module 'Identty' not found.
+# 💡 Did you mean: IdentityApi?
+```
+
+### 3. Optional Features
+
+Choose what you need:
+
+```bash
+# Minimal (no OTEL)
+php vendor/bin/spatial make:query GetSimple --module=App --entity=Data
+
+# With logging only
+php vendor/bin/spatial make:query GetUsers --module=Identity --entity=User --logging
+
+# Full observability
+php vendor/bin/spatial make:command ProcessOrder --module=App --entity=Order --logging --tracing --releaseEntity
+```
+
+## Example Workflows
+
+### Creating a New API Feature
+
+1. **Create the module:**
+
+   ```bash
+   php vendor/bin/spatial make:module OrdersApi
+   ```
+
+2. **Create entity and handlers:**
+
+   ```bash
+   php vendor/bin/spatial make:entity Order --schema=Orders
+   php vendor/bin/spatial make:command CreateOrder --module=Orders --entity=Order
+   php vendor/bin/spatial make:query GetOrders --module=Orders --entity=Order
+   ```
+
+   _Note: Logging and tracing automatically added from .spatial.yml_
+
+3. **Create controller:**
+
+   ```bash
+   php vendor/bin/spatial make:controller Order --module=OrdersApi
+   ```
+
+   _Note: Auth automatically added from .spatial.yml_
+
+4. **Add event listener (optional):**
+   ```bash
+   php vendor/bin/spatial make:listener SendOrderEmail --event=OrderCreatedEvent
+   ```
+
+## API Endpoints
+
+### Health Check
+
+```bash
+GET /web-api/health
+```
+
+### Products
+
+```bash
+GET /web-api/products           # List all
+GET /web-api/products/{id}      # Get one
+POST /web-api/products          # Create (requires auth)
+PUT /web-api/products/{id}      # Update (requires auth)
+DELETE /web-api/products/{id}   # Delete (requires auth)
+```
+
+### Values (Demo)
+
+```bash
+GET /web-api/values
+GET /web-api/values/{id}
+```
+
+## Best Practices Demonstrated
+
+1. **Clean Architecture**: Separation of concerns (presentation, core, infrastructure)
+2. **CQRS Pattern**: Commands for mutations, queries for reads
+3. **Dependency Injection**: All dependencies injected via constructor
+4. **Optional Observability**: Add logging/tracing only where needed
+5. **Configuration over Convention**: Customize via .spatial.yml
+6. **API-First Design**: RESTful endpoints with proper HTTP verbs
+
+## Configuration
+
+### Environment Variables (.env)
+
+```env
+APP_NAME="Spatial API"
+APP_ENV=development
+
+# Database
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=spatial
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+#OpenTelemetry (Optional)
+OTEL_ENABLED=true
+OTEL_ENDPOINT=http://otel-collector:4318
+```
+
+### Server Configuration
+
+- **PHP 8.2+** required
+- **OpenSwoole** for async performance
+- **Docker** for easy deployment
+
+## Development Commands
+
+```bash
+# Code generation
+php vendor/bin/spatial make:query <name> --module=<Module> --entity=<Entity>
+php vendor/bin/spatial make:command <name> --module=<Module> --entity=<Entity>
+php vendor/bin/spatial make:controller <name> --module=<ModuleName>
+php vendor/bin/spatial make:listener <name> --event=<EventName>
+
+# Database
+php vendor/bin/spatial migrate:run
+php vendor/bin/spatial migrate:rollback
+php vendor/bin/spatial db:seed
+
+# Code quality
+php vendor/bin/spatial lint
+php vendor/bin/spatial lint --fix
+php vendor/bin/spatial analyze --level=5
+```
+
+## Learning Resources
+
+- **Framework Docs**: [https://spatial.dev/docs](https://spatial.dev/docs)
+- **CLI Reference**: See `vendor/spatial/cli/README.md`
+- **Examples**: Explore `src/` directory
+- **Clean Architecture**: [https://blog.cleancoder.com](https://blog.cleancoder.com)
+- **CQRS Pattern**: [https://martinfowler.com/bliki/CQRS.html](https://martinfowler.com/bliki/CQRS.html)
+
+## Next Steps
+
+1. **Explore the Code**: Check out existing controllers and handlers
+2. **Try the CLI**: Generate your first feature with dry-run mode
+3. **Customize**: Edit `.spatial.yml` to match your team's standards
+4. **Build**: Create your amazing API!
+
+## License
+
+MIT License - See LICENSE file for details
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/aiira-co/spatial/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/aiira-co/spatial/discussions)
+- **Email**: hello@aiira.co

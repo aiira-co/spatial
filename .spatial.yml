@@ -1,0 +1,46 @@
+# .spatial.yml - Spatial Framework Configuration
+# This file defines default values for code generators
+
+generators:
+  # Global defaults for all generators
+  defaults:
+    logging: true # Include logging by default for better debugging
+    tracing: false # Disable tracing by default (opt-in for critical paths)
+    releaseEntity: true # Always release entity managers to prevent memory leaks
+
+  # Generator-specific overrides
+  overrides:
+    make:query:
+      logging: true
+      tracing: true # Always trace queries for performance monitoring
+      releaseEntity: true
+
+    make:command:
+      logging: true
+      tracing: true # Always trace commands (critical business operations)
+      releaseEntity: true
+
+    make:listener:
+      logging: true
+      tracing: false # Listeners don't typically need tracing
+
+    make:controller:
+      logging: true
+      tracing: false # Controller-level logging sufficient
+      auth: true # Protected endpoints by default
+
+    make:middleware:
+      logging: true
+      tracing: true # Trace middleware for request/response timing
+
+    make:job:
+      logging: true
+      tracing: true
+      retry: 3 # Default retry count for background jobs
+
+## Uncomment to customize project structure (these are the defaults)
+# project:
+#   namespace: "Spatial"
+#   presentation_path: "src/presentation"
+#   core_path: "src/core"
+#   infrastructure_path: "src/infrastructure"

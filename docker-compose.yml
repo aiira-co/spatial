@@ -9,27 +9,22 @@
 #
 version: "3"
 services:
-
-  #  db:
-  #    image: postgres
-  #    environment:
-  #      POSTGRES_PASSWORD: postgres
-
-  composer:
-    build: .
-    entrypoint: composer
-    command: validate
-    volumes:
-      - ./:/var/www
-
   php:
     build: .
     env_file:
       - .env
     ports:
-      - 8800:8080
+      - 8000:8080
     working_dir: /var/www
     volumes:
       - ./:/var/www
+      # - C:\secrets:/secrets  -- map your secrets directory here
+      # - ./config/secrets/dev/id_rsa:/secrets/private.pem:ro
+      # - ./config/secrets/dev/id_rsa.pub:/secrets/public.pem:ro
       - ./config/server/swoole.conf:/etc/supervisor/service.d/swoole.conf
+    networks:
+      - monitoring-net
 
+networks:
+  monitoring-net:
+    external: true
