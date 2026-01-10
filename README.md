@@ -1,323 +1,276 @@
-# Spatial Framework
+# Spatial Framework - Starter Project
 
-A modern **Clean Architecture** PHP 8.2+ framework for building high-performance APIs with OpenSwoole, CQRS, and attribute-based routing.
-
-[![PHP Version](https://img.shields.io/badge/PHP-8.2%2B-blue)](https://php.net)
-[![OpenSwoole](https://img.shields.io/badge/OpenSwoole-22.1%2B-purple)](https://openswoole.com)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-
-## Features
-
-- ⚡ **High Performance** - Async HTTP server with OpenSwoole
-- 🏛️ **Clean Architecture** - Layered design with CQRS
-- 🎯 **Attribute Routing** - Routes via PHP 8 attributes
-- 📊 **OpenTelemetry** - Built-in tracing and logging
-- 📄 **OpenAPI Generator** - Auto-generate API documentation
-- 🗄️ **Database Migrations** - Multi-connection support
-- 📡 **Event System** - Domain events with auto-discovery
-- 🌐 **WebSocket Support** - Real-time communication
-- 📦 **Job Queue** - Background job processing
-- 🚀 **Deploy Build** - Production packaging
-- 🛠️ **26 CLI Commands** - Complete development toolkit
+This is the official starter template for the Spatial PHP Framework, showcasing best practices and modern patterns.
 
 ## Quick Start
 
 ```bash
+# Create a new project from Packagist
 composer create-project spatial/spatial my-api
 cd my-api
-php public/index.php  # Runs on http://localhost:8080
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Run the application
+docker-compose up -d
+
+# Access the API
+curl http://localhost:8800/web-api/health
 ```
-
----
-
-## CLI Tool (26 Commands)
-
-```bash
-php spatial --help
-```
-
-### Code Generators (13)
-
-| Command | Description |
-|---------|-------------|
-| `make:controller` | Controller with Area + CQRS |
-| `make:command` | CQRS command + OpenTelemetry handler |
-| `make:query` | CQRS query + pagination |
-| `make:module` | API module with structure |
-| `make:dto` | DTO with validation |
-| `make:entity` | Doctrine entity |
-| `make:service` | Infrastructure service |
-| `make:middleware` | PSR-15 middleware |
-| `make:trait` | Domain DB access trait |
-| `make:event` | Domain event |
-| `make:listener` | Event listener |
-| `make:seeder` | Database seeder |
-| `make:job` | Background job |
-
-### Database (4)
-
-| Command | Description |
-|---------|-------------|
-| `migrate:create` | Create migration (multi-connection) |
-| `migrate:run` | Run pending migrations |
-| `migrate:status` | Show migration status |
-| `db:seed` | Run database seeders |
-
-### Queue (1)
-
-| Command | Description |
-|---------|-------------|
-| `queue:work` | Process background jobs |
-
-### Utilities (6)
-
-| Command | Description |
-|---------|-------------|
-| `route:list` | List all routes |
-| `route:cache` | Cache routes for production |
-| `cache:clear` | Clear all cache |
-| `config:cache` | Cache configuration |
-| `openapi:generate` | Generate OpenAPI 3.0 spec |
-| `deploy:build` | Package for deployment |
-
-### Code Quality (2)
-
-| Command | Description |
-|---------|-------------|
-| `lint` | PSR-12 code style check |
-| `analyze` | PHPStan static analysis |
-
----
-
-## API Versioning
-
-```php
-#[ApiController]
-#[ApiVersion('v1')]
-#[Route('[version]/users')]
-class UserController extends Controller
-{
-    // Routes: /v1/users, /v1/users/{id}
-}
-
-#[ApiController]
-#[ApiVersion('v2', deprecated: true, sunset: '2025-12-01')]
-class UserControllerV2 extends Controller
-{
-    // Deprecated version
-}
-```
-
----
-
-## Health Check
-
-Built-in Kubernetes-ready health endpoints:
-
-```php
-// In your bootstrap
-$health = HealthCheck::create()
-    ->withDatabase(fn() => $entityManager->getConnection())
-    ->withCache(fn() => $redis)
-    ->with('api', fn() => $externalApi->ping());
-
-// Endpoints:
-// GET /health       - Full health check
-// GET /health/live  - Liveness probe
-// GET /health/ready - Readiness probe
-```
-
-Response:
-```json
-{
-  "status": "healthy",
-  "version": "1.0.0",
-  "uptime": "5d 3h 42m",
-  "checks": {
-    "database": { "healthy": true, "latency_ms": 2.3 },
-    "cache": { "healthy": true, "latency_ms": 0.5 }
-  }
-}
-```
-
----
-
-## Database Seeders
-
-```bash
-# Create seeder
-php spatial make:seeder UsersSeeder
-
-# Run all seeders
-php spatial db:seed
-
-# Run specific seeder
-php spatial db:seed --class=UsersSeeder
-```
-
----
-
-## Job Queue
-
-```bash
-# Create job
-php spatial make:job SendEmailJob
-
-# Dispatch job (in code)
-$queue = new Queue();
-$queue->dispatch(new SendEmailJob($email));
-
-# Process jobs
-php spatial queue:work --queue=default
-```
-
----
-
-## WebSocket Support
-
-```php
-#[WebSocketController('/chat')]
-class ChatController
-{
-    #[OnConnect]
-    public function onConnect(Server $server, int $fd): void
-    {
-        echo "Client {$fd} connected";
-    }
-
-    #[OnMessage]
-    public function onMessage(Server $server, Frame $frame): void
-    {
-        $server->push($frame->fd, 'Hello!');
-    }
-
-    #[OnClose]
-    public function onClose(Server $server, int $fd): void
-    {
-        echo "Client {$fd} disconnected";
-    }
-}
-```
-
----
-
-## Request Validation
-
-```php
-use Spatial\Validation\RequestValidator;
-
-$dto = new CreateOrderDto();
-$dto->email = 'invalid';
-$dto->quantity = -5;
-
-$validator = new RequestValidator();
-$result = $validator->validate($dto);
-
-if (!$result->isValid()) {
-    return $this->badRequest($result->getErrors());
-}
-```
-
----
-
-## Production Deployment
-
-```bash
-# Build optimized package
-php spatial deploy:build --output=dist --no-dev
-
-# Cache everything
-php spatial route:cache
-php spatial config:cache
-
-# Code quality
-php spatial lint --fix
-php spatial analyze --level=5
-
-# Docker
-cd dist
-docker build -t my-api .
-docker run -p 8080:8080 my-api
-```
-
----
-
-## Full Feature Example
-
-```bash
-# 1. Module
-php spatial make:module OrdersApi
-
-# 2. Entity
-php spatial make:entity Order --schema=Orders
-
-# 3. CQRS
-php spatial make:command CreateOrder --module=Orders --entity=Order
-php spatial make:query GetOrders --module=Orders --entity=Order
-
-# 4. Controller
-php spatial make:controller Order --module=OrdersApi
-
-# 5. Events
-php spatial make:event OrderCreated --module=Orders
-php spatial make:listener NotifyWarehouse --event=OrderCreatedEvent
-
-# 6. Jobs
-php spatial make:job ProcessOrderJob --queue=orders
-
-# 7. Migrations
-php spatial migrate:create CreateOrdersTable
-php spatial migrate:run
-
-# 8. Seeders
-php spatial make:seeder OrdersSeeder
-php spatial db:seed
-
-# 9. API Docs
-php spatial openapi:generate
-
-# 10. Deploy
-php spatial deploy:build --output=dist
-```
-
----
 
 ## Project Structure
 
+This project demonstrates Spatial's **Clean Architecture** approach:
+
 ```
-spatial/
-├── public/index.php
-├── config/packages/
-│   └── doctrine.yaml
-├── src/
-│   ├── common/
-│   │   ├── Libraries/Controller.php
-│   │   └── Response/ServerResponse.php
-│   ├── core/
-│   │   ├── Application/
-│   │   │   ├── Events/
-│   │   │   ├── Listeners/
-│   │   │   ├── Traits/
-│   │   │   └── Logics/{Module}/{Entity}/
-│   │   ├── Database/Seeders/
-│   │   ├── Domain/{Schema}/Migrations/
-│   │   └── Jobs/
-│   ├── infrastructure/
-│   └── presentation/
-├── docs/openapi.yaml
-└── var/
-    ├── cache/
-    ├── queue/
-    └── migrations/
+src/
+├── presentation/          # API Layer (Controllers, Modules)
+│   ├── IdentityApi/      # User authentication & management
+│   ├── WebApi/           # Public web API
+│   └── AppModule.php     # Main application module
+├── core/Application/      # Business Logic (CQRS Handlers)
+│   └── Logics/
+│       ├── Identity/     # User domain logic
+│       └── App/          # Application domain logic
+├── infrastructure/        # External concerns (Services, Middleware)
+└── common/               # Shared utilities & DTOs
 ```
 
----
+## Generated Code Examples
 
-## Links
+This project uses **Spatial CLI v1.1+** with all modern features:
 
-- **Documentation**: https://aiira.co/developer
-- **GitHub**: https://github.com/aiira-co/spatial
+### Example 1: Health Check (Simple)
+
+**Clean code without observability** - Perfect for simple endpoints:
+
+```bash
+php vendor/bin/spatial make:controller Health --module=WebApi
+```
+
+See: `src/presentation/WebApi/Controllers/HealthController.php`
+
+### Example 2: Products API (With Configuration)
+
+**Uses .spatial.yml defaults** - Logging enabled automatically:
+
+```bash
+# With .spatial.yml, this automatically includes:
+# - Logging (from config defaults)
+# - Auth (from controller overrides)
+php vendor/bin/spatial make:controller Products --module=WebApi
+```
+
+See: `src/presentation/WebApi/Controllers/ProductsController.php`
+
+### Example 3: User Management (Full Observability)
+
+**Critical business endpoints** - Full logging, tracing, and auth:
+
+```bash
+php vendor/bin/spatial make:controller User --module=IdentityApi --logging --tracing --auth
+```
+
+See: `src/presentation/IdentityApi/Controllers/UserController.php`
+
+## Configuration File (.spatial.yml)
+
+This project includes a `.spatial.yml` file with sensible defaults:
+
+```yaml
+generators:
+  defaults:
+    logging: true # Log by default
+    tracing: false # Trace only critical paths
+    releaseEntity: true # Prevent memory leaks
+
+  overrides:
+    make:controller:
+      auth: true # Protected by default
+    make:query:
+      tracing: true # Monitor query performance
+    make:command:
+      tracing: true # Track business operations
+```
+
+### Benefits of Configuration:
+
+- **Consistency**: Team-wide coding standards
+- **DRY**: No repetitive flags
+- **Flexibility**: Override per-command when needed
+
+## CLI Features Showcase
+
+### 1. Dry-Run Mode
+
+Preview code before creating:
+
+```bash
+php vendor/bin/spatial make:query GetProducts --module=App --entity=Product --dry-run
+```
+
+### 2. Smart Error Messages
+
+Helpful suggestions for typos:
+
+```bash
+php vendor/bin/spatial make:query GetUsers --module=Identty --entity=User
+# ❌ Module 'Identty' not found.
+# 💡 Did you mean: IdentityApi?
+```
+
+### 3. Optional Features
+
+Choose what you need:
+
+```bash
+# Minimal (no OTEL)
+php vendor/bin/spatial make:query GetSimple --module=App --entity=Data
+
+# With logging only
+php vendor/bin/spatial make:query GetUsers --module=Identity --entity=User --logging
+
+# Full observability
+php vendor/bin/spatial make:command ProcessOrder --module=App --entity=Order --logging --tracing --releaseEntity
+```
+
+## Example Workflows
+
+### Creating a New API Feature
+
+1. **Create the module:**
+
+   ```bash
+   php vendor/bin/spatial make:module OrdersApi
+   ```
+
+2. **Create entity and handlers:**
+
+   ```bash
+   php vendor/bin/spatial make:entity Order --schema=Orders
+   php vendor/bin/spatial make:command CreateOrder --module=Orders --entity=Order
+   php vendor/bin/spatial make:query GetOrders --module=Orders --entity=Order
+   ```
+
+   _Note: Logging and tracing automatically added from .spatial.yml_
+
+3. **Create controller:**
+
+   ```bash
+   php vendor/bin/spatial make:controller Order --module=OrdersApi
+   ```
+
+   _Note: Auth automatically added from .spatial.yml_
+
+4. **Add event listener (optional):**
+   ```bash
+   php vendor/bin/spatial make:listener SendOrderEmail --event=OrderCreatedEvent
+   ```
+
+## API Endpoints
+
+### Health Check
+
+```bash
+GET /web-api/health
+```
+
+### Products
+
+```bash
+GET /web-api/products           # List all
+GET /web-api/products/{id}      # Get one
+POST /web-api/products          # Create (requires auth)
+PUT /web-api/products/{id}      # Update (requires auth)
+DELETE /web-api/products/{id}   # Delete (requires auth)
+```
+
+### Values (Demo)
+
+```bash
+GET /web-api/values
+GET /web-api/values/{id}
+```
+
+## Best Practices Demonstrated
+
+1. **Clean Architecture**: Separation of concerns (presentation, core, infrastructure)
+2. **CQRS Pattern**: Commands for mutations, queries for reads
+3. **Dependency Injection**: All dependencies injected via constructor
+4. **Optional Observability**: Add logging/tracing only where needed
+5. **Configuration over Convention**: Customize via .spatial.yml
+6. **API-First Design**: RESTful endpoints with proper HTTP verbs
+
+## Configuration
+
+### Environment Variables (.env)
+
+```env
+APP_NAME="Spatial API"
+APP_ENV=development
+
+# Database
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=spatial
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+#OpenTelemetry (Optional)
+OTEL_ENABLED=true
+OTEL_ENDPOINT=http://otel-collector:4318
+```
+
+### Server Configuration
+
+- **PHP 8.2+** required
+- **OpenSwoole** for async performance
+- **Docker** for easy deployment
+
+## Development Commands
+
+```bash
+# Code generation
+php vendor/bin/spatial make:query <name> --module=<Module> --entity=<Entity>
+php vendor/bin/spatial make:command <name> --module=<Module> --entity=<Entity>
+php vendor/bin/spatial make:controller <name> --module=<ModuleName>
+php vendor/bin/spatial make:listener <name> --event=<EventName>
+
+# Database
+php vendor/bin/spatial migrate:run
+php vendor/bin/spatial migrate:rollback
+php vendor/bin/spatial db:seed
+
+# Code quality
+php vendor/bin/spatial lint
+php vendor/bin/spatial lint --fix
+php vendor/bin/spatial analyze --level=5
+```
+
+## Learning Resources
+
+- **Framework Docs**: [https://spatial.dev/docs](https://spatial.dev/docs)
+- **CLI Reference**: See `vendor/spatial/cli/README.md`
+- **Examples**: Explore `src/` directory
+- **Clean Architecture**: [https://blog.cleancoder.com](https://blog.cleancoder.com)
+- **CQRS Pattern**: [https://martinfowler.com/bliki/CQRS.html](https://martinfowler.com/bliki/CQRS.html)
+
+## Next Steps
+
+1. **Explore the Code**: Check out existing controllers and handlers
+2. **Try the CLI**: Generate your first feature with dry-run mode
+3. **Customize**: Edit `.spatial.yml` to match your team's standards
+4. **Build**: Create your amazing API!
 
 ## License
 
-MIT License - Created by [Kofi Owusu-Afriyie](https://aiira.co) and the Spatial Framework Team.
+MIT License - See LICENSE file for details
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/aiira-co/spatial/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/aiira-co/spatial/discussions)
+- **Email**: hello@aiira.co
