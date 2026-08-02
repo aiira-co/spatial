@@ -243,13 +243,44 @@ OTEL_SEMCONV_STABILITY_OPT_IN=http/dup
 `spatial/README.md` documents `OTEL_ENABLED` and `OTEL_ENDPOINT`, which nothing
 reads — the endpoint variable is `OTEL_EXPORTER_OTLP_ENDPOINT`.
 
-## 8. Optional: the coroutine PostgreSQL driver
+## 8. The coroutine PostgreSQL driver — do not enable it yet
 
-`spatial/doctrine` now ships its own coroutine driver at
-`\Spatial\Entity\Driver\PgSQL\Driver`. It is opt-in, and services are unaffected
-until they set `driverClass`.
+`spatial/doctrine` ships a coroutine driver at
+`\Spatial\Entity\Driver\PgSQL\Driver`. It is opt-in, no service sets
+`driverClass`, and **none should**: OpenSwoole 26.2 cannot pool connections for
+it. Read this section before deciding it looks like the answer to a throughput
+problem, because it reads that way and it is not.
 
-### Why it matters
+### The blocker
+
+A coroutine PostgreSQL connection may only be used by the coroutine that used it
+first. Give it to a second one — which is what a pool does — and its epoll
+registration fails with `ReactorEpoll::add(): failed to add events ... File
+exists`, then the worker segfaults. Reproduced with plain
+`OpenSwoole\Coroutine\PostgreSQL` and no Doctrine, pool or framework code in the
+path, so it is the client:
+
+| Pattern                                  | Result             |
+| ---------------------------------------- | ------------------ |
+| One connection per coroutine, no handoff | 8242 q/s, 0 errors |
+| Connections shared between coroutines    | segfault (139)     |
+| `pdo_pgsql`, for reference               | 2400 q/s           |
+
+Enabling it anyway does not fail cleanly. The driver retries a failed checkout,
+so requests still return 200 while throughput collapses — a first attempt in
+`nx_api` served 600/600 at 124 req/s against 700 req/s on `pdo_pgsql`, which
+looks like a slow database rather than a broken driver.
+
+The payoff is genuine, about 3.4x `pdo_pgsql` without blocking the worker, so
+revisit this when upstream fixes connection reuse. The only shape that works
+today is one connection per coroutine and no pool, which ties the connection
+count to in-flight requests instead of a budget — the opposite of what these
+services need against a shared `max_connections` of 100.
+
+Until then: stay on `pdo_pgsql`, accept that concurrency is `worker_num`, and
+size `poolSize` for what one worker holds at once (see section 9).
+
+### Why it was written
 
 OpenSwoole publishes no PDO PostgreSQL hook — there is no `HOOK_PDO_PGSQL`, and
 `HOOK_ALL` does not cover it. Measured in a running container, two concurrent
@@ -281,45 +312,65 @@ parameterised query would fail. `Statement`, `Result` and the query paths in
 fixed, including a pool race that only appears under contention. The details are
 in `src/Driver/PgSQL/README.md`.
 
-### Enabling it
+### If the client is ever fixed
 
-In the relevant `doctrine.yaml` connection block:
-
-```yaml
-driverClass: \Spatial\Entity\Driver\PgSQL\Driver
-```
-
-Then re-check the connection budget: each worker can now hold `poolSize`
+Set `driverClass: \Spatial\Entity\Driver\PgSQL\Driver` in the `doctrine.yaml`
+connection block, then re-check the budget: each worker can hold `poolSize`
 concurrent connections rather than roughly one, so the ceiling per service
-becomes `worker_num x pools x poolSize`. Lower `worker_num` as you raise
-effective concurrency, and confirm the total against the server's
-`max_connections`.
+becomes `worker_num x pools x poolSize`. Lower `worker_num` as effective
+concurrency rises, and confirm the total against `max_connections`.
 
-Before enabling it in a service, run the conformance test in that container —
-it exercises parameterised queries, transactions, SQLSTATE mapping, concurrency
-and the exhaustion path:
+Run the conformance and benchmark suites in that container first — the first
+exercises parameterised queries, transactions, SQLSTATE mapping, concurrency and
+exhaustion; the second is what surfaces a pool that is silently reconnecting:
 
 ```bash
 php vendor/spatial/doctrine/tests/driver-conformance.php
+php vendor/spatial/doctrine/tests/driver-benchmark.php
 ```
 
-Two limitations to know: only positional `?` placeholders are rewritten to
+Two further limitations: only positional `?` placeholders are rewritten to
 `$1, $2`, so named parameters in raw DBAL SQL are unsupported (no service uses
 them today), and binary or large-object parameters are rejected rather than
 silently corrupted.
 
 [opsway]: https://github.com/opsway/doctrine-dbal-swoole-pgsql-driver
 
+## 9. Size `poolSize` against the shared server, not per service
+
+The four services on `host.docker.internal:5432` share one Postgres with
+`max_connections = 100`, three of which are superuser-reserved. Each service
+pins `worker_num x poolSize` connections, because `warmup()` fills the pool in
+every worker.
+
+At `worker_num: 8` and `poolSize: 8` that is 64 connections for one service.
+`nx_api` was measured holding 64 of the 100 while `nx_suite_api`,
+`nx_identity_api` and `nx_intelligence_api` had yet to warm theirs; had all four
+warmed at those settings they would have asked for roughly 208. The others are
+lazy today only because nothing constructs their `DbConnection` subclasses
+during boot, so `warmup()` finds no pool to fill — a timing accident, not a
+safety margin.
+
+Those connections could not have been used in any case. `pdo_pgsql` blocks its
+worker, so a worker runs one query at a time whatever `poolSize` says; the rest
+of the pool is open connections that no code path can reach. Size it for what a
+worker genuinely holds at once — the EntityManager running the query, plus slack
+for coroutines holding one across a Redis or HTTP call.
+
+`nx_api` now runs `worker_num: 8`, `poolSize: 3`: 24 connections instead of 64,
+measured at 680 req/s against the 700 req/s it managed at `poolSize: 8`, so the
+40 connections bought nothing. The other three services still need the same
+treatment.
+
 ## Still outstanding
 
 Not addressed here, tracked for Phase 1 and 2:
 
-- The coroutine driver is written and tested but not enabled in any service.
-  Turning it on is a per-service decision that comes with a `worker_num`
-  re-budget.
-- Prepared statements are not cached across queries, so each parameterised query
-  costs an extra `PREPARE` round trip. Correct, but leaves throughput on the
-  table.
+- `nx_suite_api`, `nx_identity_api` and `nx_intelligence_api` still run
+  `poolSize: 8`. See section 9.
+- Prepared statements are not cached across queries in the coroutine driver, so
+  each parameterised query costs an extra `PREPARE` round trip. Moot while the
+  driver is unusable.
 
 - **12 more PSR-4 violations remain in `nx_api`**, and two of them are live
   production bugs rather than latent ones:
