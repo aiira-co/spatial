@@ -1,7 +1,6 @@
 {
   "name": "spatial/spatial",
   "description": "PHP8+ WebAPI Clean Architecture Framework.",
-  "version": "4.1.0",
   "type": "project",
   "keywords": [
     "PHP",
