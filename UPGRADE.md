@@ -141,18 +141,32 @@ private function getConnection(): EntityManagerInterface
 
 Applies to `SocialTrait`, `SuiteTrait`, `IdentityTrait` and `NotifyTrait`.
 
-### 5. Guarantee release
+### 5. Release is now automatic — nothing to do
 
-Any handler that calls `getEntityManager()` must release in a `finally`. Newer
-suite and intelligence handlers already do; many older `nx_api` handlers release
-inline, so an exception on the happy path leaks the lease. Prefer the lease
-helper, which cannot leak:
+This step used to say "every `getEntityManager()` must release in a `finally`".
+That advice was correct and unfollowable: across the five services 652 handlers
+take an `EntityManager` and exactly one wraps it in `try/finally`, so any early
+return or exception stranded a pool slot for the life of the worker, and eight
+of them starved it.
 
-```php
-$result = $this->socialDb->withEntityManager(
-    fn(EntityManagerInterface $em) => $em->getRepository(Person::class)->find($id)
-);
-```
+Checkouts are now scoped to the coroutine instead. The first `getConnection()`
+in a request leases an `EntityManager` and registers a `defer` hook; later calls
+in the same request get the same instance back, and it returns to the pool when
+the request ends — early return, exception, or normal completion alike.
+
+Practically:
+
+- **Existing `releaseConnection()` calls are fine.** They still reset the
+  `EntityManager`, rolling back an abandoned transaction and clearing the
+  identity map. They no longer return the slot, so calling one is no longer the
+  difference between a healthy worker and a starved one.
+- **Missing `releaseConnection()` calls are now harmless.** No migration needed.
+- **`withEntityManager()` still works** and is still the clearest way to express
+  a scoped unit of work.
+- **One exception: outside a coroutine** — console commands, queue consumers,
+  migrations — there is no `defer` to hang the release on, so the old contract
+  stands. Pair `getConnection()` with `releaseConnection()` in `bin/` scripts, or
+  use `withEntityManager()`.
 
 ### 6a. Done in `nx_api`: the Rent module was removed
 
@@ -229,9 +243,83 @@ OTEL_SEMCONV_STABILITY_OPT_IN=http/dup
 `spatial/README.md` documents `OTEL_ENABLED` and `OTEL_ENDPOINT`, which nothing
 reads — the endpoint variable is `OTEL_EXPORTER_OTLP_ENDPOINT`.
 
+## 8. Optional: the coroutine PostgreSQL driver
+
+`spatial/doctrine` now ships its own coroutine driver at
+`\Spatial\Entity\Driver\PgSQL\Driver`. It is opt-in, and services are unaffected
+until they set `driverClass`.
+
+### Why it matters
+
+OpenSwoole publishes no PDO PostgreSQL hook — there is no `HOOK_PDO_PGSQL`, and
+`HOOK_ALL` does not cover it. Measured in a running container, two concurrent
+one-second queries on `pdo_pgsql` take two seconds, not one: a query blocks the
+whole worker. So today, request concurrency equals `worker_num`, coroutines buy
+no database parallelism, and `poolSize` above 1 is decorative.
+
+With this driver the same test finishes in about one second, and eight
+concurrent queries take about the time of one. Concurrency becomes
+`worker_num x poolSize`, which is why `poolSize` and the connection budget only
+start meaning what they say once it is enabled.
+
+### What it is
+
+A fork of [opsway/doctrine-dbal-swoole-pgsql-driver][opsway] 4.0.0 (MIT).
+Upstream's design is preserved — the pooled connection binds to the coroutine
+context and returns via `defer` — but it was forked rather than depended upon
+because it has had no commit since June 2024, ships no tests, is pinned to
+`doctrine/dbal ^3.2`, and targets an OpenSwoole PostgreSQL API that no longer
+exists.
+
+That last point matters if you were considering enabling the upstream package:
+on OpenSwoole 26 it does not work at all. `prepare($name, $sql)` raises
+`ArgumentCountError`, `$connection->execute()` and the connection-level fetch
+methods were removed, and `query()` returns an object where the code tests for a
+resource — so every successful query is reported as a connection failure. Every
+parameterised query would fail. `Statement`, `Result` and the query paths in
+`Connection` were rewritten against the current API, and four genuine bugs were
+fixed, including a pool race that only appears under contention. The details are
+in `src/Driver/PgSQL/README.md`.
+
+### Enabling it
+
+In the relevant `doctrine.yaml` connection block:
+
+```yaml
+driverClass: \Spatial\Entity\Driver\PgSQL\Driver
+```
+
+Then re-check the connection budget: each worker can now hold `poolSize`
+concurrent connections rather than roughly one, so the ceiling per service
+becomes `worker_num x pools x poolSize`. Lower `worker_num` as you raise
+effective concurrency, and confirm the total against the server's
+`max_connections`.
+
+Before enabling it in a service, run the conformance test in that container —
+it exercises parameterised queries, transactions, SQLSTATE mapping, concurrency
+and the exhaustion path:
+
+```bash
+php vendor/spatial/doctrine/tests/driver-conformance.php
+```
+
+Two limitations to know: only positional `?` placeholders are rewritten to
+`$1, $2`, so named parameters in raw DBAL SQL are unsupported (no service uses
+them today), and binary or large-object parameters are rejected rather than
+silently corrupted.
+
+[opsway]: https://github.com/opsway/doctrine-dbal-swoole-pgsql-driver
+
 ## Still outstanding
 
-Not addressed by Phase 0, tracked for Phase 1 and 2:
+Not addressed here, tracked for Phase 1 and 2:
+
+- The coroutine driver is written and tested but not enabled in any service.
+  Turning it on is a per-service decision that comes with a `worker_num`
+  re-budget.
+- Prepared statements are not cached across queries, so each parameterised query
+  costs an extra `PREPARE` round trip. Correct, but leaves throughput on the
+  table.
 
 - **12 more PSR-4 violations remain in `nx_api`**, and two of them are live
   production bugs rather than latent ones:
@@ -255,9 +343,10 @@ Not addressed by Phase 0, tracked for Phase 1 and 2:
 - No Doctrine/DBAL instrumentation.
 - Metadata, query and result caches are declared in `doctrine.yaml` but never
   wired into `Configuration`.
-- `src/Connection/{CoroutineConnection,CoroutineDriverMiddleware}`,
-  `src/ORM/CoroutineEntityManager` and `src/DoctrineConfig.php` are dead and
-  would fatal if constructed.
+- `src/DoctrineConfig.php` is dead and would fatal if constructed. The four
+  coroutine stubs that shared this problem — `CoroutineConnection`,
+  `CoroutineDriverMiddleware`, `CoroutineEntityManager` and
+  `ReopeningEntityManager` — have been removed.
 
 ## Verifying
 
@@ -267,6 +356,16 @@ Offline, no service required:
 php spatial-doctrine/tests/pool-lease-test.php      # lease accounting, 28 checks
 php spatial-core/test/route-normalizer-test.php     # metric cardinality
 ```
+
+Inside a service container, which has the openswoole extension:
+
+```bash
+php vendor/spatial/doctrine/tests/coroutine-scope-test.php   # scoped checkouts, 15 checks
+php vendor/spatial/doctrine/tests/driver-conformance.php     # coroutine driver, 21 checks
+```
+
+The driver test needs a reachable database and creates and drops one table,
+`spatial_driver_probe`.
 
 Against a running service, `tools/verify-phase0.php` drives load and watches
 what PostgreSQL actually does. It checks that connections plateau at the

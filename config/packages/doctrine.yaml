@@ -39,6 +39,10 @@ doctrine:
         # the database server are: worker_num x pools per service x poolSize.
         # Keep worker_num explicit in public/index.php and size this against the
         # server's max_connections, counting every service that shares it.
+        #
+        # A checkout belongs to the coroutine that made it and returns when that
+        # coroutine ends, so under the HTTP server this is the ceiling on
+        # concurrent in-flight requests that touch this database, per worker.
         poolSize: 5
         # Seconds a request waits for a free slot before failing with 503
         # instead of blocking the coroutine indefinitely.
@@ -48,11 +52,15 @@ doctrine:
         # checkout. isOpen() is always checked regardless.
         validateOnCheckout: false
 
-        # --- OpsWay Swoole PgSQL driver (optional) ---
-        # The four keys below plus `retry` are only honoured when driverClass is
-        # set to the OpsWay driver, which pools at the DBAL layer. Leave it
-        # commented out and they have no effect.
-        # driverClass: \OpsWay\Doctrine\DBAL\Swoole\PgSQL\Driver
+        # --- Spatial coroutine PostgreSQL driver (optional) ---
+        # Without this, queries run on pdo_pgsql, which OpenSwoole cannot hook:
+        # a query blocks the whole worker, so poolSize buys nothing and request
+        # concurrency equals worker_num. With it, a query suspends the coroutine
+        # instead, and poolSize becomes the real limit on concurrent queries per
+        # worker. See src/Driver/PgSQL/README.md in spatial/doctrine.
+        #
+        # The keys below plus `retry` are only honoured when driverClass is set.
+        # driverClass: \Spatial\Entity\Driver\PgSQL\Driver
         tickFrequency: 60000 # how often to check whether idle connections can be closed
         connectionTtl: 60 # close a connection unused for this long (seconds)
         usedTimes: 100 # retire a connection after this many queries
