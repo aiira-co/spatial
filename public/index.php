@@ -39,75 +39,117 @@
  * @copyright   2021 Aiira Inc.
  * @license     http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link        http://aiira.co
- * @version     @@3.00@@
+ * @version     @@4.00@@
  */
 
 declare(strict_types=1);
 
-
+use OpenSwoole\Http\Request;
+use OpenSwoole\Http\Response;
+use OpenSwoole\Http\Server;
+use OpenSwoole\Process;
+use OpenSwoole\Runtime;
 use Presentation\AppModule;
 use Spatial\Core\App;
+use Spatial\Entity\DbConnection;
 use Spatial\Swoole\BridgeManager;
-use Swoole\Http\Request;
-use Swoole\Http\Response;
-use Swoole\Http\Server;
-
+use Spatial\Telemetry\OtelProviderFactory;
 
 const DS = DIRECTORY_SEPARATOR;
 require_once __DIR__ . DS . '..' . DS . 'vendor' . DS . 'autoload.php';
 
+Runtime::enableCoroutine(true, Runtime::HOOK_ALL);
+
 /**
- * This is how you would normally bootstrap your Spatial application
- * For the sake of demonstration, we also add a simple middleware
- * to check that the entire app stack is being setup and executed
- * properly.
+ * Bootstrap the application in the master process.
+ *
+ * Everything built here is inherited by every worker through fork, so it must
+ * stay limited to configuration, routing tables and the DI container. Database
+ * connection pools are created empty on purpose and populated per worker in
+ * onWorkerStart below — see DbConnection::warmup().
  */
 $app = new App();
-
 
 co::run(function () use ($app) {
     $app->boot(AppModule::class);
 });
 
-/**
- * CGI NGNIX HttpServer
- */
-
-//$response = $app->processX();
-//http_response_code($response->getStatusCode());
-//echo $response->getBody();
-
-/**
- *
- * We instanciate the BridgeManager(this library)
- */
 $bridgeManager = new BridgeManager($app);
 
-/**
- * We start the Swoole server
- */
 $http = new Server("0.0.0.0", 8080);
 
 /**
- * We register the on "start" event
+ * Worker count is set explicitly.
+ *
+ * OpenSwoole otherwise defaults to one worker per CPU core, which silently
+ * multiplies the database connection footprint by the size of the host:
+ * total connections = workers x pools per service x poolSize. Keep this in
+ * step with `poolSize` in config/packages/doctrine.yaml and with the
+ * database server's own connection limit.
  */
+$http->set([
+    'worker_num' => (int)(getenv('SWOOLE_WORKER_NUM') ?: 4),
+    // Workers are not recycled: each one owns a connection pool, and
+    // recycling would churn database connections for no benefit here.
+    'max_request' => 0,
+    'enable_coroutine' => true,
+]);
+
 $http->on(
     "start",
-    function (Server $server) use ($app) {
+    function (Server $server) {
         echo sprintf('Swoole http server is started at http://%s:%s', $server->host, $server->port), PHP_EOL;
     }
 );
 
 /**
- * We register the on "request event, which will use the BridgeManager to transform request, process it
- * as a Spatial request and merge back the response
- *
+ * Per-worker setup, after the fork.
  */
+$http->on(
+    "workerStart",
+    function (Server $server, int $workerId) {
+        // Populate this worker's own pools. Creating an EntityManager does not
+        // open a socket — DBAL connects lazily on first query — so this is
+        // cheap and keeps checkout latency predictable.
+        try {
+            DbConnection::warmup();
+        } catch (Throwable $e) {
+            // Fall back to on-demand creation inside the request coroutine.
+            error_log("Worker {$workerId} pool warmup skipped: " . $e->getMessage());
+        }
+
+        // ExportingReader has no internal schedule, so without this tick
+        // metrics would only be exported when the process finally exits.
+        OtelProviderFactory::registerFlushTimer();
+    }
+);
+
+/**
+ * Per-worker teardown. Runs on reload and on shutdown, unlike
+ * register_shutdown_function, which only fires when the process itself exits.
+ */
+$http->on(
+    "workerStop",
+    function (Server $server, int $workerId) {
+        DbConnection::closeAllConnection();
+        OtelProviderFactory::shutdown();
+    }
+);
+
 $http->on(
     "request",
     function (Request $request, Response $response) use ($bridgeManager, $http) {
         $bridgeManager->process($request, $response, $http)->end();
     }
 );
+
+/**
+ * Graceful shutdown. Process::signal is used rather than pcntl_signal, which
+ * needs an explicit pcntl_signal_dispatch() pump that an event loop never runs.
+ */
+Process::signal(SIGTERM, function () use ($http) {
+    echo "Received SIGTERM, draining workers...\n";
+    $http->shutdown();
+});
 
 $http->start();

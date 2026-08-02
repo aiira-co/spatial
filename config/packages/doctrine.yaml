@@ -34,15 +34,32 @@ doctrine:
         sessionMode: ~
         # True to use a pooled server with the oci8 driver
         pooled: ~
-        poolSize: 5 # MAX count connections in one pool
-        tickFrequency: 60000 # when need check possibilities downscale (close) opened connection to DB in pools
-        connectionTtl: 60 # when connection not used this time(seconds) - it will be close (free)
-        usedTimes: 100 # 1 connection (in pool) will be re-used maximum N queries
-        connectionDelay: 2 # time(seconds) for waiting response from pool
-        useConnectionPool: true # if false, will create new connect instead of using pool
-        retry: 
-            maxAttempts: 2 # if connection in pool was timeout (before use) then try re-connect
-            delay: 1000 # delay to try fetch from pool again(milliseconds) if no connect available
+        # --- Pool (read by Spatial\Entity\DbConnection) ---
+        # Max EntityManagers per pool, PER WORKER PROCESS. Total connections to
+        # the database server are: worker_num x pools per service x poolSize.
+        # Keep worker_num explicit in public/index.php and size this against the
+        # server's max_connections, counting every service that shares it.
+        poolSize: 5
+        # Seconds a request waits for a free slot before failing with 503
+        # instead of blocking the coroutine indefinitely.
+        connectionDelay: 2
+        # Issue `SELECT 1` on checkout. Catches connections dropped server-side
+        # (idle timeout, failover, restart) at the cost of one round trip per
+        # checkout. isOpen() is always checked regardless.
+        validateOnCheckout: false
+
+        # --- OpsWay Swoole PgSQL driver (optional) ---
+        # The four keys below plus `retry` are only honoured when driverClass is
+        # set to the OpsWay driver, which pools at the DBAL layer. Leave it
+        # commented out and they have no effect.
+        # driverClass: \OpsWay\Doctrine\DBAL\Swoole\PgSQL\Driver
+        tickFrequency: 60000 # how often to check whether idle connections can be closed
+        connectionTtl: 60 # close a connection unused for this long (seconds)
+        usedTimes: 100 # retire a connection after this many queries
+        useConnectionPool: true # if false, connect per request instead of pooling
+        retry:
+            maxAttempts: 2 # re-connect attempts when a pooled connection timed out
+            delay: 1000 # delay before retrying the pool (milliseconds)
 
 
       #galaxyIdentity
@@ -68,15 +85,19 @@ doctrine:
         sessionMode: ~
         # True to use a pooled server with the oci8 driver
         pooled: ~
-        poolSize: 5 # MAX count connections in one pool
-        tickFrequency: 60000 # when need check possibilities downscale (close) opened connection to DB in pools
-        connectionTtl: 60 # when connection not used this time(seconds) - it will be close (free)
-        usedTimes: 100 # 1 connection (in pool) will be re-used maximum N queries
-        connectionDelay: 2 # time(seconds) for waiting response from pool
-        useConnectionPool: true # if false, will create new connect instead of using pool
-        retry: 
-            maxAttempts: 2 # if connection in pool was timeout (before use) then try re-connect
-            delay: 1000 # delay to try fetch from pool again(milliseconds) if no connect available
+        # See the `default` connection above for what each pool key does.
+        # This is a SECOND pool: its poolSize adds to the per-worker total.
+        poolSize: 5
+        connectionDelay: 2
+        validateOnCheckout: false
+        # driverClass: \OpsWay\Doctrine\DBAL\Swoole\PgSQL\Driver
+        tickFrequency: 60000
+        connectionTtl: 60
+        usedTimes: 100
+        useConnectionPool: true
+        retry:
+            maxAttempts: 2
+            delay: 1000
 
   orm:
     auto-generate_proxy_classes: true
