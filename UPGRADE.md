@@ -98,17 +98,22 @@ $http->on("workerStop", function (Server $server, int $workerId) {
 Creating an `EntityManager` does not open a socket — DBAL connects lazily on
 first query — so `warmup()` is cheap.
 
-### 3. Replace the empty SIGTERM handler
+### 3. Delete the SIGTERM handler
 
 `pcntl_signal` never fires here: it needs a `pcntl_signal_dispatch()` pump that
-an event loop does not run. Batched spans are lost on every rolling deploy.
+an event loop does not run. Remove it and add nothing in its place — the
+OpenSwoole master installs its own SIGTERM handler, which shuts the server down
+gracefully and so fires `workerStop`, draining pools and flushing telemetry.
+
+Do **not** reach for `Process::signal()` as the replacement:
 
 ```php
-use OpenSwoole\Process;
+// Wrong. Called before start(), this creates the event loop, and
+// Server::start() then refuses with "eventLoop has already been created".
+// Supervisor restart-loops the worker until it gives up in a FATAL state.
+Process::signal(SIGTERM, fn() => $http->shutdown());
 
-Process::signal(SIGTERM, function () use ($http) {
-    $http->shutdown();
-});
+$http->start();
 ```
 
 ### 4. Simplify the DB traits

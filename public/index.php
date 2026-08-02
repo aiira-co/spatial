@@ -47,7 +47,6 @@ declare(strict_types=1);
 use OpenSwoole\Http\Request;
 use OpenSwoole\Http\Response;
 use OpenSwoole\Http\Server;
-use OpenSwoole\Process;
 use OpenSwoole\Runtime;
 use Presentation\AppModule;
 use Spatial\Core\App;
@@ -79,13 +78,19 @@ $bridgeManager = new BridgeManager($app);
 $http = new Server("0.0.0.0", 8080);
 
 /**
- * Worker count is set explicitly.
+ * Worker count is set explicitly, because it caps both throughput and the
+ * database footprint. OpenSwoole otherwise defaults to one worker per CPU
+ * core, which sizes your connection usage to whatever host you deploy on.
  *
- * OpenSwoole otherwise defaults to one worker per CPU core, which silently
- * multiplies the database connection footprint by the size of the host:
- * total connections = workers x pools per service x poolSize. Keep this in
- * step with `poolSize` in config/packages/doctrine.yaml and with the
- * database server's own connection limit.
+ * How many connections that means depends on the driver. OpenSwoole exposes no
+ * PDO PostgreSQL coroutine hook, so with a plain `pdo_pgsql` driver a query
+ * blocks its whole worker: concurrency comes from workers rather than
+ * coroutines, a worker holds about one connection, and the pool never fills.
+ * Uncomment `driverClass` in config/packages/doctrine.yaml to get the OpsWay
+ * coroutine driver, and queries then genuinely run in parallel — at which
+ * point the ceiling becomes `worker_num x poolSize` per pool.
+ *
+ * Budget across every service sharing the database, not just this one.
  */
 $http->set([
     'worker_num' => (int)(getenv('SWOOLE_WORKER_NUM') ?: 4),
@@ -144,12 +149,13 @@ $http->on(
 );
 
 /**
- * Graceful shutdown. Process::signal is used rather than pcntl_signal, which
- * needs an explicit pcntl_signal_dispatch() pump that an event loop never runs.
+ * SIGTERM needs no handler here. The OpenSwoole master installs its own, which
+ * shuts the server down gracefully and so fires workerStop, draining pools and
+ * flushing telemetry.
+ *
+ * Do not call Process::signal() at this level. Before start() it creates the
+ * event loop, and Server::start() then refuses with "eventLoop has already been
+ * created", leaving supervisor to restart-loop into a FATAL state.
  */
-Process::signal(SIGTERM, function () use ($http) {
-    echo "Received SIGTERM, draining workers...\n";
-    $http->shutdown();
-});
 
 $http->start();
