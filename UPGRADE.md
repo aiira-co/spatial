@@ -357,47 +357,42 @@ of the pool is open connections that no code path can reach. Size it for what a
 worker genuinely holds at once — the EntityManager running the query, plus slack
 for coroutines holding one across a Redis or HTTP call.
 
-`nx_api` now runs `worker_num: 8`, `poolSize: 3`: 24 connections instead of 64,
-measured at 680 req/s against the 700 req/s it managed at `poolSize: 8`, so the
-40 connections bought nothing. The other three services still need the same
-treatment.
+`nx_api`, `nx_suite_api`, and `nx_identity_api` now run `worker_num: 8`,
+`poolSize: 3` (24 connections each). `nx_intelligence_api` uses `poolSize: 2`.
+`nx_notify` uses its own database at `poolSize: 3`.
 
 ## Still outstanding
 
-Not addressed here, tracked for Phase 1 and 2:
+Tracked for follow-up phases:
 
-- `nx_suite_api`, `nx_identity_api` and `nx_intelligence_api` still run
-  `poolSize: 8`. See section 9.
-- Prepared statements are not cached across queries in the coroutine driver, so
-  each parameterised query costs an extra `PREPARE` round trip. Moot while the
-  driver is unusable.
+### Done since this doc was first written
 
-- **12 more PSR-4 violations remain in `nx_api`**, and two of them are live
-  production bugs rather than latent ones:
-  - `src/core/Application/Logics/Control/interverse/` is lowercase while the
-    namespace is `Control\Interverse`. macOS is case-insensitive so it resolves
-    locally, but the Linux containers are not — those four classes do not
-    autoload in production, and `ControlApi/Controllers/InterverseController`
-    references them. Fix with a two-step `git mv` to `Interverse/`.
-  - `BasicAuthMiddleware .php` and `RateLimitMiddleware .php` have a space
-    before the extension, so neither autoloads anywhere. `RateLimitMiddleware`
-    has a referencing file.
-  - `Infrastructure\Cache\RedisCacheService` declares itself as
-    `NxApi\Infrastructure\Cache\...`, a prefix absent from the autoload map.
-  - `src/common/Compat/phpstan-stubs.php` declares five vendor classes
-    (`OpenSwoole\Coroutine\Channel`, three `Spatial\...` interfaces). Being
-    skipped is what keeps it from colliding with the real ones, so add it to
-    `exclude-from-classmap` rather than "fixing" it.
-- No coroutine-safe OTel `ContextStorage`, so concurrent requests in one worker
-  can parent spans onto each other under `HOOK_ALL`.
-- No W3C trace context propagation in either direction.
-- No Doctrine/DBAL instrumentation.
-- Metadata, query and result caches are declared in `doctrine.yaml` but never
-  wired into `Configuration`.
-- `src/DoctrineConfig.php` is dead and would fatal if constructed. The four
-  coroutine stubs that shared this problem — `CoroutineConnection`,
-  `CoroutineDriverMiddleware`, `CoroutineEntityManager` and
-  `ReopeningEntityManager` — have been removed.
+- OTel Phase 1: coroutine-safe `ContextStorage`, W3C inbound/outbound propagation,
+  Guzzle outbound tracing, DBAL query spans (`spatial/core` + `spatial/doctrine`
+  v4.2.x).
+- Shared-DB `poolSize` reduced to `3` on `nx_api`, `nx_suite_api`, and
+  `nx_identity_api`; `nx_intelligence_api` runs `poolSize: 2`.
+- `nx_api` PSR-4 fixes: `Control/Interverse/`, middleware filenames,
+  `RedisCacheService` namespace, `phpstan-stubs.php` excluded from classmap.
+- `nx_notify` V2 providers (email, FCM push, Uniwallet SMS, WhatsApp, Telegram,
+  Discord, WeChat, LINE) and domain API migration via `Spatial\Notify\NotifyGateway`.
+
+### Remaining
+
+- **Coroutine PostgreSQL driver** — do not enable until OpenSwoole fixes
+  cross-coroutine connection reuse (section 8).
+- **Doctrine metadata / query / result caches** — declared in `doctrine.yaml` but
+  not wired into `Configuration`.
+- **`nx_notify` email templates** — most domain mail still uses
+  `transactional.raw`; migrate to versioned templates under
+  `assets/notification-templates/email/`.
+- **Legacy v1** `POST /notify-api/send` — retire once all callers use V2.
+- **`spatial/core` Packagist release** — tag v4.2.3 with `Spatial\Notify` so
+  consumers drop the monorepo autoload path override.
+- **Remaining nx_api PSR-4** — audit any classes still outside PSR-4 after the
+  Interverse/middleware fixes (see Packagist autoload report if CI adds one).
+- Prepared-statement caching in the coroutine driver — moot while that driver is
+  disabled.
 
 ## Verifying
 

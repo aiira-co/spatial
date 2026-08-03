@@ -5,7 +5,7 @@ namespace Core\Application\Logics\Identity\ResetPassword\Commands;
 use Core\Application\Traits\IdentityTrait;
 use Core\Domain\Identity\ResetPasswordRequest;
 use Core\Domain\Identity\Signature;
-use Infrastructure\Services\EmailService;
+use Spatial\Notify\NotifyGateway;
 use Spatial\Psr7\Request;
 
 class UpdateResetRequest extends Request
@@ -93,16 +93,13 @@ class UpdateResetRequest extends Request
 Your password has been changed.
 </p>
 ";
-        $mail = new EmailService();
-        $payload = $mail->from('verify@aiira.co', 'Team Aiira')
-            ->to(
-                [
-                    (object)[
-                        'name' => $this->passwordRequest->person->username,
-                        'email' => $this->data->email
-                    ]
-                ]
-            )
-            ->send('Password Updated', $description);
+        (new NotifyGateway())->queueRawEmail(
+            commandId: sprintf('spatial-reset-updated-%d', $this->passwordRequest->id),
+            recipientEmail: $this->data->email,
+            subject: 'Password Updated',
+            htmlBody: $description,
+            referenceType: 'identity_user',
+            referenceId: (string) $this->passwordRequest->person->id,
+        );
     }
 }

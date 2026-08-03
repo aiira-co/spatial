@@ -5,7 +5,7 @@ namespace Core\Application\Logics\Identity\ResetPassword\Commands;
 use Core\Application\Traits\IdentityTrait;
 use Core\Domain\Identity\Person;
 use Core\Domain\Identity\ResetPasswordRequest;
-use Infrastructure\Services\EmailService;
+use Spatial\Notify\NotifyGateway;
 use Spatial\Psr7\Request;
 
 class CreateResetRequest extends Request
@@ -81,13 +81,14 @@ class CreateResetRequest extends Request
 <small>*If you didn’t make this request, or made it by mistake, please ignore this email. Your password will remain as it was.</small>
 </p>
 ";
-        $mail = new EmailService();
-        $payload = $mail->from('verify@aiira.co', 'Team Aiira')
-            ->to([
-                     (object)['name' => $request->person->username,
-                     'email' => $this->data->email]
-                 ])
-            ->send('Forgot your password? We can help', $description);
+        (new NotifyGateway())->queueRawEmail(
+            commandId: sprintf('spatial-reset-create-%d', $request->id),
+            recipientEmail: $this->data->email,
+            subject: 'Forgot your password? We can help',
+            htmlBody: $description,
+            referenceType: 'identity_user',
+            referenceId: (string) $request->person->id,
+        );
         return true;
     }
 

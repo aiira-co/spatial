@@ -61,7 +61,8 @@
       "Presentation\\": "src/presentation/",
       "Common\\": "src/common/",
       "Core\\": "src/core/",
-      "Infrastructure\\": "src/infrastructure/"
+      "Infrastructure\\": "src/infrastructure/",
+      "Spatial\\Notify\\": "../Spatial_Framework/spatial-core/src/notify/"
     }
   },
   "require-dev": {

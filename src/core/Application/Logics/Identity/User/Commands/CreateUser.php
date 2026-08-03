@@ -13,7 +13,7 @@ use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\TransactionRequiredException;
-use Infrastructure\Services\EmailService;
+use Spatial\Notify\NotifyGateway;
 use Spatial\Psr7\Request;
 
 /**
@@ -105,14 +105,13 @@ We wanted to confirm that your new Pixbay account is registered and good to go.
  If you have any questions, please don't hesitate to contact us at support@aiira.co
 </p>
 ";
-        $mail = new EmailService();
-        $payload = $mail->from('no_reply@aiira.co', 'Team Aiira')
-            ->to([
-                (object)[
-                    'name' => $user->username,
-                    'email' => $user->email
-                ]
-            ])
-            ->send('Welcome to Pixaby. Let’s Get Started!', $description);
+        (new NotifyGateway())->queueRawEmail(
+            commandId: sprintf('spatial-user-create-%d', $user->id),
+            recipientEmail: $user->email,
+            subject: 'Welcome to Pixaby. Let’s Get Started!',
+            htmlBody: $description,
+            referenceType: 'identity_user',
+            referenceId: (string) $user->id,
+        );
     }
 }
