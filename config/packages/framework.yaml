@@ -5,4 +5,6 @@ header:
   allowed_headers: 'AccountKey, X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Host, Date, Cookie, Cookie2'
   allow_credentials: 'true'
   max_cache_age: 60
+# Overridden at boot from APP_ENV: production mode when APP_ENV != development.
+# This value is only used when APP_ENV is unset.
 enableProdMode: false
