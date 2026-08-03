@@ -381,8 +381,12 @@ Tracked for follow-up phases:
 
 - **Coroutine PostgreSQL driver** — do not enable until OpenSwoole fixes
   cross-coroutine connection reuse (section 8).
-- **Doctrine metadata / query / result caches** — declared in `doctrine.yaml` but
-  not wired into `Configuration`.
+- **Doctrine metadata / query / result caches** — wired in `spatial/doctrine`
+  via `Spatial\Entity\Cache\DoctrineCacheFactory`. Reads
+  `metadata_cache_driver`, `query_cache_driver` and `result_cache_driver`
+  from `doctrine.yaml`; uses Redis in prod (`enableProdMode: true`) with
+  `REDIS_*` env vars, in-memory `ArrayAdapter` in dev. Requires
+  `symfony/cache` (added to `spatial/doctrine` ^4.2.5).
 - **`nx_notify` email templates** — most domain mail still uses
   `transactional.raw`; migrate to versioned templates under
   `assets/notification-templates/email/`.
