@@ -372,6 +372,8 @@ Tracked for follow-up phases:
 - OTel sampler from `OTEL_TRACES_SAMPLER` / `_ARG`; dual autoload env vars removed
   from `.env.example`; queue producer/consumer spans + W3C on AMQP headers.
 - Dead `DoctrineConfig` class + old `Connection\ConnectionPool` removed.
+- Phase 3 request scope: `ScopedContainer` + `#[Injectable('request'|'any')]`
+  (`spatial/core` v4.2.7). Controllers are `make()`'d per request.
 
 ### Remaining
 
@@ -386,6 +388,52 @@ Tracked for follow-up phases:
   disabled.
 - **PgBouncer** — optional capacity lever (see section 10); not required after
   Phase 0 budget cuts.
+- **Monorepo consolidation** / broader composer constraint cleanup — follow-up.
+
+## 11. Request-scoped DI (`spatial/core` v4.2.7)
+
+Under Swoole, PHP-DI's default singleton map is **per worker**, not per HTTP
+request. That made `#[Injectable('request')]` a no-op (and previously left
+commented out in `App`).
+
+**What changed**
+
+- `App` boots a `Spatial\Core\DI\ScopedContainer`.
+- `ModuleRegistrar` marks `providedIn: request|any` providers as request-scoped
+  and **does not** eagerly `get()` them at boot (so pools like `IdentityDB` are
+  not constructed in the master before fork).
+- `App::process()` calls `beginRequest()` / `endRequest()` around the middleware
+  pipeline so request instances are dropped after the response.
+- `RouterModule` resolves controllers with `make()` each request so constructor
+  deps are not trapped on a long-lived controller singleton.
+
+**How to use it**
+
+```php
+use Spatial\Core\Attributes\Injectable;
+
+#[Injectable('request')]
+class IdentityDB extends DbConnection
+{
+    // ...
+}
+```
+
+Resolve via the container (`App::diContainer()->get(IdentityDB::class)` or
+constructor injection into a per-request controller). Do **not** `new IdentityDB()`
+inside handlers — that bypasses both the DI scope and the shared pool wiring.
+
+**Scopes**
+
+| `providedIn` | Lifetime |
+| ------------ | -------- |
+| `root` / `platform` / default | One instance per worker |
+| `request` / `any` | One instance per HTTP request |
+| `null` | Not auto-provided; list in a module `providers` array |
+
+No consumer code change is required for packages already annotated
+`#[Injectable('request')]` (e.g. `IdentityDB` in nx_api / nx_identity_api).
+Bump `spatial/core` to **^4.2.7** and restart workers.
 
 ## 10. PgBouncer (optional)
 
@@ -419,8 +467,10 @@ count.
 Offline, no service required:
 
 ```bash
-php spatial-doctrine/tests/pool-lease-test.php      # lease accounting, 28 checks
-php spatial-core/test/route-normalizer-test.php     # metric cardinality
+php spatial-doctrine/tests/pool-lease-test.php         # lease accounting, 28 checks
+php spatial-core/test/route-normalizer-test.php        # metric cardinality
+php spatial-core/test/injectable-scope-test.php        # request-scoped DI
+php spatial-core/test/configuration-loader-test.php    # APP_ENV → enableProdMode
 ```
 
 Inside a service container, which has the openswoole extension:
