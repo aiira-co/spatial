@@ -374,21 +374,23 @@ Tracked for follow-up phases:
 - Dead `DoctrineConfig` class + old `Connection\ConnectionPool` removed.
 - Phase 3 request scope: `ScopedContainer` + `#[Injectable('request'|'any')]`
   (`spatial/core` v4.2.7). Controllers are `make()`'d per request.
+- App.php legacy registration/route builders removed (`spatial/core` v4.2.8).
+- Remaining product emails migrated off `transactional.raw` to versioned
+  templates (`connect.*`, `suite.welcome-*`); v1 `POST /notify-api/send` returns
+  410 Gone.
+- Monorepo umbrella started at `spatial-framework` (path-repo workflow); Packagist
+  still publishes from satellite repos.
 
 ### Remaining
 
 - **Coroutine PostgreSQL driver** — do not enable until OpenSwoole fixes
   cross-coroutine connection reuse (section 8).
-- **`nx_notify` email templates** — identity + suite password/welcome/verification
-  use versioned templates; remaining callers (`nx_api` featured/relationship,
-  suite entity create/update) still use `transactional.raw`.
-- **Legacy v1** `POST /notify-api/send` — retire once all callers use V2.
-- **Remaining nx_api PSR-4** — audit any classes still outside PSR-4.
+- **Monorepo slice 2** — import package histories into `packages/*` and automate
+  subtree splits to satellite repos.
 - Prepared-statement caching in the coroutine driver — moot while that driver is
   disabled.
-- **PgBouncer** — optional capacity lever (see section 10); not required after
-  Phase 0 budget cuts.
-- **Monorepo consolidation** / broader composer constraint cleanup — follow-up.
+- **PgBouncer** — local stack in `nx_pg_bouncer`; replicate on prod with real PG host.
+- **Remaining nx_api PSR-4** — audit any classes still outside PSR-4.
 
 ## 11. Request-scoped DI (`spatial/core` v4.2.7)
 
