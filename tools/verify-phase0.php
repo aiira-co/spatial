@@ -231,7 +231,6 @@ function drive(
             }
 
             curl_multi_remove_handle($multi, $ch);
-            curl_close($ch);
             unset($started[$key]);
 
             if ($accepting) {
@@ -272,7 +271,6 @@ function probe(string $url, string $method, array $headers, float $timeout = 30.
     $error = curl_error($ch);
     $status = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
     $headerSize = (int)curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-    curl_close($ch);
 
     return [
         'status' => $status,

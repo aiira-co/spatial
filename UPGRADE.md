@@ -387,9 +387,10 @@ Tracked for follow-up phases:
   from `doctrine.yaml`; uses Redis in prod (`enableProdMode: true`) with
   `REDIS_*` env vars, in-memory `ArrayAdapter` in dev. Requires
   `symfony/cache` (added to `spatial/doctrine` ^4.2.5).
-- **`nx_notify` email templates** — most domain mail still uses
-  `transactional.raw`; migrate to versioned templates under
-  `assets/notification-templates/email/`.
+- **`nx_notify` email templates** — identity + suite password/welcome/verification
+  flows now use versioned templates (`identity.*`, `suite.*`). Remaining callers
+  (`nx_api` featured/relationship, suite entity create/update) still use
+  `transactional.raw`.
 - **Legacy v1** `POST /notify-api/send` — retire once all callers use V2.
 - **`spatial/core` Packagist release** — tag v4.2.3 with `Spatial\Notify` so
   consumers drop the monorepo autoload path override.
