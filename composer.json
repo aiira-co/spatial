@@ -28,7 +28,7 @@
     "azjezz/psl": "^4.2.0",
     "lcobucci/jwt": "^5",
     "openswoole/core": "^22.1",
-    "spatial/core": "^4.2.5",
+    "spatial/core": "^4.2.7",
     "spatial/doctrine": "^4.2.5",
     "spatial/cli": "^1.1",
     "symfony/yaml": "^6"
