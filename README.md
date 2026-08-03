@@ -219,9 +219,12 @@ DB_DATABASE=spatial
 DB_USERNAME=root
 DB_PASSWORD=secret
 
-#OpenTelemetry (Optional)
-OTEL_ENABLED=true
-OTEL_ENDPOINT=http://otel-collector:4318
+# OpenTelemetry (manual SDK via Spatial\Telemetry\OtelProviderFactory)
+OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+OTEL_METRIC_EXPORT_INTERVAL=60000
+OTEL_TRACES_SAMPLER=parentbased_traceidratio
+OTEL_TRACES_SAMPLER_ARG=1.0
+OTEL_SEMCONV_STABILITY_OPT_IN=http/dup
 ```
 
 ### Server Configuration

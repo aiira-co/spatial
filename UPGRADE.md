@@ -218,30 +218,22 @@ so every forked worker starts one slot down. Drop the constructor checkout and
 lease per request instead. Same pattern in `spatial`'s own `AppDB` and
 `IdentityDB` templates.
 
-### 7. Reconcile the OTel environment variables
+### 7. Reconcile the OTel environment variables — done
 
-`.env.example` currently sets both the extension's autoload SDK and the manual
-OTLP SDK:
-
-```
-OTEL_PHP_AUTOLOAD_ENABLED=true
-OTEL_TRACES_EXPORTER=console
-OTEL_METRICS_EXPORTER=console
-OTEL_LOGS_EXPORTER=console
-```
-
-No `opentelemetry-auto-*` package is installed, so the autoload path
-instruments nothing while the console exporter settings conflict with the OTLP
-path that actually runs. Remove the four lines and keep
-`OTEL_EXPORTER_OTLP_ENDPOINT`. Optionally add:
+`.env.example` files no longer enable the extension autoload SDK. Keep the
+manual path only:
 
 ```
+OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
 OTEL_METRIC_EXPORT_INTERVAL=60000
+OTEL_TRACES_SAMPLER=parentbased_traceidratio
+OTEL_TRACES_SAMPLER_ARG=1.0
 OTEL_SEMCONV_STABILITY_OPT_IN=http/dup
 ```
 
-`spatial/README.md` documents `OTEL_ENABLED` and `OTEL_ENDPOINT`, which nothing
-reads — the endpoint variable is `OTEL_EXPORTER_OTLP_ENDPOINT`.
+Do not set `OTEL_PHP_AUTOLOAD_ENABLED` — it conflicts with
+`OtelProviderFactory`. Sampler env vars are honoured by
+`SamplerFactory` inside `OtelProviderFactory::create()`.
 
 ## 8. The coroutine PostgreSQL driver — do not enable it yet
 
@@ -371,33 +363,56 @@ Tracked for follow-up phases:
   Guzzle outbound tracing, DBAL query spans (`spatial/core` + `spatial/doctrine`
   v4.2.x).
 - Shared-DB `poolSize` reduced to `3` on `nx_api`, `nx_suite_api`, and
-  `nx_identity_api`; `nx_intelligence_api` runs `poolSize: 2`.
+  `nx_identity_api`; `nx_intelligence_api` uses `poolSize: 2` via `DbConnection`.
 - `nx_api` PSR-4 fixes: `Control/Interverse/`, middleware filenames,
   `RedisCacheService` namespace, `phpstan-stubs.php` excluded from classmap.
-- `nx_notify` V2 providers (email, FCM push, Uniwallet SMS, WhatsApp, Telegram,
-  Discord, WeChat, LINE) and domain API migration via `Spatial\Notify\NotifyGateway`.
+- `nx_notify` V2 providers and domain API migration via `Spatial\Notify\NotifyGateway`.
+- Doctrine Redis metadata/query/result caches (`spatial/doctrine` v4.2.5) gated by
+  `APP_ENV` → `enableProdMode`.
+- OTel sampler from `OTEL_TRACES_SAMPLER` / `_ARG`; dual autoload env vars removed
+  from `.env.example`; queue producer/consumer spans + W3C on AMQP headers.
+- Dead `DoctrineConfig` class + old `Connection\ConnectionPool` removed.
 
 ### Remaining
 
 - **Coroutine PostgreSQL driver** — do not enable until OpenSwoole fixes
   cross-coroutine connection reuse (section 8).
-- **Doctrine metadata / query / result caches** — wired in `spatial/doctrine`
-  via `Spatial\Entity\Cache\DoctrineCacheFactory`. Reads
-  `metadata_cache_driver`, `query_cache_driver` and `result_cache_driver`
-  from `doctrine.yaml`; uses Redis in prod (`enableProdMode: true`) with
-  `REDIS_*` env vars, in-memory `ArrayAdapter` in dev. Requires
-  `symfony/cache` (added to `spatial/doctrine` ^4.2.5).
 - **`nx_notify` email templates** — identity + suite password/welcome/verification
-  flows now use versioned templates (`identity.*`, `suite.*`). Remaining callers
-  (`nx_api` featured/relationship, suite entity create/update) still use
-  `transactional.raw`.
+  use versioned templates; remaining callers (`nx_api` featured/relationship,
+  suite entity create/update) still use `transactional.raw`.
 - **Legacy v1** `POST /notify-api/send` — retire once all callers use V2.
-- **`spatial/core` Packagist release** — tag v4.2.3 with `Spatial\Notify` so
-  consumers drop the monorepo autoload path override.
-- **Remaining nx_api PSR-4** — audit any classes still outside PSR-4 after the
-  Interverse/middleware fixes (see Packagist autoload report if CI adds one).
+- **Remaining nx_api PSR-4** — audit any classes still outside PSR-4.
 - Prepared-statement caching in the coroutine driver — moot while that driver is
   disabled.
+- **PgBouncer** — optional capacity lever (see section 10); not required after
+  Phase 0 budget cuts.
+
+## 10. PgBouncer (optional)
+
+PgBouncer sits between services and PostgreSQL and multiplexes many client
+connections onto fewer real backends:
+
+```
+services (worker_num × pools × poolSize clients)
+        ↓
+    PgBouncer
+        ↓
+ PostgreSQL (smaller max_connections budget)
+```
+
+**When to add it.** After Phase 0, direct connections are sized for the shared
+host. Introduce PgBouncer when you need more workers/services without raising
+Postgres `max_connections`, or when `pg_stat_activity` shows the budget is
+tight again.
+
+**Mode.** Prefer **transaction** pooling for short request-scoped work. Avoid
+**statement** pooling with Doctrine/`pdo_pgsql` prepared statements. If you rely
+on session state (temp tables, `SET`, advisory locks held across round-trips),
+use **session** pooling instead and size backends closer to client count.
+
+**What it does not replace.** Pool-leak fixes, `poolSize` budgets, and worker
+hooks remain mandatory. PgBouncer only reduces the Postgres-side connection
+count.
 
 ## Verifying
 
