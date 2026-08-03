@@ -462,6 +462,19 @@ use **session** pooling instead and size backends closer to client count.
 hooks remain mandatory. PgBouncer only reduces the Postgres-side connection
 count.
 
+**Local / prod-parity stack.** Use the sibling repo `nx_pg_bouncer`:
+
+```bash
+cd ../nx_pg_bouncer
+./bin/bootstrap-env.sh
+docker compose up -d
+./bin/point-apis-at-pgbouncer.sh
+```
+
+APIs on `monitoring-net` then set `DB_HOST=pgbouncer` / `DB_PORT=5432`.
+`nx_notify` stays on its own compose Postgres unless you move it onto the
+shared cluster.
+
 ## Verifying
 
 Offline, no service required:
