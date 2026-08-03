@@ -28,8 +28,8 @@
     "azjezz/psl": "^4.2.0",
     "lcobucci/jwt": "^5",
     "openswoole/core": "^22.1",
-    "spatial/core": "^4.0",
-    "spatial/doctrine": "^4.0",
+    "spatial/core": "^4.2.5",
+    "spatial/doctrine": "^4.2.5",
     "spatial/cli": "^1.1",
     "symfony/yaml": "^6"
   },
@@ -61,8 +61,7 @@
       "Presentation\\": "src/presentation/",
       "Common\\": "src/common/",
       "Core\\": "src/core/",
-      "Infrastructure\\": "src/infrastructure/",
-      "Spatial\\Notify\\": "../Spatial_Framework/spatial-core/src/notify/"
+      "Infrastructure\\": "src/infrastructure/"
     }
   },
   "require-dev": {
